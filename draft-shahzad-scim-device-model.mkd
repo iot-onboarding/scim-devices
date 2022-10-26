@@ -1,0 +1,189 @@
+---
+title: Device Schema Extensions to the SCIM model
+abbrev: SCIM Device Schema Extensions
+docname: draft-shahzad-scim-device-model-00
+submissionType: IETF
+category: std
+
+ipr: trust200902
+keyword: Internet-Draft
+
+stand_alone: yes
+pi: [toc, sortrefs, symrefs]
+
+author:
+ -  ins: M. Shahzad
+    name: Muhammad Shahzad
+    org: North Carolina State University
+    street:
+    - Department of Computer Science
+    - 890 Oval Drive
+    - Campus Box 8206
+    city: Raleigh, NC
+    code: 27695-8206
+    country: USA
+    email: mshahza@ncsu.edu
+ -
+    ins: H. Iqbal
+    name: Hassan Iqbal
+    org: North Carolina State University
+    street:
+    - Department of Computer Science
+    - 890 Oval Drive
+    - Campus Box 8206
+    city: Raleigh, NC
+    code: 27695-8206
+    country: USA
+    email: hiqbal@ncsu.edu
+ -
+    ins: E. Lear
+    name: Eliot Lear
+    org: Cisco Systems
+    street: Richtistrasse 7
+    code: CH-8304
+    city: Wallisellen
+    country: Switzerland
+    phone: +41 44 878 9200
+    email: lear@cisco.com
+
+--- abstract
+
+The initial core schema for SCIM (System for Cross Identity
+Management) was designed for provisioning users.  This memo specifies
+schema extensions that enables provisioning of devices, using various
+underlying bootstrapping systems, such as Wifi EasyConnect, RFC 8366
+vouchers, and BLE passcodes.
+
+--- middle
+
+Introduction
+============
+
+The Internet of Things presents a management challenge in many
+dimensions.  One of them is the ability to onboard and manage large
+number of devices.  There are many models for bootstrapping trust
+between devices and network deployments.  Indeed it is expected that
+different manufacturers will make use of different methods.
+
+SCIM (System for Cross Identity Management) {{!RFC7643}} {{!RFC7644}}
+defines a protocol and a schema for provisioning of users.  However,
+it can easily be extended to provision devices.  The protocol and core
+schema were designed to permit just such extensions.  Bulk operations
+are supported.  This is good because often devices are procured in
+bulk.
+
+Protocol Participants
+---------------------
+
+In the normal SCIM model, it was presumed that large federated
+deployments would be SCIM clients who provision and remove employees
+and contractors as they are enter and depart those deployments, and
+federated services such as sales, payment, or conferencing services
+would be the servers.
+
+In the device model, the roles are reversed, and may be somewhat more
+varied.  A deployment network management system gateway (NMS gateway)
+plays the role of the server, receiving information about devices that
+are expected to be connected to its network.  That server will apply
+appropriate local policies regarding whether/how the device should be
+connected.
+
+The client may be one of a number of entities:
+
+ - A vendor who is authorized to add devices to a network as part of
+   a sales transaction.  This is similar to the sales integration
+   sometimes envisioned by Bootstrapping Remote Key Infrastructure
+   (BRSKI) {{?RFC8995}}.
+
+ - A client application that administrators or employees use to add,
+   remove, or get information about devices.  An example might be an
+   tablet or phone app that scans Easyconnect QR codes.
+
+
+Schema Description
+------------------
+
+RFC 7643 does not prescribe a language to describe a schema. We
+have chosen the JSON schema language {{!I-D.bhutton-json-schema}} for
+this purpose.  This implies that use of XML for this device extension
+is not supported.
+
+Several additional schemas specify specific onboarding mechanisms,
+such as BLE and Wifi Easy Connect.
+
+Terminology
+-----------
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in BCP 14 {{!RFC2119}} {{!RFC8174}} when, and only when, they
+appear in all capitals, as shown here.
+
+
+The Device Schema
+=================
+
+The device schema is a base schema upon which specific onboarding
+technology schemas are built.  It is described below.
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_endpoint_extension_schema.json}}
+<CODE ENDS>
+~~~~~~~~~
+
+The BLE Device Extension
+========================
+
+This schema extends the Device schema to specify how the device is to
+be authenticated, as well as well as a URL to a control interface for
+the device.
+
+~~~~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_BLE_extension_schema.json}
+<CODE ENDS>
+~~~~~~~~
+
+Wifi EasyConnect Extension
+==========================
+
+This schema extends the device schema to enable Wifi EasyConnect
+(otherwise known as Device Provisioning Protocol).
+
+~~~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_WiFi_extension_schema.json}
+<CODE ENDS>
+~~~~~~~
+
+Zigbee Extension
+================
+
+This schema extends the device schema to enable provisioning of
+Zigbee devices.
+
+~~~~~~~
+{::include extensions/SCIM_zigbee_extension_schema.json}
+~~~~~~~
+
+Security Considerations
+=======================
+
+Because provisioning operations are senstive, each client must be
+appropriately authenticated.  Certain objects may be read-only or
+not visible based on who is connected.
+
+\[ More to be added here. \]
+
+IANA Considerations
+===================
+
+TBD
+
+Changes from Earlier Versions
+=============================
+
+Draft -00:
+
+  * Initial revision

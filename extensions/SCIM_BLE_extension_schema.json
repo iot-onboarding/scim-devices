@@ -1,0 +1,112 @@
+{
+    "urn:ietf:params:scim:schemas:extension:Ble:2.0:Device":{
+      "type": "object",
+      "$id": "#/properties/urn:ietf:params:scim:schemas:extension:Ble:2.0:Device",
+      "title": "Device extension schema for BLE",
+      "description": "Extension schema for devices that support BLE. It contains the attributes that are specific BLE devices only.",
+
+      "required": [
+        "versionSupport",
+        "deviceMacAddress",
+        "addressType",
+        "pairingMethods"
+      ],
+      
+      "properties": {
+        "versionSupport": {
+          "$id": "#/properties/versionSupport",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Version support",
+          "description": "Provides a list of all the BLE versions supported by the device.",
+          "examples": ["4.1", "4.2", "5.0", "5.1", "5.2", "5.3"]
+        },
+        "deviceMacAddress": {
+          "$id": "#/properties/deviceMacAddress",
+          "type": "string",
+          "title": "Device MAC address",
+          "description": "It is the public MAC address assigned by the manufacturer. It is unique 48 bit value.",
+          "examples": ["01:23:45:67:89:AB"],
+          "pattern": "^[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}$"
+        },
+        "addressType": {
+          "$id": "#/properties/addressType",
+          "type": "boolean",
+          "title": "Address type",
+          "default": false,
+          "description": "AddressType flag is taken from the BLE core specifications 5.3. If FALSE, the device is using public MAC address. If TRUE, device is using Random address which is resolved using IRK. "
+        },
+        "irk": {
+          "$id": "#/properties/irk",
+          "type": "string",
+          "title": "Identity resolving key",
+          "description": "Identity resolving key, which is unique for every device. It is used to resolve random address."
+        },
+        "pairingMethods": {
+          "$id": "#/properties/pairingMethods",
+          "type": "array",
+          "item":{
+            "type": "string"
+          },
+          "title": "Pairing methods",
+          "examples": ["urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device", "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device", "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device", "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device"]
+        },
+        
+        "urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device": {
+          "type": "null",
+          "title": "Extension for null pairing method",
+          "description": "This pairing method is for the BLE devices that do not use any pairing method and connects with the nearest device when powered up. There is no attribute for this method."
+        },
+        "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device": {
+          "type": "object",
+          "title": "Extension for just works pairing method.",
+          "properties": {
+            "key": {
+              "type": "null",
+              "title": "Key",
+              "description": "Just works does not have any key value. For completeness, it is added with a key value 'null'."
+            }
+          }
+        },
+        "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device": {
+          "type": "object",
+          "title": "Extension for pass key pairing method.",
+          "properties": {
+            "key": {
+              "type": "integer",
+              "title": "Key",
+              "description": "A six digit passkey for ble device",
+              "pattern": "^[0-9]{6}$"
+            }
+          }
+        },
+        "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device": {
+          "type": "object",
+          "title": "Extension for out of band pairing method.",
+          "required": [
+            "key",
+            "randNumber"
+          ],
+          "properties": {
+            "key": {
+              "type": "string",
+              "title": "Key",
+              "description": "A key value retrieved from out of band source such as NFC."
+            },
+            "randNumber": {
+              "type": "integer",
+              "title": "Random number",
+              "description": "Nonce added to the key."
+            },
+            "confirmationNumber": {
+              "type": "integer",
+              "title": "Confirmation number",
+              "description": "Some solutions require confirmation number RESTful message exchange."
+            }
+          }
+        }
+      }
+    }
+}

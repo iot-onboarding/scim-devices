@@ -1,0 +1,35 @@
+{  
+    "urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device":{
+        "type": "object",
+        "$id": "urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device",
+        "title": "Device extension schema for zigbee.",
+        "description": "Extension schema for devices that support zigbee. It contains the attributes that are specific zigbee devices only.",
+
+        "required": [
+            "versionSupport",
+            "deviceEui64Address"
+        ],
+        
+        "properties": {
+            "versionSupport": {
+            "$id": "#/properties/versionSupport",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "title": "Version support",
+            "description": "Provides a list of all the zigbee versions supported by the device.",
+            "examples": ["3.0"]
+            },
+            "deviceEui64Address": {
+            "$id": "#/properties/deviceEui64Address",
+            "type": "string",
+            "title": "EUI-64 address",
+            "description": "The EUI-64 (Extended Unique Identifier) device address.",
+            "examples": ["50325FFFFEE76728"],
+            "pattern": "^[0-9A-Fa-f]{16}$"
+            }
+        }
+    }
+}
+  

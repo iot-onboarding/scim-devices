@@ -1,0 +1,68 @@
+{
+    "urn:ietf:params:scim:schemas:extension:Wifi:2.0:Device":{
+      "type": "object",
+      "$id": "urn:ietf:params:scim:schemas:extension:Wifi:2.0:Device",
+      "title": "Device extension schema for WiFi",
+      "description": "Extension schema for devices that support WiFi. It contains the attributes that are specific WiFi devices only.",
+
+      "required": [
+        "versionSupport",
+        "bootstrapKey"
+      ],
+      
+      "properties": {
+        "versionSupport": {
+          "$id": "#/properties/versionSupport",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Version support",
+          "description": "Provides a list of all the WiFi versions supported by the device.",
+          "examples": ["802.11ax"]
+        },
+        "bootstrappingMethod": {
+          "$id": "#/properties/bootstrappingMethod",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Bootstrapping method",
+          "description": "The list of all the bootstrapping methods available on the enrollee device.",
+          "examples": ["QR", "NFC"]
+        },
+        "bootstrapKey": {
+          "$id": "#/properties/bootstrapKey",
+          "type": "string",
+          "title": "Bootstrap key",
+          "description": "This key is Elliptic-Curve Diffie–Hellman (ECDH) public key. The base64 encoded length for P-256, P-384, and P-521 is 80, 96, and 120 characters.",
+          "examples": ["MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADURzxmttZoIRIPWGoQMV00XHWCAQIhXruVWOz0NjlkIA="]
+        },
+        "deviceMacAddress": {
+          "$id": "#/properties/deviceMacAddress",
+          "type": "string",
+          "title": "Device MAC address",
+          "description": "The MAC address assigned by the manufacturer. It is unique 48 bit value.",
+          "examples": ["01:23:45:67:89:AB"],
+          "pattern": "^[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}$"
+        },
+        "classChannel": {
+          "$id": "#/properties/classChannel",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Class channel",
+          "description": "A list of global operating class and channel shared as bootstrapping information. It is formatted as class/channel.",
+          "examples": ["81/1", "115/36"]
+        },
+         "serialNumber": {
+          "$id": "#/properties/serialNumber",
+          "type": "string",
+          "title": "Serial number",
+          "description": "An alphanumeric serial number that may also be passed as bootstrapping information.",
+          "examples": ["4774LH2b4044"]
+        }
+      }
+    }
+}

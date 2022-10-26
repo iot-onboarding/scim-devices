@@ -1,0 +1,152 @@
+{
+    "urn:ietf:params:scim:schemas:extension:Endpoints:2.0:Device":{
+        "type": "object",
+        "$id": "urn:ietf:params:scim:schemas:extension:endpoints:2.0:Device",
+        "title": "Endpoints extension schema for partner application",
+        "description": "Endpoint schema contains URLs and root certificates for the partner application and URLs for enterprise endpoints.",
+        "required": [
+          "onboarding",
+          "deviceControl",
+          "dataReceiver"
+        ],
+  
+        "properties": {
+  
+          "onboarding": {
+            "type": "object",
+            "$id": "#/properties/onboarding",
+            "title": "Onboarding",
+            "description": "Onboarding application attributes.",
+  
+            "required": [
+              "onboardingAppUrl",
+              "onboardingAppRootCertificate",
+                    "onboardingEnterpriseEndpoint"
+            ],
+  
+            "properties": {
+              "onboardingAppUrl": {
+                "$id": "#/properties/onboardingAppUrl",
+                "type": "string",
+                "format": "iri-reference",
+                "title": "Onboarding application URL",
+                "description": "The URL of the onboarding application which can be used to access the application. This attribute is provided by the onboarding application when it creates the SCIM object for the device.",
+                "examples": ["https//example.com/onboardingapp/"]
+              },
+              "onboardingAppRootCertificate": {
+                "$id": "#/properties/onboardingAppRootCertificate",
+                "type": "string",
+                "title": "The root certificate of onboarding application",
+                "description": "This attribute comprises of the root certificate signed by the root CA. Onboarding application provides this attribute when it creates the SCIM object for the device."
+              },
+              "onboardingEnterpriseEndpoint": {
+                "$id": "#/properties/onboardingEnterpriseEndpoint",
+                "type": "string",
+                "format": "iri-reference",
+                "title": "Enterprise endpoint for onboarding app",
+                "description": "The URL of the enterprise endpoint which oboarding app uses to reach enterprise network gateway. This attribute is already known to the onboarding app and adds it to the SCIM object, when it creates the SCIM object for the device.",
+                "examples": ["https//enterprise.com/onboardingapp_endpoint/"]
+              }
+            }
+          },
+  
+          "deviceControl": {
+            "type": "object",
+            "$id": "#/properties/deviceControl",
+            "title": "Device Control",
+            "description": "Device controll application attributes.",
+  
+            "required": [
+              "deviceControlApps",
+                    "deviceControlEnterpriseEndpoint"
+            ],
+  
+            "properties": {
+              
+              "deviceControlApps": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                },
+                "title": "Device control apps",
+                "description": "The list of device control apps where each list entry contains i) URL and ii) root certificate for each device control app that can control the device.",
+                "properties": {
+                  "deviceControlAppUrl": {
+                    "$id": "#/properties/deviceControlAppUrl",
+                    "type": "string",
+                    "format": "iri-reference",
+                    "title": "Device control app url",
+                    "description": "The URL of the device control application which can be used to access the app. This attribute is provided by the onboarding application when it creates the SCIM object for the device.",
+                    "examples": ["https//example.com/device_control_app1/"]
+                  },
+                  "deviceControlAppRootCertificate": {
+                    "$id": "#/properties/deviceControlAppRootCertificate",
+                    "type": "string",
+                    "title": "Device control root certificate",
+                    "description": "This attribute comprises of the root certificate signed by the root CA. This attribute is already known to the onboarding app and adds it to the SCIM object, when it creates the SCIM object for the device."
+                  }
+                }
+              },
+              
+              "deviceControlEnterpriseEndpoint": {
+                "$id": "#/properties/deviceControlEnterpriseEndpoint",
+                "type": "string",
+                "format": "iri-reference",
+                "title": "Device control enterprise endpoint",
+                "description": "The URL of the enterprise endpoint which device control apps uses to reach enterprise network gateway. When enterprise receives the SCIM object from onboarding app, it adds this attribute to the object and sends back the object as response back to the onboarding app.",
+                "examples": ["https//enterprise.com/device_control_endpoint/"]
+              }
+            }
+          },
+  
+          "dataReceiver": {
+            "type": "object",
+            "$id": "#/properties/dataReceiver",
+            "title": "Data Receiver",
+            "description": "Data receiver application attributes.",
+  
+            "required": [
+              "dataReceiverApps",
+                    "dataReceiverEnterpriseEndpoint"
+            ],
+  
+            "properties": {
+              
+              "dataReceiverApps": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                },
+                "title": "Data receiver apps",
+                "description": "The list of data receiver apps where each list entry contains i) URL and ii) root certificate for each of the data receiver app.",
+                "properties": {
+                  "dataReceiverAppUrl": {
+                    "$id": "#/properties/dataReceiverAppUrl",
+                    "type": "string",
+                    "format": "iri-reference",
+                    "title": "Data receiver app URL",
+                    "description": "The URL of the data receiver application which can be used to access the application. This attribute is provided by the device control app when it communicates with the controller. Controller will add this in the SCIM object locally stored in the SCIM server.",
+                    "examples": ["https//example.com/dataReceoiverapp1/"]
+                  },
+                  "dataReceiverAppRootCertificate": {
+                    "$id": "#/properties/dataReceiverAppRootCertificate",
+                    "type": "string",
+                    "title": "Data receiver root certificate",
+                    "description": "This attribute comprises of the root certificate signed by the root CA. This attribute is provided by the device control app when it communicates with the controller. Controller will add this in the SCIM object locally stored in the SCIM server."
+                  }
+                }
+              },
+              
+              "dataReceiverEnterpriseEndpoint": {
+                "$id": "#/properties/dataReceiverEnterpriseEndpoint",
+                "type": "string",
+                "format": "iri-reference",
+                "title": "Data receiver enterprise endpoint",
+                "description": "The URL of the enterprise endpoint which data receiver apps uses to reach enterprise network gateway. When enterprise receives the SCIM object from onboarding app, it adds this attribute to the object and sends back the object as response back to the onboarding app.",
+                "examples": ["https//enterprise.com/data_receiver_endpoint/"]
+              }
+            }
+          }
+        }
+    }
+}
