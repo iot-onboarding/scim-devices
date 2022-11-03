@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "SCIM zigbee device core schema",
+  
+  "required": [
+    "schemas",
+    "id",
+    "adminState",
+    "connectivity",
+    "meta"
+  ],
+
+  "properties": {
+    "schemas": {
+      "$id": "#/properties/schemas",
+      "type": "array",
+      "item": {
+        "type": "string"
+      },
+      "description": "This is a default attribute of SCIM which contains the list of schema URIs that are present in the SCIM JSON object. It contains URI of core schema and extension schema. It may also include URI for applications schema depending on use-case.",
+      "examples": ["urn:ietf:params:scim:schemas:core:2.0:Device"]
+    },
+    "id": {
+      "$id": "#/properties/id",
+      "type": "string",
+      "title": "ID",
+      "uniqueItems": true,
+      "description": "It represents a unique device ID, formated as 128 bit UUID format. It provides a uniform way of uniquely identifying the device in the scope of the application.",
+      "examples": ["e9e30dba-f08f-4109-8486-d5c6a3312345"],
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "displayName": {
+      "$id": "#/properties/displayName",
+      "type": "string",
+      "title": "Display Name",
+      "description": "Human readable name of the device, suitable for displaying to end-users.",
+      "examples": ["BLE Heart Monitor"]
+    },
+    "adminState": {
+      "$id": "#/properties/adminState",
+      "type": "boolean",
+      "title": "Admin State",
+      "default": false,
+      "description": "A mutable boolean value indicating the device administrative status. If set TRUE, the commands (such as connect, disconnect, subscribe) that control app sends to the controller for the devices will be processeed by the controller. If set FALSE, any command comming from the control app for the device will be rejected by the controller."
+    },
+    "connectivity": {
+      "$id": "#/properties/connectivity",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Connectivity",
+      "description": "It represents the communication technology supported by the device such as BLE, WiFi, LoRa, Zigbee.",
+      "examples": ["BLE", "Zigbee"]
+    },
+    "mudUrl": {
+      "$id": "#/properties/mudurl",
+      "type": "string",
+      "format": "iri-reference",
+      "title": "MUD URL",
+      "description": "A URL to MUD file of the device (RFC 8520). It is added for future use. Current usage is not defined yet."
+    }
+  },
+
+  "meta": {
+    "type": "object",
+    "title": "MetaData",
+
+    "required": [
+      "resourceType",
+      "created",
+      "lastModified",
+      "version",
+      "location"
+    ],
+
+    "properties": {
+
+      "resourceType": {
+        "type": "string",
+        "title": "Resource type",
+        "enum": ["Device"],
+        "description": "The name of the resource type of the resource. This attribute has a mutability of readOnly.",
+        "readOnly": true
+      },
+
+      "created": {
+        "type": "string",
+        "format": "dateTime",
+        "title": "Created",
+        "description": "The DateTime that the resource was added to the service provider. This attribute MUST be a DateTime."
+      },
+
+      "lastModified": {
+        "type": "string",
+        "format": "dateTime",
+        "title": "Last modified",
+        "description": "The most recent DateTime that the details of this resource were updated at the service provider. If this resource has never been modified since its initial creation, the value MUST be the same as the value of created."
+      },
+
+      "version": {
+        "type": "string",
+        "title": "Version",
+        "description": "The version of the resource being returned. This value must be the same as the entity-tag (ETag) HTTP response header (see Sections 2.1 and 2.3 of [RFC7232])."
+      },
+
+      "location": {
+        "type": "string",
+        "format": "iri-reference",
+        "title": "Location",
+        "description": "The URI of the resource being returned. This value MUST be the same as the Content-Location HTTP response header (see Section 3.1.4.2 of [RFC7231])."
+      }
+    }    
+  }
+}

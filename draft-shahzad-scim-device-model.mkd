@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-shahzad-scim-device-model-00
+docname: draft-shahzad-scim-device-model-01
 submissionType: IETF
 category: std
 
@@ -120,8 +120,26 @@ described in BCP 14 {{!RFC2119}} {{!RFC8174}} when, and only when, they
 appear in all capitals, as shown here.
 
 
+
+
 The Device Schema
 =================
+
+The core device schema contains only those elements that any device
+may need.  Not all elements are optional.
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include SCIM_device_core_schema.json}
+<CODE ENDS>
+~~~~~~~~~
+
+The Endpoint Extension Schema
+=============================
+
+Sometimes devices require and application gateway interface to manage
+them.  This is the case with BLE and Zigbee non-IP devices.  SCIM
+clients MUST NOT specify this to describe native IP-based devices.
 
 The device schema is a base schema upon which specific onboarding
 technology schemas are built.  It is described below.
@@ -183,6 +201,10 @@ TBD
 
 Changes from Earlier Versions
 =============================
+
+Draft -01:
+
+  *  Doh! We forgot the core device schemea!
 
 Draft -00:
 
