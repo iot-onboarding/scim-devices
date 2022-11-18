@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-shahzad-scim-device-model-01
+docname: draft-shahzad-scim-device-model-02
 submissionType: IETF
 category: std
 
