@@ -1,26 +1,23 @@
 {
-    "urn:ietf:params:scim:schemas:extension:Wifi:2.0:Device":{
+    "urn:ietf:params:scim:schemas:extension:DPP:2.0:Device":{
       "type": "object",
-      "$id": "urn:ietf:params:scim:schemas:extension:Wifi:2.0:Device",
-      "title": "Device extension schema for WiFi",
-      "description": "Extension schema for devices that support WiFi. It contains the attributes that are specific WiFi devices only.",
+      "$id": "urn:ietf:params:scim:schemas:extension:DPP:2.0:Device",
+      "title": "Device extension schema for DPP",
+	"description": "Extension schema for devices that support Device Provision Protocol (DPP). It contains the attributes to construct the DPP URI.",
 
       "required": [
-        "versionSupport",
-        "bootstrapKey"
+          "bootstrapKey",
+	  "dppVersion"
       ],
+        "dppVersion": {
+          "$id": "#/properties/dppVersion",
+          "type": "integer",
+          "title": "Version support",
+           "description": "Version of DPP this device supports",
+           "examples": [ 1, 2 ]
+        },
       
       "properties": {
-        "versionSupport": {
-          "$id": "#/properties/versionSupport",
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Version support",
-          "description": "Provides a list of all the WiFi versions supported by the device.",
-          "examples": ["802.11ax"]
-        },
         "bootstrappingMethod": {
           "$id": "#/properties/bootstrappingMethod",
           "type": "array",

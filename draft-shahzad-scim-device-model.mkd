@@ -181,7 +181,7 @@ This schema extends the device schema to enable Wifi EasyConnect
 
 ~~~~~~~
 <CODE BEGINS>
-{::include extensions/SCIM_WiFi_extension_schema.json}
+{::include extensions/SCIM_DPP_extension_schema.json}
 <CODE ENDS>
 ~~~~~~~
 
