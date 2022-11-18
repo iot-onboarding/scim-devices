@@ -72,6 +72,16 @@ schema were designed to permit just such extensions.  Bulk operations
 are supported.  This is good because often devices are procured in
 bulk.
 
+Why SCIM for devices?
+---------------------
+Some might ask why SCIM is well suited for this purpose and not, for
+example, NETCONF or RESTCONF with YANG.  After all, there are all sorts
+of existing models available.  The answer is that the only information
+being passed about the device is neither state nor device configuration
+information, but only information necessary to bootstrap trust so that
+the device may establish connectivity.
+
+
 Protocol Participants
 ---------------------
 
