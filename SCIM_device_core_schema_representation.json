@@ -1,0 +1,56 @@
+{  
+  "id": "urn:ietf:params:scim:schemas:core:2.0:Device",
+  "name": "Device",
+  "description": "Device account",
+  "attributes" : [
+    {
+      "name": "deviceDisplayName",
+      "type": "string",
+      "description": "Human readable name of the device, suitable for displaying to end-users. For example, 'BLE Heart Monitor' etc.",
+      "multivalues": false,
+      "required": false,
+      "caseExact": true,
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none"
+    },
+    {
+      "name": "adminState",
+      "type": "boolean",
+      "description": "A mutable boolean value indicating the device administrative status. If set TRUE, the commands (such as connect, disconnect, subscribe) that control app sends to the controller for the devices will be processeed by the controller. If set FALSE, any command comming from the control app for the device will be rejected by the controller.",
+      "multivalues": false,
+      "required": true,
+      "caseExact": false,
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none"
+    },
+    {
+      "name": "mudUrl",
+      "type": "reference",
+      "description": "A URL to MUD file of the device (RFC 8520). It is added for future use. Current usage is not defined yet.",
+      "multivalues": false,
+      "required": false,
+      "caseExact": true,
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none"
+    },
+    {
+      "name": "connectivity",
+      "type": "string",
+      "description": "It represents the communication technology supported by the device such as BLE, WiFi, LoRa, Zigbee.",
+      "multivalues": true,
+      "required": true,
+      "caseExact": true,
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none"
+    }
+  ],
+  "meta" : {
+    "resourceType" : "Schema",
+    "location" :
+      "/v2/Schemas/urn:ietf:params:scim:schemas:core:2.0:Device"
+  }
+}
