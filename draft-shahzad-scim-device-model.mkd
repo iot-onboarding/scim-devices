@@ -121,6 +121,9 @@ is not supported.
 Several additional schemas specify specific onboarding mechanisms,
 such as BLE and Wifi Easy Connect.
 
+## Schema Representation
+It MUST be noted that the attributes defined in the device core schema and extensions comprise characteristics and SCIM datatypes defined in Sections 2.2 and 2.3 of the {{!RFC643}}. This RFC does not define new characteristics and datatype for the SCIM attributes.
+
 Terminology
 -----------
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
@@ -130,42 +133,126 @@ described in BCP 14 {{!RFC2119}} {{!RFC8174}} when, and only when, they
 appear in all capitals, as shown here.
 
 
-
-
-The Device Schema
-=================
-
-The core device schema contains only those elements that any device
-may need.  Not all elements are optional.
+ResourceType Device
+====================
+This section defines a new resource type, 'Device'. The "ResourceType" schema specifies the metadata about a resource type (see section 6 of {{!RFC7643}}). The resource "Devices" comprises a core device schema and several extension schemas. The core schema provides a minimal resource representation, whereas extension schemas extend the core schema depending on the device's capability. 
 
 ~~~~~~~~~
 <CODE BEGINS>
-{::include SCIM_device_core_schema.json}
+{::include SCIM_resource_type.json}
 <CODE ENDS>
 ~~~~~~~~~
 
-The Endpoint Extension Schema
-=============================
 
-Sometimes devices require and application gateway interface to manage
-them.  This is the case with BLE and Zigbee non-IP devices.  SCIM
-clients MUST NOT specify this to describe native IP-based devices.
 
-The device schema is a base schema upon which specific onboarding
-technology schemas are built.  It is described below.
+# SCIM Core Device Schema
+
+
+The core device schema provides the minimal representation of a resource "Device". It contains only those attributes that any device may need. Not all attributes are optional.
+The core schema for "Device" is identified using the schema URI: "urn:ietf:params:scim:schemas:core:2.0:Device". The following attributes are defined in the device core schema, and details of their characteristics are presented in [](#device-schema-json-representation).
+
+## Common Attributes
+The Device schema contains three common attributes as defined in the {{!RFC7643}}. 
+
+id <br />
+An id is a required and unique attribute of the device core schema (see section 3.1 of {{!RFC7643}}).
+
+externalID <br />
+An externalID is an optional attribute (see section 3.1 of {{!RFC7643}}).
+
+meta <br />
+Meta is a complex attribute and is required (see section 3.1 of {{!RFC7643}}).
+
+
+
+## Singular Attributes
+deviceDisplayName <br />
+It is a human-readable device name suitable for displaying to end-users. 
+It is a mutable, non-unique, and not required string value.
+For example, "BLE Heart Monitor".
+
+adminState <br />
+It is a required mutable boolean value indicating the device's administrative status. If set to TRUE, the commands (such as connect, disconnect, subscribe) that the control app sends to the controller for the devices will be processed by the controller. If set to FALSE, any command coming from the control app for the device will be rejected by the controller.
+
+mudUrl <br />
+A URL to the MUD file of the device {{!RFC8520}}. It is added for future use. Current usage still needs to be defined.
+
+## Multivalued Attributes
+The core attributes of the device schema contain one multivalued attribute.
+
+connectivity <br/>
+It represents the communication technology supported by a device such as BLE, WiFi, LoRa, and Zigbee. It is an array of string values, mutable, non-unique, but required. For example, ["BLE", "Zigbee"].
+
+## Device Schema JSON Representation
+Following is the JSON representation of the Device core schema. Common attributes such as "id" and "externalID" are not presented below.
 
 ~~~~~~~~~
 <CODE BEGINS>
-{::include extensions/SCIM_endpoint_extension_schema.json}}
+{::include SCIM_device_core_schema_representation.json}
 <CODE ENDS>
 ~~~~~~~~~
 
-The BLE Device Extension
-========================
 
-This schema extends the Device schema to specify how the device is to
-be authenticated, as well as well as a URL to a control interface for
-the device.
+## Device Object Example 
+Following is the minimal example of a device object that does not contain any extension representing the device's communication capability.
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include examples/SCIM_device_core_schema_object.json}
+<CODE ENDS>
+~~~~~~~~~
+
+
+# SCIM Device Extensions 
+
+This section presents various extension schemas, their attributes, JSON representation, and example object. These schemas extend the core device schema based on the device's capability (communication stack). Contrary to {{!RFC7643}}; this RFC presents an additional hierarchical level by introducing extensions within an extension. More details on nested extensions are present in [](#ble-pairing-method-extensions).
+
+
+## BLE Extension
+
+This schema extends the device schema to represent the devices supporting BLE. The attributes are as follows (for details on their characteristics, refer to [](#ble-extension-json-representation)).
+
+### Singular Attributes
+
+deviceMacAddress <br />
+It is the public MAC address assigned by the manufacturer. It is a unique 48-bit value. The regex pattern is ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}. 
+
+addressType <br />
+AddressType flag is taken from the BLE core specifications 5.3. If FALSE, the device is using a public MAC address. If TRUE, the device uses a Random address resolved using IRK.
+
+irk <br />
+Identity resolving key, which is unique for every device. It is used to resolve the random address.
+
+### Multivalued Attributes
+
+versionSupport <br />
+It provides an array of all the BLE versions supported by the device. For example, [4.1, 4.2, 5.0, 5.1, 5.2, 5.3].
+
+pairingMethods <br />
+This attribute is the array of pairing methods associated with the BLE device. The pairing methods may require sub-attributes, such as key/password, for the device pairing process. To enable the scalability of pairing methods in the future, they are represented as extensions to incorporate various attributes that are part of the respective pairing process. Pairing method extensions are nested inside the BLE extension. [See example object in ](#ble-device-object-example).
+
+### BLE Pairing Method Extensions
+The details on pairing methods and their associated attributes are in section 2.3 of [BLE core spec 5.3](https://www.bluetooth.com/specifications/specs/core-specification-5-3/). This RFC defines extensions for four pairing methods that are nested insided the BLE extension schema. They are as follows.
+
+urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device <br />
+This extension does not have any attribute. It allows pairing for BLE devices that do not require a pairing method.
+
+urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device <br />
+Just works pairing method does not require a key to pair devices. For completeness, the key value is set to 'null'.
+
+urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device <br />
+The pass key pairing method requires a 6-digit key to pair devices. 
+This extension has one singular attribute, "key".
+The key pattern is ^[0-9]{6}$.
+
+urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device <br />
+The out-of-band pairing method includes three singular attributes, i.e., key, randomNumber, and confirmationNumber. The key value is required and received from out-of-bond sources such as NFC. 
+randomNumber is also a required attribute which is nounce added to the key.
+confirmationNumber is a non-required attribute, which some solutions require in RESTful message exchange.
+
+
+
+### BLE Extension JSON Representation
 
 ~~~~~~~~
 <CODE BEGINS>
@@ -173,11 +260,49 @@ the device.
 <CODE ENDS>
 ~~~~~~~~
 
-Wifi EasyConnect Extension
-==========================
+### BLE Device Object Example 
 
-This schema extends the device schema to enable Wifi EasyConnect
+~~~~~~~~
+<CODE BEGINS>
+{::include examples/SCIM_device_ble_object.json}
+<CODE ENDS>
+~~~~~~~~
+
+
+
+
+## DPP EasyConnect Extension
+
+
+This schema extends the device schema to enable WiFi EasyConnect
 (otherwise known as Device Provisioning Protocol).
+The attributes in this extension are adopted from [WiFi Easy Connect Spec v2.0](https://www.wi-fi.org/download.php?file=/sites/default/files/private/Wi-Fi_Easy_Connect_Specification_v2.0.pdf) (see Section 5). The attributes are as follows (for details on their characteristics, refer to [](#dpp-extension-json-representation)).
+
+
+### Singular Attributes
+
+dppVersion <br />
+It represents the version of DPP the device supports.
+
+bootstrapKey <br />
+This key is Elliptic-Curve Diffie–Hellman (ECDH) public key. The base64 encoded lengths for P-256, P-384, and P-521 are 80, 96, and 120 characters.
+
+deviceMacAddress <br />
+The manufacturer assigns the MAC address. It is a unique 48-bit value. The regex pattern is ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.
+
+serialNumber <br />
+An alphanumeric serial number may also be passed as bootstrapping information.
+
+
+### Multivalued Attributes
+
+bootstrappingMethod <br />
+It is the array of all the bootstrapping methods available on the enrollee device. For example, [QR, NFC].
+
+classChannel <br />
+An array of global operating class and channel shared as bootstrapping information. It is formatted as class/channel. For example, '81/1', '115/36'.
+
+### DPP Extension JSON Representation
 
 ~~~~~~~
 <CODE BEGINS>
@@ -185,15 +310,122 @@ This schema extends the device schema to enable Wifi EasyConnect
 <CODE ENDS>
 ~~~~~~~
 
-Zigbee Extension
-================
 
-This schema extends the device schema to enable provisioning of
-Zigbee devices.
+### DPP Device Object Example 
 
-~~~~~~~
+~~~~~~~~
+<CODE BEGINS>
+{::include examples/SCIM_device_dpp_object.json}
+<CODE ENDS>
+~~~~~~~~
+
+
+## Zigbee Extension
+
+
+This schema extends the device schema to enable the provisioning of Zigbee devices. It has one singular attribute and one multivalued attribute. The attributes are as follows (for details on their characteristics, refer to [](#zigbee-extension-json-representation)).
+
+
+### Singular Attribute
+
+deviceEui64Address <br />
+It is a EUI-64 (Extended Unique Identifier) device address. The regex pattern is ^[0-9A-Fa-f]{16}$.
+
+### Multivalued Attribute
+versionSupport <br />
+It provides an array of all the Zigbee versions supported by the device. For example, [3.0].
+
+
+### Zigbee Extension JSON Representation
+
+~~~~~~~~
+<CODE BEGINS>
 {::include extensions/SCIM_zigbee_extension_schema.json}
-~~~~~~~
+<CODE ENDS>
+~~~~~~~~
+
+
+### Zigbee Device Object Example 
+
+~~~~~~~~
+<CODE BEGINS>
+{::include examples/SCIM_device_zigbee_object.json}
+<CODE ENDS>
+~~~~~~~~
+
+
+## The Endpoint Applications Extension Schema
+
+Sometimes devices require an application gateway interface to manage
+them, such as non-IP devices like BLE and Zigbee. SCIM
+clients MUST NOT specify this to describe native IP-based devices.
+
+The device schema is a base schema upon which specific onboarding
+technology schemas are built. This extension provides three complex attributes (onboarding, deviceControl, and dataReceiver) to represent three types of partner endpoint applications, i.e., onboarding, device control, and data receiver applications, respectively. These complex attributes and their respective sub-attributes are as follows (for details on their characteristics, refer to [](#endpoint-extension-json-representation)).
+
+### "onboarding" Complex Attribute
+This complex attribute represents the application responsible for onboarding the device. It has three subattributes which are as follows.
+
+appUrl <br />
+It is the URL of the onboarding application for accessing the application. This attribute is provided by the onboarding application when it creates the SCIM object for the device.
+
+rootCertificate <br />
+This attribute comprises the root certificate signed by the root CA. The onboarding application provides this attribute when it creates the SCIM object for the device.
+
+enterpriseEndpoint <br />
+It is the URL of the enterprise endpoint that the onboarding app uses to reach the enterprise network gateway. This attribute is already known to the onboarding app and added to the SCIM object when it creates the SCIM object for the device.
+
+
+
+
+### "deviceControl" Complex Attribute
+This complex attribute represents the application responsible for controlling the device. Device control applications provide access control for the device. It determines which other applications can access the data from the device. Depending on the use case, there can be more than one device control application.
+
+"deviceControl" has two attributes: i) a multivalued complex attribute called "apps" and ii) a singular attribute called "enterpriseEndpoint". The complex attribute "apps" provides the URLs and root certificates of the respective data control applications in an array. Their details are as follows:
+
+apps.appUrl <br />
+It is the URL of the device control application for accessing the app. This attribute is provided by the onboarding application when it creates the SCIM object for the device.
+
+apps.rootCertificate <br />
+This attribute comprises the root certificate signed by the root CA. This attribute is already known to the onboarding app and adds it to the SCIM object when it creates the SCIM object for the device.
+
+
+enterpriseEndpoint <br />
+Device control apps use the URL of the enterprise endpoint to reach the network gateway. When the enterprise receives the SCIM object from the onboarding app, it adds this attribute to it and sends it back as a response to the onboarding app.
+
+
+### "dataReceiver" Complex Attribute
+This complex attribute represents the application that receives data from the device. Depending on the use case, there can be more than one data receiver application.
+
+"dataReceiver" has two attributes: i) a multivalued complex attribute called "apps" and ii) a singular attribute called "enterpriseEndpoint". The complex attribute "apps" provides the URLs and root certificates of the respective data receiver applications in an array. Their details are as follows:
+
+apps.appUrl <br />
+It is the URL of the data receiver application for accessing the application. This attribute is provided by the device control app when it communicates with the controller. The controller will add this to the SCIM object locally stored in the SCIM server.
+
+apps.rootCertificate <br />
+This attribute comprises the root certificate signed by the root CA. This attribute is provided by the device control app when it communicates with the controller. The controller will add this to the SCIM object locally stored in the SCIM server.
+
+enterpriseEndpoint <br />
+Data receiver apps use the URL of the enterprise endpoint to reach the network gateway. When the enterprise receives the SCIM object from the onboarding app, it adds this attribute to it and sends it back as a response to the onboarding app.
+
+
+### Endpoint Extension JSON Representation
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_endpoint_extension_schema.json}}
+<CODE ENDS>
+~~~~~~~~~
+
+### Endpoints Device Object Example 
+This example object below presents a BLE device along with the application endpoints.
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include examples/SCIM_device_endpoints_with_ble_object.json}}
+<CODE ENDS>
+~~~~~~~~~
+
 
 Security Considerations
 =======================

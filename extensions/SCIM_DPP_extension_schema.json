@@ -1,65 +1,78 @@
-{
-    "urn:ietf:params:scim:schemas:extension:DPP:2.0:Device":{
-      "type": "object",
-      "$id": "urn:ietf:params:scim:schemas:extension:DPP:2.0:Device",
-      "title": "Device extension schema for DPP",
-	"description": "Extension schema for devices that support Device Provision Protocol (DPP). It contains the attributes to construct the DPP URI.",
-
-      "required": [
-          "bootstrapKey",
-	  "dppVersion"
-      ],
-        "dppVersion": {
-          "$id": "#/properties/dppVersion",
-          "type": "integer",
-          "title": "Version support",
-           "description": "Version of DPP this device supports",
-           "examples": [ 1, 2 ]
-        },
-      
-      "properties": {
-        "bootstrappingMethod": {
-          "$id": "#/properties/bootstrappingMethod",
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Bootstrapping method",
-          "description": "The list of all the bootstrapping methods available on the enrollee device.",
-          "examples": ["QR", "NFC"]
-        },
-        "bootstrapKey": {
-          "$id": "#/properties/bootstrapKey",
-          "type": "string",
-          "title": "Bootstrap key",
-          "description": "This key is Elliptic-Curve Diffie–Hellman (ECDH) public key. The base64 encoded length for P-256, P-384, and P-521 is 80, 96, and 120 characters.",
-          "examples": ["MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADURzxmttZoIRIPWGoQMV00XHWCAQIhXruVWOz0NjlkIA="]
-        },
-        "deviceMacAddress": {
-          "$id": "#/properties/deviceMacAddress",
-          "type": "string",
-          "title": "Device MAC address",
-          "description": "The MAC address assigned by the manufacturer. It is unique 48 bit value.",
-          "examples": ["01:23:45:67:89:AB"],
-          "pattern": "^[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}$"
-        },
-        "classChannel": {
-          "$id": "#/properties/classChannel",
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Class channel",
-          "description": "A list of global operating class and channel shared as bootstrapping information. It is formatted as class/channel.",
-          "examples": ["81/1", "115/36"]
-        },
-         "serialNumber": {
-          "$id": "#/properties/serialNumber",
-          "type": "string",
-          "title": "Serial number",
-          "description": "An alphanumeric serial number that may also be passed as bootstrapping information.",
-          "examples": ["4774LH2b4044"]
-        }
+{  
+    "id": "urn:ietf:params:scim:schemas:extension:dpp:2.0:Device",
+    "name": "dppExtension",
+    "description": "Device extension schema for DPP",
+    "attributes" : [
+      {
+        "name": "dppVersion",
+        "type": "integer",
+        "description": "Version of DPP this device supports.",
+        "multivalues": false,
+        "required": true,
+        "caseExact": false,
+        "mutability": "readWrite",
+        "returned": "default",
+        "uniqueness": "none"
+      },
+      {
+        "name": "bootstrappingMethod",
+        "type": "string",
+        "description": "The list of all the bootstrapping methods available on the enrollee device. For example, [QR, NFC].",
+        "multivalues": true,
+        "required": false,
+        "caseExact": false,
+        "mutability": "readWrite",
+        "returned": "default",
+        "uniqueness": "none"
+      },
+      {
+        "name": "bootstrapKey",
+        "type": "string",
+        "description": "This key is Elliptic-Curve Diffie–Hellman (ECDH) public key. The base64 encoded length for P-256, P-384, and P-521 is 80, 96, and 120 characters.",
+        "multivalues": false,
+        "required": true,
+        "caseExact": true,
+        "mutability": "readWrite",
+        "returned": "default",
+        "uniqueness": "none"
+      },
+      {
+        "name": "deviceMacAddress",
+        "type": "string",
+        "description": "The MAC address assigned by the manufacturer. It is unique 48 bit value. The regex pattern is ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.",
+        "multivalues": false,
+        "required": false,
+        "caseExact": false,
+        "mutability": "readWrite",
+        "returned": "default",
+        "uniqueness": "Manufacturer"
+      },
+      {
+        "name": "classChannel",
+        "type": "string",
+        "description": "A list of global operating class and channel shared as bootstrapping information. It is formatted as class/channel. For example, '81/1', '115/36'.",
+        "multivalues": true,
+        "required": false,
+        "caseExact": false,
+        "mutability": "readWrite",
+        "returned": "default",
+        "uniqueness": "none"
+      },
+      {
+        "name": "serialNumber",
+        "type": "string",
+        "description": "An alphanumeric serial number that may also be passed as bootstrapping information.",
+        "multivalues": false,
+        "required": false,
+        "caseExact": false,
+        "mutability": "readWrite",
+        "returned": "default",
+        "uniqueness": "none"
       }
+
+    ],
+    "meta" : {
+      "resourceType" : "Schema",
+      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:dpp:2.0:Device"
     }
-}
+  }

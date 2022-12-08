@@ -1,0 +1,49 @@
+[
+  {
+    "schemas": ["urn:ietf:params:scim:schemas:core:2.0:ResourceType"],
+    "id": "Device",
+    "name": "Device",
+    "endpoint": "/Device",
+    "description": "Device Account",
+    "schema": "urn:ietf:params:scim:schemas:core:2.0:Device",
+    "schemaExtensions": [
+      {
+        "schema": "urn:ietf:params:scim:schemas:extension:ble:2.0:Device",
+        "required": false
+      },
+      {
+        "schema": "urn:ietf:params:scim:schemas:extension:dpp:2.0:Device",
+        "required": false
+      },
+      {
+        "schema": "urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device",
+        "required": false
+      },
+      {
+        "schema": "urn:ietf:params:scim:schemas:extension:endpointApps:2.0:Device",
+        "required": false
+      },
+      {
+        "schema": "urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device",
+        "required": false
+      },
+      {
+        "schema": "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device",
+        "required": false
+      },
+      {
+        "schema": "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device",
+        "required": false
+      },
+      {
+        "schema": "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device",
+        "required": false
+      }
+    ],
+    "meta": {
+      "location": "https://example.com/v2/ResourceTypes/Device",
+      "resourceType": "ResourceType"
+    }
+  }
+
+]
