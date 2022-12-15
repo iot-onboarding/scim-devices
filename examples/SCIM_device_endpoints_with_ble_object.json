@@ -1,76 +1,76 @@
 {
-	"schemas": ["urn:ietf:params:scim:schemas:core:2.0:Device",
-				"urn:ietf:params:scim:schemas:extension:ble:2.0:Device",
-				"urn:ietf:params:scim:schemas:extension:endpointapps:2.0:Device"],
+        "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Device",
+                                "urn:ietf:params:scim:schemas:extension:ble:2.0:Device",
+                                "urn:ietf:params:scim:schemas:extension:endpointapps:2.0:Device"],
 
-	"id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
-	"displayName": "BLE Heart Monitor",
-	"adminState": true,
-	"connectivity": ["BLE"],
+        "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
+        "displayName": "BLE Heart Monitor",
+        "adminState": true,
+        "connectivity": ["BLE"],
 
-	"urn:ietf:params:scim:schemas:extension:ble:2.0:Device" : {		
-		"versionSupport": ["5.3"],
-		"deviceMacAddress": "2C:54:91:88:C9:E2",
-		"addressType": false,
-		"pairingMethods": ["urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device",
-				"urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device",
-				"urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device",
-				"urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device"],
-		"urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device": null,
-  		"urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device": {
-			"key": null
-  		},
-		"urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device" : {
-			"key": 123456
-		},
-		"urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device": {
-			"key": "TheKeyvalueRetrievedFromOOB",
-			"randNumber": 238796813516896
-		}		
-	},
+        "urn:ietf:params:scim:schemas:extension:ble:2.0:Device" : {             
+                "versionSupport": ["5.3"],
+                "deviceMacAddress": "2C:54:91:88:C9:E2",
+                "addressType": false,
+                "pairingMethods": ["urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device",
+                                "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device",
+                                "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device",
+                                "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device"],
+                "urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device": null,
+                "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device": {
+                        "key": null
+                },
+                "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device" : {
+                        "key": 123456
+                },
+                "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device": {
+                        "key": "TheKeyvalueRetrievedFromOOB",
+                        "randNumber": 238796813516896
+                }               
+        },
 
-	"urn:ietf:params:scim:schemas:extension:endpointapps:2.0:Device": {
-		"onboarding": {
-			"appUrl": "https//example.com/onboardingapp/",
-			"rootCertificate": "Certificate for onboarding app",
-			"enterpriseEndpoint": "https//enterprise.com/onboardingapp_endpoint/"
-		},
-		
-		"deviceControl": {
-			"apps": [
-				{
-					"appUrl": "https//example.com/device_control_app_1/",
-					"rootCertificate": "Certificate for device control app 1"
-				},
-				{
-					"appUrl": "https//example.com/device_control_app_2/",
-					"rootCertificate": "Certificate for device control app 2"
-				}
-			],
-			"enterpriseEndpoint": "https//enterprise.com/device_control_endpoint/"
-		},
-		
-		"dataReceiver": {
-			"apps":[
-				{
-					"appUrl": "https//example.com/data_receiver_app_1/",
-					"rootCertificate": "Certificate for data receiver app 1"
-				},
-				{
-					"appUrl": "https//example.com/data_receiver_app_2/",
-					"rootCertificate": "Certificate for data receiver app 2"
-				}
-			],
-			"enterpriseEndpoint": "https//enterprise.com/data_receiver_endpoint/"			
-		}
-	},
+        "urn:ietf:params:scim:schemas:extension:endpointapps:2.0:Device": {
+                "onboarding": {
+                        "appUrl": "https//example.com/onboardingapp/",
+                        "rootCertificate": "Certificate for onboarding app",
+                        "enterpriseEndpoint": "https//enterprise.com/onboardingapp_endpoint/"
+                },
+                
+                "deviceControl": {
+                        "apps": [
+                                {
+                                        "appUrl": "https//example.com/device_control_app_1/",
+                                        "rootCertificate": "Certificate for device control app 1"
+                                },
+                                {
+                                        "appUrl": "https//example.com/device_control_app_2/",
+                                        "rootCertificate": "Certificate for device control app 2"
+                                }
+                        ],
+                        "enterpriseEndpoint": "https//enterprise.com/device_control_endpoint/"
+                },
+                
+                "dataReceiver": {
+                        "apps":[
+                                {
+                                        "appUrl": "https//example.com/data_receiver_app_1/",
+                                        "rootCertificate": "Certificate for data receiver app 1"
+                                },
+                                {
+                                        "appUrl": "https//example.com/data_receiver_app_2/",
+                                        "rootCertificate": "Certificate for data receiver app 2"
+                                }
+                        ],
+                        "enterpriseEndpoint": "https//enterprise.com/data_receiver_endpoint/"                   
+                }
+        },
 
-	
-	"meta": {
-	  "resourceType": "Device",
+        
+        "meta": {
+          "resourceType": "Device",
       "created": "2022-01-23T04:56:22Z",
-	  "lastModified": "2022-05-13T04:42:34Z",
-	  "version": "W\/\"a330bc54f0671c9\"", 
-	  "location": "https://example.com/v2/Device/e9e30dba-f08f-4109-8486-d5c6a3316111"
-	}
+          "lastModified": "2022-05-13T04:42:34Z",
+          "version": "W\/\"a330bc54f0671c9\"", 
+          "location": "https://example.com/v2/Device/e9e30dba-f08f-4109-8486-d5c6a3316111"
+        }
 }

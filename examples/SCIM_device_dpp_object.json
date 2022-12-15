@@ -1,25 +1,25 @@
 {
-	"schemas": ["urn:ietf:params:scim:schemas:core:2.0:Device"],
-	"id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
-	"displayName": "WiFi Heart Monitor",
-	"adminState": true,
-	"connectivity": ["WiFi"],
-	
-	"urn:ietf:params:scim:schemas:extension:dpp:2.0:Device" : {
-		
-		"versionSupport": ["802.11ax"],
-		"bootstrappingMethod": ["QR"],
-		"bootstrapKey": "MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADURzxmttZoIRIPWGoQMV00XHWCAQIhXruVWOz0NjlkIA=",
-		"deviceMacAddress": "2C:54:91:88:C9:F2",
-		"classChannel": ["81/1", "115/36"], 
-		"serialNumber": "4774LH2b4044"		
-	},
+        "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Device"],
+        "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
+        "displayName": "WiFi Heart Monitor",
+        "adminState": true,
+        "connectivity": ["WiFi"],
+        
+        "urn:ietf:params:scim:schemas:extension:dpp:2.0:Device" : {
+                
+                "versionSupport": ["802.11ax"],
+                "bootstrappingMethod": ["QR"],
+                "bootstrapKey": "MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADURzxmttZoIRIPWGoQMV00XHWCAQIhXruVWOz0NjlkIA=",
+                "deviceMacAddress": "2C:54:91:88:C9:F2",
+                "classChannel": ["81/1", "115/36"], 
+                "serialNumber": "4774LH2b4044"          
+        },
 
-	"meta": {
-	  "resourceType": "Device",
+        "meta": {
+          "resourceType": "Device",
       "created": "2022-01-23T04:56:22Z",
-	  "lastModified": "2022-05-13T04:42:34Z",
-	  "version": "W\/\"a330bc54f0671c9\"", 
-	  "location": "https://example.com/v2/Device/e9e30dba-f08f-4109-8486-d5c6a3316111"
-	}
+          "lastModified": "2022-05-13T04:42:34Z",
+          "version": "W\/\"a330bc54f0671c9\"", 
+          "location": "https://example.com/v2/Device/e9e30dba-f08f-4109-8486-d5c6a3316111"
+        }
 }
