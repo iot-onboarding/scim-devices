@@ -3,8 +3,6 @@
         "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
         "deviceDisplayName": "BLE Heart Monitor",
         "adminState": true,
-        "connectivity": ["BLE"],
-        
         "meta": {
           "resourceType": "Device",
       "created": "2022-01-23T04:56:22Z",

@@ -5,10 +5,7 @@
         "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
         "displayName": "WiFi Heart Monitor",
         "adminState": true,
-        "connectivity": ["WiFi"],
-        
         "urn:ietf:params:scim:schemas:extension:dpp:2.0:Device" : {
-                
                 "versionSupport": ["802.11ax"],
                 "bootstrappingMethod": ["QR"],
                 "bootstrapKey": "MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgADURzxmttZoIRIPWGoQMV00XHWCAQIhXruVWOz0NjlkIA=",

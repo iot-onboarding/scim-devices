@@ -210,15 +210,6 @@ mudUrl
 A URL to the MUD file of the device.  When present, the mudUrl may be
 associated with this device, and used as described in {{!RFC8520}}.
 
-## Multivalued Attributes
-The core attributes of the device schema contain one multivalued attribute.
-
-connectivity
-
-It represents the communication technology supported by a device such
-as BLE, WiFi, LoRa, and Zigbee. It is an array of string values,
-mutable, non-unique, but required. For example, \["BLE", "Zigbee"\].
-
 ## Device Schema JSON Representation
 
 Following is the JSON representation of the Device core schema. Common

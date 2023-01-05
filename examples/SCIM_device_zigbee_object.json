@@ -5,8 +5,6 @@
         "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
         "displayName": "Zigbee Heart Monitor",
         "adminState": true,
-        "connectivity": ["zigbee"],
-
         "urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device" : {
                 "versionSupport": ["3.0"],
                 "deviceEui64Address": "50325FFFFEE76728"
