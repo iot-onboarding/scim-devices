@@ -581,6 +581,10 @@ This example object below presents a BLE device along with the application endpo
 <CODE ENDS>
 ~~~~~~~~~
 
+Device Group
+============
+The group for device objects is represented same as the group shown in Section 8.4 of {{!RFC7643}}.
+
 
 Security Considerations
 =======================
