@@ -124,6 +124,31 @@ The client may be one of a number of entities:
    remove, or get information about devices.  An example might be an
    tablet or phone app that scans Easyconnect QR codes.
 
+~~~~~
+
+
+                            +-----------------------------------+
+                            |                                   |
+    +-----------+   Request |  +---------+                      |
+    | onboarding|------------->|  SCIM   |                      |
+    |    app    |<-------------| Server  |                      |
+    +-----------+  Ctrl Endpt  +---------+                      |
+                            |                                   |
+    +-----------+           |  +------------+         +-------+ |
+    |  Control  |...........|..|    ALG     |.........|device | |
+    |    App    |           |  +------------+         +-------+ |
+    +-----------+           |                                   |
+                            |                                   |
+                            +-----------------------------------+
+
+~~~~~
+{: #arch title="Basic Architecture"}
+
+In {{arch}}, the onboarding app provides the device particulars.  As
+part of the response, the SCIM server might provide additional
+information, especially in the case of non-IP devices, where an
+application-layer gateway may need to be used to communicate with
+the device.
 
 Schema Description
 ------------------
@@ -154,7 +179,7 @@ appear in all capitals, as shown here.
 
 ResourceType Device
 ====================
-This section defines a new resource type, 'Device'. The "ResourceType" schema specifies the metadata about a resource type (see section 6 of {{!RFC7643}}). The resource "Devices" comprises a core device schema and several extension schemas. The core schema provides a minimal resource representation, whereas extension schemas extend the core schema depending on the device's capability. 
+This section defines a new resource type, 'Device'. The "ResourceType" schema specifies the metadata about a resource type (see section 6 of {{!RFC7643}}). The resource "Devices" comprises a core device schema and several extension schemas. The core schema provides a minimal resource representation, whereas extension schemas extend the core schema depending on the device's capability.
 
 ~~~~~~~~~
 <CODE BEGINS>
@@ -176,7 +201,7 @@ characteristics are presented in
 [](#device-schema-json-representation).
 
 ## Common Attributes
-The Device schema contains three common attributes as defined in the {{!RFC7643}}. 
+The Device schema contains three common attributes as defined in the {{!RFC7643}}.
 
 id
 
@@ -197,7 +222,7 @@ Meta is a complex attribute and is required (see section 3.1 of {{!RFC7643}}).
 
 deviceDisplayName
 
-It is a human-readable device name suitable for displaying to end-users. 
+It is a human-readable device name suitable for displaying to end-users.
 It is a mutable, non-unique, and not required string value.
 For example, "BLE Heart Monitor".
 
@@ -222,7 +247,7 @@ attributes such as "id" and "externalID" are not presented below.
 ~~~~~~~~~
 
 
-## Device Object Example 
+## Device Object Example
 
 Following is the minimal example of a device object that does not
 contain any extension representing the device's communication
@@ -235,7 +260,7 @@ capability.
 ~~~~~~~~~
 
 
-# SCIM Device Extensions 
+# SCIM Device Extensions
 
 This section presents various extension schemas, their attributes,
 JSON representation, and example object. These schemas extend the core
@@ -336,7 +361,7 @@ solutions require in RESTful message exchange.
 <CODE ENDS>
 ~~~~~~~~
 
-### BLE Device Object Example 
+### BLE Device Object Example
 
 ~~~~~~~~
 <CODE BEGINS>
@@ -398,7 +423,7 @@ class/channel. For example, \['81/1','115/36'\].
 ~~~~~~~
 
 
-### DPP Device Object Example 
+### DPP Device Object Example
 
 ~~~~~~~~
 <CODE BEGINS>
@@ -441,7 +466,7 @@ device. For example, \[3.0\].
 ~~~~~~~~
 
 
-### Zigbee Device Object Example 
+### Zigbee Device Object Example
 
 ~~~~~~~~
 <CODE BEGINS>
@@ -452,9 +477,9 @@ device. For example, \[3.0\].
 
 ## The Endpoint Applications Extension Schema
 
-Sometimes devices require an application gateway interface to manage
-them, such as non-IP devices like BLE and Zigbee. SCIM
-clients MUST NOT specify this to describe native IP-based devices.
+Sometimes non-IP devices such as those using BLE or Zigbe require an
+application gateway interface to manage them. SCIM clients MUST NOT
+specify this to describe native IP-based devices.
 
 The device schema is a base schema upon which specific onboarding
 technology schemas are built. This extension provides three complex
@@ -572,7 +597,7 @@ response to the onboarding app.
 <CODE ENDS>
 ~~~~~~~~~
 
-### Endpoints Device Object Example 
+### Endpoints Device Object Example
 This example object below presents a BLE device along with the application endpoints.
 
 ~~~~~~~~~
