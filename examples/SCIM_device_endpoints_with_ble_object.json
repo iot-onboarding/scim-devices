@@ -34,30 +34,16 @@
                 },
                 
                 "deviceControl": {
-                        "apps": [
-                                {
-                                        "appUrl": "https//example.com/device_control_app_1/",
-                                        "rootCertificate": "Certificate for device control app 1"
-                                },
-                                {
-                                        "appUrl": "https//example.com/device_control_app_2/",
-                                        "rootCertificate": "Certificate for device control app 2"
-                                }
-                        ],
+                        "client-tokens": [
+			    "1293847109832471203984789383XXX"
+			],
                         "enterpriseEndpoint": "https//enterprise.com/device_control_endpoint/"
                 },
                 
                 "dataReceiver": {
-                        "apps":[
-                                {
-                                        "appUrl": "https//example.com/data_receiver_app_1/",
-                                        "rootCertificate": "Certificate for data receiver app 1"
-                                },
-                                {
-                                        "appUrl": "https//example.com/data_receiver_app_2/",
-                                        "rootCertificate": "Certificate for data receiver app 2"
-                                }
-                        ],
+                        "client-tokens":[
+			    "dlku23234sdui232393"
+			],
                         "enterpriseEndpoint": "https//enterprise.com/data_receiver_endpoint/"                   
                 }
         },

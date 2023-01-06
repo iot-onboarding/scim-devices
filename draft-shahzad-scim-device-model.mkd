@@ -176,6 +176,10 @@ NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
 described in BCP 14 {{!RFC2119}} {{!RFC8174}} when, and only when, they
 appear in all capitals, as shown here.
 
+## Device Grouping
+
+Device grouping occurs using the core SCIM group object, as defined in
+{{!RFC7643}} Section 4.2.
 
 ResourceType Device
 ====================
@@ -201,7 +205,9 @@ characteristics are presented in
 [](#device-schema-json-representation).
 
 ## Common Attributes
-The Device schema contains three common attributes as defined in the {{!RFC7643}}.
+
+The Device schema contains three common attributes as defined in the
+{{!RFC7643}}.
 
 id
 
@@ -222,13 +228,16 @@ Meta is a complex attribute and is required (see section 3.1 of {{!RFC7643}}).
 
 deviceDisplayName
 
-It is a human-readable device name suitable for displaying to end-users.
-It is a mutable, non-unique, and not required string value.
-For example, "BLE Heart Monitor".
+This is a human-readable device name suitable for displaying to
+end-users.  It is a mutable, non-unique, and not required string
+value.  For example, "BLE Heart Monitor".
 
 adminState
 
-It is a required mutable boolean value indicating the device's administrative status. If set to TRUE, the commands (such as connect, disconnect, subscribe) that the control app sends to the controller for the devices will be processed by the controller. If set to FALSE, any command coming from the control app for the device will be rejected by the controller.
+This is a required mutable boolean value indicating the device's
+administrative status. If this variable is set to True, then the
+device is expected to be accessible.  Note that the SCIM server
+may apply whatever policy it may to establish and control this state.
 
 mudUrl
 
@@ -482,38 +491,11 @@ application gateway interface to manage them. SCIM clients MUST NOT
 specify this to describe native IP-based devices.
 
 The device schema is a base schema upon which specific onboarding
-technology schemas are built. This extension provides three complex
-attributes (onboarding, deviceControl, and dataReceiver) to represent
-three types of partner endpoint applications, i.e., onboarding, device
+technology schemas are built. This extension provides two complex
+attributes deviceControl, and dataReceiver to represent
+two types of partner endpoint applications, device
 control, and data receiver applications, respectively. These complex
 attributes and their respective sub-attributes are as follows:
-
-### "onboarding" Complex Attribute
-
-This complex attribute represents the application responsible for
-onboarding the device. It has three subattributes which are as
-follows.
-
-appUrl
-
-This attribute is the URL of the onboarding application for accessing the
-application. This attribute is provided by the onboarding application
-when it creates the SCIM object for the device.
-
-rootCertificate
-
-This attribute comprises the root certificate signed by the root
-CA. The onboarding application provides this attribute when it creates
-the SCIM object for the device.
-
-enterpriseEndpoint
-
-This attribute is the URL of the enterprise endpoint that the
-onboarding app uses to reach the enterprise network gateway. This
-attribute is already known to the onboarding app and added to the SCIM
-object when it creates the SCIM object for the device.
-
-
 
 
 ### "deviceControl" Complex Attribute
@@ -524,23 +506,17 @@ control for the device. It determines which other applications can
 access the data from the device. Depending on the use case, there can
 be more than one device control application.
 
-"deviceControl" has two attributes: i) a multivalued complex attribute
-called "apps" and ii) a singular attribute called
-"enterpriseEndpoint". The complex attribute "apps" provides the URLs
-and root certificates of the respective data control applications in
-an array. Their details are as follows:
+"deviceControl" has two attributes: i) a multvalued client-tokens
+attribute" and ii) a singular attribute called
+"enterpriseEndpoint". Their details are as follows:
 
-apps.appUrl
+client-tokens
 
-This attribute is the URL of the device control application for
-accessing the app. This attribute is provided by the onboarding
-application when it creates the SCIM object for the device.
+This attribute contains a list of tokens that the client will used to
+authenticate itself.  Each token may be a string up to 500 characters
+in length.
 
-apps.rootCertificate
-
-This attribute comprises the root certificate signed by the root
-CA. This attribute is already known to the onboarding app and adds it
-to the SCIM object when it creates the SCIM object for the device.
+\[\[ We probably need something better here. \]\]
 
 
 enterpriseEndpoint
@@ -559,7 +535,7 @@ data receiver application.
 
 "dataReceiver" has two attributes:
 
-1. a multivalued complex attribute called "apps" and
+1. a multi-valued attribute called "client-tokens".
 
 2. a singular attribute called "enterpriseEndpoint".
 
@@ -567,19 +543,14 @@ The complex attribute "apps" provides the URLs and root certificates of the
 respective data receiver applications in an array. Their details are
 as follows:
 
-apps.appUrl
+client-tokens
 
-This attribute is the URL of the data receiver application for accessing the
-application. This attribute is provided by the device control app when
-it communicates with the controller. The controller will add this to
-the SCIM object locally stored in the SCIM server.
 
-apps.rootCertificate
+This attribute contains a list of tokens that the client will used to
+authenticate itself.  Each token may be a string up to 500 characters
+in length.
 
-This attribute comprises the root certificate signed by the root
-CA. This attribute is provided by the device control app when it
-communicates with the controller. The controller will add this to the
-SCIM object locally stored in the SCIM server.
+\[\[ We probably need something better here. \]\]
 
 enterpriseEndpoint
 
