@@ -1,20 +1,20 @@
 {
-        "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Device",
-                 "urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device"],
-                 
-        "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
-        "displayName": "Zigbee Heart Monitor",
-        "adminState": true,
-        "urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device" : {
-                "versionSupport": ["3.0"],
-                "deviceEui64Address": "50325FFFFEE76728"
-        },
-        
-        "meta": {
-          "resourceType": "Device",
+  "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Device",
+     "urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device"],
+     
+  "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
+  "displayName": "Zigbee Heart Monitor",
+  "adminState": true,
+  "urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device" : {
+    "versionSupport": ["3.0"],
+    "deviceEui64Address": "50325FFFFEE76728"
+  },
+  
+  "meta": {
+    "resourceType": "Device",
       "created": "2022-01-23T04:56:22Z",
-          "lastModified": "2022-05-13T04:42:34Z",
-          "version": "W\/\"a330bc54f0671c9\"", 
-          "location": "https://example.com/v2/Device/e9e30dba-f08f-4109-8486-d5c6a3316111"
-        }
+    "lastModified": "2022-05-13T04:42:34Z",
+    "version": "W\/\"a330bc54f0671c9\"", 
+    "location": "https://example.com/v2/Device/e9e30dba-f08f-4109-8486-d5c6a3316111"
+  }
 }

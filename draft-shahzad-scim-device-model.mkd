@@ -148,7 +148,8 @@ In {{arch}}, the onboarding app provides the device particulars.  As
 part of the response, the SCIM server might provide additional
 information, especially in the case of non-IP devices, where an
 application-layer gateway may need to be used to communicate with
-the device.
+the device.  The control endpoint is one among a number of objects
+that may be returned.
 
 Schema Description
 ------------------

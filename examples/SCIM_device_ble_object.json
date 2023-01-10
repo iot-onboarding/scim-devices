@@ -1,35 +1,35 @@
 {
-        "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Device",
-                 "urn:ietf:params:scim:schemas:extension:ble:2.0:Device"],
+  "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Device",
+     "urn:ietf:params:scim:schemas:extension:ble:2.0:Device"],
 
-        "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
-        "deviceDisplayName": "BLE Heart Monitor",
-        "adminState": true,
-        "urn:ietf:params:scim:schemas:extension:ble:2.0:Device" : {             
-                "versionSupport": ["5.3"],
-                "deviceMacAddress": "2C:54:91:88:C9:E2",
-                "addressType": false,
-                "pairingMethods": ["urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device",
-                                "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device",
-                                "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device",
-                                "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device"],
-                "urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device": null,
-                "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device": {
-                        "key": null
-                },
-                "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device" : {
-                        "key": 123456
-                },
-                "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device": {
-                        "key": "TheKeyvalueRetrievedFromOOB",
-                        "randNumber": 238796813516896
-                }               
-        },
-        "meta": {
-          "resourceType": "Device",
+  "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
+  "deviceDisplayName": "BLE Heart Monitor",
+  "adminState": true,
+  "urn:ietf:params:scim:schemas:extension:ble:2.0:Device" : {       
+    "versionSupport": ["5.3"],
+    "deviceMacAddress": "2C:54:91:88:C9:E2",
+    "addressType": false,
+    "pairingMethods": ["urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device",
+        "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device",
+        "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device",
+        "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device"],
+    "urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device": null,
+    "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device": {
+      "key": null
+    },
+    "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device" : {
+      "key": 123456
+    },
+    "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device": {
+      "key": "TheKeyvalueRetrievedFromOOB",
+      "randNumber": 238796813516896
+    }         
+  },
+  "meta": {
+    "resourceType": "Device",
       "created": "2022-01-23T04:56:22Z",
-          "lastModified": "2022-05-13T04:42:34Z",
-          "version": "W\/\"a330bc54f0671c9\"", 
-          "location": "https://example.com/v2/Device/e9e30dba-f08f-4109-8486-d5c6a3316111"
-        }
+    "lastModified": "2022-05-13T04:42:34Z",
+    "version": "W\/\"a330bc54f0671c9\"", 
+    "location": "https://example.com/v2/Device/e9e30dba-f08f-4109-8486-d5c6a3316111"
+  }
 }
