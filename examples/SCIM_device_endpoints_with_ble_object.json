@@ -29,12 +29,7 @@
   },
 
   "urn:ietf:params:scim:schemas:extension:endpointapps:2.0:Device": {
-    "onboarding": {
-      "appUrl": "https//example.com/onboardingapp/",
-      "rootCertificate": "Certificate for onboarding app",
-      "enterpriseEndpoint": "https//enterprise.com/onboardingapp_endpoint/"
-    },
-    
+        
     "deviceControl": {
       "client-tokens": [
           "1293847109832471203984789383XXX"

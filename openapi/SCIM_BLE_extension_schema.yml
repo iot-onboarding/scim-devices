@@ -1,0 +1,183 @@
+openapi: 3.0.1
+info:
+  version: 1.0.0
+  title: DPP Extension Schema
+  description: API for DPP device extension schema
+
+components:
+  schemas:
+    BleDeviceExtension:
+      type: object
+      properties:
+        versionSupport:
+          type: array
+          items:
+            type: string
+          description: Provides a list of all the BLE versions 
+                       supported by the device. For example, 
+                       [4.1, 4.2, 5.0, 5.1, 5.2, 5.3].
+          nullable: false
+          readOnly: false
+          writeOnly: false
+        deviceMacAddress:
+          type: string
+          description: It is the public MAC address assigned by the 
+                       manufacturer. It is unique 48 bit value. The
+                       regex pattern is 
+                       ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.
+          nullable: false
+          readOnly: false
+          writeOnly: false
+
+        addressType:
+          type: boolean
+          description: AddressType flag is taken from the BLE core 
+                       specifications 5.3. If FALSE, the device is 
+                      using public MAC address. If TRUE, device is 
+                      using Random address which is resolved using IRK.
+          nullable: false
+          readOnly: false
+          writeOnly: false
+        irk:
+          type: string
+          description: Identity resolving key, which is unique for 
+                       every device. It is used to resolve random 
+                       address.
+          nullable: true
+          readOnly: false
+          writeOnly: false
+        pairingMethods:
+          type: array
+          items:
+            type: string
+          description: List of pairing methods associated with the 
+                       ble device, stored as schema URI.
+          nullable: true
+          readOnly: false
+          writeOnly: false
+      required:
+        - versionSupport
+        - deviceMacAddress
+        - AddressType
+        - pairingMethods
+      additionalProperties: false
+
+    NullPairing:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the null pairing schema.
+          nullable: false
+          readOnly: true
+          writeOnly: false
+
+    PairingJustWorks:
+      type: object
+      description: Just works pairing method for ble
+      properties:
+        key:
+          type: integer
+          description: Just works does not have any key value. For 
+                       completeness, it is added with a key value 'null'.
+          nullable: false
+          readOnly: false
+          writeOnly: false
+      required:
+        - key
+
+    PairingPassKey:
+      type: object
+      description: Pass key pairing method for ble
+      properties:
+        key:
+          type: integer
+          description: A six digit passkey for ble device. The pattern 
+                       of key is ^[0-9]{6}$.
+          nullable: false
+          readOnly: false
+          writeOnly: false
+      required:
+        - key
+
+    PairingOOB:
+      type: object
+      description: Out-of-band pairing method for ble
+      properties:
+        key:
+          type: string
+          description: The OOB key value for ble device.
+          nullable: false
+          readOnly: false
+          writeOnly: false
+        randomNumber:
+          type: integer
+          description: Nonce added to the key
+          nullable: false
+          readOnly: false
+          writeOnly: false
+        confirmationNumber:
+          type: integer
+          description: Some solutions require confirmation number in 
+                       RESTful message exchange
+          nullable: true
+          readOnly: false
+          writeOnly: false
+      required:
+        - key
+        - randomNumber
+
+paths:
+  /devices:
+    post:
+      summary: Create a new device
+      operationId: createDevice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BleDeviceExtension'
+              anyof:
+                - $ref: '#/components/schemas/NullPairing'
+                - $ref: '#/components/schemas/PairingJustWorks'
+                - $ref: '#/components/schemas/PairingPassKey'
+                - $ref: '#/components/schemas/PairingOOB'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BleDeviceExtension'
+                anyof:
+                  - $ref: '#/components/schemas/NullPairing'
+                  - $ref: '#/components/schemas/PairingJustWorks'
+                  - $ref: '#/components/schemas/PairingPassKey'
+                  - $ref: '#/components/schemas/PairingOOB'
+  /devices/{deviceId}:
+    get:
+      summary: Get a Dpp device by ID
+      description: Returns a single Dpp device by its ID.
+      operationId: getDeviceById
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the device to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BleDeviceExtension'
+                anyof:
+                  - $ref: '#/components/schemas/NullPairing'
+                  - $ref: '#/components/schemas/PairingJustWorks'
+                  - $ref: '#/components/schemas/PairingPassKey'
+                  - $ref: '#/components/schemas/PairingOOB'
+
+            
