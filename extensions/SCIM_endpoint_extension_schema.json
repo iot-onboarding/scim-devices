@@ -16,8 +16,8 @@
       "subAttributes" : [
         {
           "name": "client-tokens",
-           "type": "string",
-           "description": "This attribute contains a list of tokens that the client will used to authenticate itself.  Each token may be a string up to 500 characters in length.",
+           "type": "reference",
+           "description": "The URL of the device control application which can be used to access the app. This attribute is provided by the onboarding application when it creates the SCIM object for the device.",
            "multivalues": true,
            "required": true,
            "caseExact": true,
@@ -51,8 +51,8 @@
       "subAttributes" : [
         {
           "name": "client-tokens",
-           "type": "string",
-           "description": "This attribute contains a list of tokens that the client will used to authenticate itself.  Each token may be a string up to 500 characters in length.",
+           "type": "reference",
+           "description": "The URL of the device control application which can be used to access the app. This attribute is provided by the onboarding application when it creates the SCIM object for the device.",
            "multivalues": true,
            "required": true,
            "caseExact": true,

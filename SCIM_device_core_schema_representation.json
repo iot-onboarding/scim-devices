@@ -9,7 +9,7 @@
       "description": "Human readable name of the device, suitable for displaying to end-users. For example, 'BLE Heart Monitor' etc.",
       "multivalues": false,
       "required": false,
-      "caseExact": false,
+      "caseExact": true,
       "mutability": "readWrite",
       "returned": "default",
       "uniqueness": "none"

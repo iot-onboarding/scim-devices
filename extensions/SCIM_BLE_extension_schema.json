@@ -86,7 +86,7 @@
         "multivalues": false,
         "required": true,
         "caseExact": false,
-        "mutability": "immutable",
+        "mutability": "readWrite",
         "returned": "default",
         "uniqueness": "none"
       }
