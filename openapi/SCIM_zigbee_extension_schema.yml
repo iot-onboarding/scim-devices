@@ -1,0 +1,70 @@
+openapi: 3.0.1
+info:
+  title: Zigbee Device Extension
+  description: API for Zigbee device extensions schema
+  version: 1.0.0
+ 
+components:
+  schemas:
+    ZigbeeDeviceExtension:
+      type: object
+      properties:
+        versionSupport:
+          type: array
+          items:
+            type: string
+          description: Provides a list of all the Zigbee versions 
+                       supported by the device. For example, [3.0].
+          nullable: false
+          readOnly: false
+          writeOnly: false
+        deviceEui64Address:
+          type: string
+          description: The EUI-64 (Extended Unique Identifier) device 
+                       address. The regex pattern is ^[0-9A-Fa-f]{16}$.
+          nullable: false
+          readOnly: false
+          writeOnly: false
+      required:
+        - versionSupport
+        - deviceEui64Address
+      description: Device extension schema for Zigbee.
+      
+
+paths:
+  /devices:
+    post:
+      summary: Create a new device
+      operationId: createDevice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZigbeeDeviceExtension'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZigbeeDeviceExtension'
+  /devices/{deviceId}:
+    get:
+      summary: Get a Zigbee device by ID
+      description: Returns a single Zigbee device by its ID.
+      operationId: getDeviceById
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the device to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZigbeeDeviceExtension'
