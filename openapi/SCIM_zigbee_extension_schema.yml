@@ -21,7 +21,8 @@ components:
         deviceEui64Address:
           type: string
           description: The EUI-64 (Extended Unique Identifier) device 
-                       address. The regex pattern is ^[0-9A-Fa-f]{16}$.
+                       address. The regex pattern is
+                       ^[0-9A-Fa-f]{16}$.
           nullable: false
           readOnly: false
           writeOnly: false

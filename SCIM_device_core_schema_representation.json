@@ -28,7 +28,7 @@
     {
       "name": "mudUrl",
       "type": "reference",
-      "description": "A URL to MUD file of the device (RFC 8520). It is added for future use. Current usage is not defined yet.",
+      "description": "A URL to MUD file of the device (RFC 8520)."
       "multivalues": false,
       "required": false,
       "caseExact": true,

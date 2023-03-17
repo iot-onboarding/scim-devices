@@ -28,17 +28,17 @@ components:
         bootstrapKey:
           type: string
           description: This key is Elliptic-Curve Diffie–Hellman 
-                      (ECDH) public key. The base64 encoded length for
-                      P-256, P-384, and P-521 is 80, 96, and 120 
-                      characters.
+                       (ECDH) public key. The base64 encoded length
+                       for P-256, P-384, and P-521 is 80, 96, and 120
+                       characters.
           nullable: false
           readOnly: false
           writeOnly: false
         deviceMacAddress:
           type: string
-          description: The MAC address assigned by the manufacturer. It
-                      is unique 48 bit value. The regex pattern 
-                      is ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.
+          description: The MAC address assigned by the manufacturer.
+                       The regex pattern is
+                       ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.
           nullable: false
           readOnly: false
           writeOnly: false
@@ -48,8 +48,8 @@ components:
             type: string
           description: A list of global operating class and channel 
                        shared as bootstrapping information. It is 
-                       formatted as class/channel. For example, '81/1',
-                       '115/36'.
+                       formatted as class/channel. For example,
+                       '81/1', '115/36'.
           nullable: false
           readOnly: false
           writeOnly: false

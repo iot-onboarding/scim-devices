@@ -33,8 +33,9 @@ components:
           type: boolean
           description: AddressType flag is taken from the BLE core 
                        specifications 5.3. If FALSE, the device is 
-                      using public MAC address. If TRUE, device is 
-                      using Random address which is resolved using IRK.
+                       using public MAC address. If TRUE, device is 
+                       using Random address which is resolved using
+                       the IRK.
           nullable: false
           readOnly: false
           writeOnly: false
@@ -79,7 +80,8 @@ components:
         key:
           type: integer
           description: Just works does not have any key value. For 
-                       completeness, it is added with a key value 'null'.
+                       completeness, it is added with a key value
+                       'null'.
           nullable: false
           readOnly: false
           writeOnly: false
@@ -92,8 +94,8 @@ components:
       properties:
         key:
           type: integer
-          description: A six digit passkey for ble device. The pattern 
-                       of key is ^[0-9]{6}$.
+          description: A six digit passkey for ble device.
+                       The pattern of key is ^[0-9]{6}$.
           nullable: false
           readOnly: false
           writeOnly: false
@@ -102,7 +104,7 @@ components:
 
     PairingOOB:
       type: object
-      description: Out-of-band pairing method for ble
+      description: Out-of-band pairing method for BLE
       properties:
         key:
           type: string
@@ -118,8 +120,8 @@ components:
           writeOnly: false
         confirmationNumber:
           type: integer
-          description: Some solutions require confirmation number in 
-                       RESTful message exchange
+          description: Some solutions require a confirmation number 
+                       in the RESTful message exchange.
           nullable: true
           readOnly: false
           writeOnly: false
@@ -179,5 +181,3 @@ paths:
                   - $ref: '#/components/schemas/PairingJustWorks'
                   - $ref: '#/components/schemas/PairingPassKey'
                   - $ref: '#/components/schemas/PairingOOB'
-
-            

@@ -13,22 +13,22 @@ components:
       properties:
         deviceDisplayName:
           type: string
-          description: "Human readable name of the device, suitable for
-                        displaying to end-users. For example, 'BLE 
-                        Heart Monitor' etc."
+          description: "Human readable name of the device, suitable
+                        for displaying to end-users. For example,
+                       'BLE Heart Monitor' etc."
           nullable: true
           readOnly: false
           writeOnly: false
         adminState:
           type: boolean
           description: A mutable boolean value indicating the device
-                       administrative status. If set TRUE, the commands
-                       (such as connect, disconnect, subscribe) that 
-                       control app sends to the controller for the 
-                       devices will be processeed by the controller. 
-                       If set FALSE, any command comming from the 
-                       control app for the device will be rejected 
-                       by the controller.
+                       administrative status. If set TRUE, the
+                       commands (such as connect, disconnect,
+                       subscribe) that control app sends to the
+                       controller for the devices will be processeed
+                       by the controller.  If set FALSE, any command
+                       comming from the control app for the device
+                       will be rejected by the controller.
           nullable: false
           readOnly: false
           writeOnly: false
@@ -83,8 +83,8 @@ components:
             created:
               type: string
               format: date-time
-              description: The date and time the resource was added to
-                           the service provider.
+              description: The date and time the resource was added
+                           to the service provider.
               nullable: false
               readOnly: true
               writeOnly: false
@@ -92,8 +92,8 @@ components:
               type: string
               format: date-time
               description: The most recent date and time that the 
-                           details of this resource were updated at the
-                           service provider.
+                           details of this resource were updated at
+                           the service provider.
               nullable: false
               readOnly: true
               writeOnly: false

@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-shahzad-scim-device-model-02
+docname: draft-shahzad-scim-device-model-04
 submissionType: IETF
 category: std
 
@@ -186,7 +186,7 @@ schema specifies the metadata about a resource type (see section 6 of
 and several extension schemas. The core schema provides a minimal 
 resource representation, whereas extension schemas extend the core 
 schema depending on the device's capability. The JSON schema for Device
-resource type is in [](#device-resource-schema).
+resource type is in {{device-resource-schema}}.
 
 
 ## Common Attributes
@@ -267,13 +267,13 @@ An example of a device SCIM object is as follows:
 
 ~~~~~~~~~
 <CODE BEGINS>
-{::include examples/SCIM_device_core_schema_object.json}
+{::include examples/SCIM_device_core_schema_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~~
 
 The schema for the device is presented in JSON format in Section
-[](#device-core-schema-json), while the openAPI representation is provided in 
-Section [](#device-core-schema-openapi-representation).
+{{device-core-schema-json}}, while the openAPI representation is provided in 
+Section {{device-core-schema-openapi-representation}}.
 
 Device Groups
 =============
@@ -317,12 +317,19 @@ pattern is the following:
 ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}
 ~~~~~~
 
-addressType
+isRandom
 
 A boolean flag taken from the BLE core specification, 5.3. If FALSE, the
 device is using a public MAC address. If TRUE, the device uses a
-Random address resolved using IRK. This attribute is required, it is 
-mutable, and return by default. 
+Random address resolved using IRK. This attribute is not required, it is 
+mutable, and returned by default.  Its default value is FALSE.
+
+separateBroadcastaddress
+
+When present, this address is used for broadcasts/advertisements.
+This value MUST NOT be set when an IRK is provided.  Its form is the
+same as deviceMacAddress.  It is not required, multivalued, mutable,
+and returned by default.
 
 irk
 
@@ -434,7 +441,7 @@ An example of a device object with BLE extension is as follows:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include examples/SCIM_device_ble_object.json}
+{::include examples/SCIM_device_ble_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~
 
@@ -528,7 +535,7 @@ An example of a device object with DPP extension is below:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include examples/SCIM_device_dpp_object.json}
+{::include examples/SCIM_device_dpp_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~
 
@@ -588,7 +595,7 @@ An example of a device object with Zigbee extension is shown below:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include examples/SCIM_device_zigbee_object.json}
+{::include examples/SCIM_device_zigbee_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~
 
@@ -690,13 +697,13 @@ An example of a device object with endpointApps extension is below:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include examples/SCIM_device_endpoints_with_ble_object.json}
+{::include examples/SCIM_device_endpoints_with_ble_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~
 
 The schema for the endpointApps extension along with BLE extension is 
-presented in JSON format in Section [](#endpointapps-extension-schema-json), while 
-the openAPI representation is provided in Section [](#endpointapps-extension-schema-openapi-representation).
+presented in JSON format in Section {{endpointapps-extension-schema-json}}, while 
+the openAPI representation is provided in Section {{endpointapps-extension-schema-openapi-representation}}.
 
 
 
@@ -704,48 +711,48 @@ the openAPI representation is provided in Section [](#endpointapps-extension-sch
 Schema JSON Representation
 =============================
 
-## Device Resource Schema
+## Device Resource Schema {#device-resource-schema}
 
 ~~~~~~~~~
 <CODE BEGINS>
-{::include SCIM_resource_type.json}
+{::include SCIM_resource_type.ftxt}
 <CODE ENDS>
 ~~~~~~~~~
 
-## Device Core Schema JSON
+## Device Core Schema JSON {#device-core-schema-json}
 
 
 ~~~~~~~~~
 <CODE BEGINS>
-{::include SCIM_device_core_schema_representation.json}
+{::include SCIM_device_core_schema_representation.ftxt}
 <CODE ENDS>
 ~~~~~~~~~
 
 ## BLE Extension Schema JSON
 ~~~~~~~~~
 <CODE BEGINS>
-{::include extensions/SCIM_BLE_extension_schema.json}
+{::include extensions/SCIM_BLE_extension_schema.ftxt}
 <CODE ENDS>
 ~~~~~~~~~
 
 ## DPP Extension Schema JSON
 ~~~~~~~~~
 <CODE BEGINS>
-{::include extensions/SCIM_DPP_extension_schema.json}
+{::include extensions/SCIM_DPP_extension_schema.ftxt}
 <CODE ENDS>
 ~~~~~~~~~
 
 ## Zigbee Extension Schema JSON
 ~~~~~~~~~
 <CODE BEGINS>
-{::include extensions/SCIM_zigbee_extension_schema.json}
+{::include extensions/SCIM_zigbee_extension_schema.ftxt}
 <CODE ENDS>
 ~~~~~~~~~
 
-## EndpointApps Extension Schema JSON
+## EndpointApps JSON Extension Schema {#endpointapps-extension-schema-json}
 ~~~~~~~~~
 <CODE BEGINS>
-{::include extensions/SCIM_endpoint_extension_schema.json}
+{::include extensions/SCIM_endpoint_extension_schema.ftxt}
 <CODE ENDS>
 ~~~~~~~~~
 
@@ -795,7 +802,7 @@ Draft -00:
 APPENDIX
 =========
 
-## Device Core Schema OpenAPI Representation
+## Device Core Schema OpenAPI Representation {#device-core-schema-openapi-representation}
 OpenAPI representation of device core schema is as follows:
 
 ~~~~~~~~~
@@ -832,7 +839,7 @@ OpenAPI representation of zigbee extension schema is as follows:
 <CODE ENDS>
 ~~~~~~~~
 
-## EndpointApps Extension Schema OpenAPI Representation
+## EndpointApps Extension Schema OpenAPI Representation {#endpointapps-extension-schema-openapi-representation}
 OpenAPI representation of endpoint Apps schema is as follows:
 
 ~~~~~~~~
