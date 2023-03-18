@@ -1,29 +1,20 @@
-openapi: 3.0.1
-info:
-  version: 1.0.0
-  title: Endpoint Apps Extension
-  description: Extension for partner endpoint applications that can
-               onboard, control, and communicate with the device.
-
 components:
   schemas:
-    endpointApps:
-      type: array
-      items:
-        allOf:
-          - $ref: '#/components/schemas/deviceControl'
-          - $ref: '#/components/schemas/dataReceiver'  
+    EndpointAppsExtension:
+      type: object
+      properties:
+        deviceControl:
+          $ref: '#/components/schemas/deviceControl'
+        dataReceiver:
+          $ref: '#/components/schemas/dataReceiver'
       
     deviceControl:
-      type: array
-      items:
-        $ref: '#/components/schemas/deviceControlAttributes'
-    
-    deviceControlAttributes:
+      type: object
       properties:
         client-tokens:
-          type: string
-          format: uri
+          type: array
+          items:
+            type: string
           description: This attribute contains a list of tokens that 
                        the client will used to authenticate itself. 
                        Each token may be a string up to 500
@@ -49,15 +40,11 @@ components:
         - enterpriseEndpoint
 
     dataReceiver:
-      type: array
-      items:
-        $ref: '#/components/schemas/dataReceiverAttributes'
-
-    dataReceiverAttributes:
       properties:
         client-tokens:
-          type: string
-          format: uri
+          type: array
+          items:
+            type: string
           description: This attribute contains a list of tokens that 
                        the client will used to authenticate itself. 
                        Each token may be a string up to 500 octets
@@ -78,18 +65,3 @@ components:
           nullable: false
           readOnly: false
           writeOnly: false
-paths:
-  /endpointApps:
-    get:
-      summary: Get endpoint apps
-      description: Returns all endpoint apps
-      operationId: getAllEndpointApps
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/endpointApps'

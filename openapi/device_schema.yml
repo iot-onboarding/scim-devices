@@ -1,9 +1,3 @@
-openapi: 3.0.3
-info:
-  title: Device Schema
-  version: 1.0.0
-  description: API for device core schema
-
 components:
   schemas:
     Device:
@@ -49,6 +43,14 @@ components:
     CommonAttributes:
       type: object
       properties:
+        schemas:
+          type: array
+          items:
+            type: string
+            enum:
+              - urn:ietf:params:scim:schemas:core:2.0:Device
+          description: The list of schemas that define the resource.
+          nullable: false
         id:
           type: string
           format: uri
@@ -65,6 +67,7 @@ components:
           writeOnly: false
         meta:
           type: object
+          readOnly: true
           properties:
             resourceType:
               type: string
@@ -78,7 +81,7 @@ components:
               format: uri
               description: The URI of the resource being returned.
               nullable: false
-              readOnly: false
+              readOnly: true
               writeOnly: false
             created:
               type: string
@@ -101,56 +104,6 @@ components:
               type: string
               description: The version of the resource. 
               nullable: true
-              readOnly: false
+              readOnly: true
               writeOnly: false
           additionalProperties: false
-  
-
-paths:
-  /devices:
-    post:
-      summary: Create a new device
-      description: Creates a new device.
-      operationId: createDevice
-      requestBody:
-        description: The device to create
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Device'
-      responses:
-        '201':
-          description: Created
-          headers:
-            Location:
-              schema:
-                type: string
-                format: uri
-              description: The URI of the newly created device.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Device'
-
-  /devices/{deviceId}:
-    get:
-      summary: Get a device by ID
-      description: Returns a single device by its ID.
-      operationId: getDeviceById
-      parameters:
-        - name: deviceId
-          in: path
-          description: The ID of the device to return.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Device'
-
-
