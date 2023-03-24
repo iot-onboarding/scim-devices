@@ -1,0 +1,103 @@
+openapi: 3.0.3
+info:
+  title: SCIM API
+  description: APIs using the SCIM interface
+  version: 1.0.0
+
+components:
+  schemas:
+    DeviceResource:
+      type: object
+      allOf:
+        - $ref: "./device_schema.yml#/components/schemas/Device"
+        - anyOf:
+            - $ref: "./SCIM_BLE_extension_schema.yml#/components/schemas/BleDevice"
+            - $ref: "./SCIM_zigbee_extension_schema.yml#/components/schemas/ZigbeeDevice"
+            - $ref: "./SCIM_DPP_extension_schema.yml#/components/schemas/DppDevice"
+            - type: object
+              properties:
+                schemas:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - urn:ietf:params:scim:schemas:extension:endpointApps:2.0:Device
+                urn:ietf:params:scim:schemas:extension:endpointApps:2.0:Device:
+                  $ref: './SCIM_endpoint_extension_schema.yml#/components/schemas/EndpointAppsExtension'
+                  required: true
+
+paths:
+  /Devices:
+    post:
+      summary: Create a new device
+      operationId: createDevice
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: "#/components/schemas/DeviceResource"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/scim+json:
+              schema:
+                $ref: "#/components/schemas/DeviceResource"
+  /Devices/{id}:
+    get:
+      summary: Get a BLE device by ID
+      description: Returns a single BLE device by its ID.
+      operationId: getDeviceById
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the device to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/scim+json:
+              schema:
+                $ref: "#/components/schemas/DeviceResource"
+    put:
+      summary: Update a device
+      description: Updates a device.
+      operationId: updateDevice
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the device to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: "#/components/schemas/DeviceResource"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/scim+json:
+              schema:
+                $ref: "#/components/schemas/DeviceResource"
+    delete:
+      summary: Delete a device
+      description: Deletes a device.
+      operationId: deleteDevice
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the device to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content

@@ -1,11 +1,18 @@
-openapi: 3.0.1
-info:
-  title: Zigbee Device Extension
-  description: API for Zigbee device extensions schema
-  version: 1.0.0
- 
 components:
   schemas:
+    ZigbeeDevice:
+      type: object
+      description: Zigbee Device schema.
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+            enum:
+              - urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device
+        urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device:
+          $ref: '#/components/schemas/ZigbeeDeviceExtension'
+          required: true
     ZigbeeDeviceExtension:
       type: object
       properties:
@@ -30,42 +37,3 @@ components:
         - versionSupport
         - deviceEui64Address
       description: Device extension schema for Zigbee.
-      
-
-paths:
-  /devices:
-    post:
-      summary: Create a new device
-      operationId: createDevice
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ZigbeeDeviceExtension'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZigbeeDeviceExtension'
-  /devices/{deviceId}:
-    get:
-      summary: Get a Zigbee device by ID
-      description: Returns a single Zigbee device by its ID.
-      operationId: getDeviceById
-      parameters:
-        - name: id
-          in: path
-          description: The ID of the device to return.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZigbeeDeviceExtension'

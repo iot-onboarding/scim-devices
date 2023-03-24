@@ -1,11 +1,18 @@
-openapi: 3.0.1
-info:
-  version: 1.0.0
-  title: DPP Extension Schema
-  description: API for DPP device extension schema
-
 components:
   schemas:
+    BleDevice:
+      type: object
+      description: BLE Device schema.
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+            enum:
+              - urn:ietf:params:scim:schemas:extension:ble:2.0:Device
+        urn:ietf:params:scim:schemas:extension:ble:2.0:Device:
+          $ref: '#/components/schemas/BleDeviceExtension'
+          required: true
     BleDeviceExtension:
       type: object
       properties:
@@ -56,6 +63,18 @@ components:
           nullable: true
           readOnly: false
           writeOnly: false
+        urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device:
+          $ref: '#/components/schemas/NullPairing'
+          required: false
+        urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device:
+          $ref: '#/components/schemas/PairingJustWorks'
+          required: false
+        urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device:
+          $ref: '#/components/schemas/PairingPassKey'
+          required: false
+        urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device:
+          $ref: '#/components/schemas/PairingOOB'
+          required: false
       required:
         - versionSupport
         - deviceMacAddress
@@ -128,56 +147,3 @@ components:
       required:
         - key
         - randomNumber
-
-paths:
-  /devices:
-    post:
-      summary: Create a new device
-      operationId: createDevice
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BleDeviceExtension'
-              anyof:
-                - $ref: '#/components/schemas/NullPairing'
-                - $ref: '#/components/schemas/PairingJustWorks'
-                - $ref: '#/components/schemas/PairingPassKey'
-                - $ref: '#/components/schemas/PairingOOB'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BleDeviceExtension'
-                anyof:
-                  - $ref: '#/components/schemas/NullPairing'
-                  - $ref: '#/components/schemas/PairingJustWorks'
-                  - $ref: '#/components/schemas/PairingPassKey'
-                  - $ref: '#/components/schemas/PairingOOB'
-  /devices/{deviceId}:
-    get:
-      summary: Get a Dpp device by ID
-      description: Returns a single Dpp device by its ID.
-      operationId: getDeviceById
-      parameters:
-        - name: id
-          in: path
-          description: The ID of the device to return.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BleDeviceExtension'
-                anyof:
-                  - $ref: '#/components/schemas/NullPairing'
-                  - $ref: '#/components/schemas/PairingJustWorks'
-                  - $ref: '#/components/schemas/PairingPassKey'
-                  - $ref: '#/components/schemas/PairingOOB'

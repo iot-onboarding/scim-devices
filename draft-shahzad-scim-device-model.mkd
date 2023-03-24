@@ -607,7 +607,7 @@ representation is provided in Section [](#zigbee-extension-schema-openapi-repres
 
 ## The Endpoint Applications Extension Schema
 
-Sometimes non-IP devices such as those using BLE or Zigbe require an
+Sometimes non-IP devices such as those using BLE or Zigbee require an
 application gateway interface to manage them. SCIM clients MUST NOT
 specify this to describe native IP-based devices.
 
