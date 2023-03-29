@@ -611,14 +611,14 @@ Sometimes non-IP devices such as those using BLE or Zigbee require an
 application gateway interface to manage them. SCIM clients MUST NOT
 specify this to describe native IP-based devices.
 
-The device schema is a base schema upon which specific onboarding
+The device schema is a base schema upon which specific onboarding // FIXME no it's not
 technology schemas are built. This extension provides two complex
 attributes deviceControl, and dataReceiver to represent
 two types of partner endpoint applications, device
 control, and data receiver applications, respectively. 
 The extension is identified using the following schema URI:
 
-urn:ietf:params:scim:schemas:extension:endpointApps:2.0:Device
+urn:ietf:params:scim:schemas:extension:endpointApps:2.0:Device // FIXME
 
 ### "deviceControl" Complex Attribute
 
@@ -631,7 +631,7 @@ sub-attributes: (i) a multvalued client-tokens
 attribute and (ii) a singular attribute called
 enterpriseEndpoint.
 
-client-tokens
+client-token
 
 This attribute contains a list of tokens that the client will used to
 authenticate itself.  Each token may be a string up to 500 characters
@@ -658,7 +658,7 @@ data receiver application. "dataReceiver" has two sub-attributes:
 (i) a multi-valued attribute called client-tokens, and (ii) a singular
 attribute called enterpriseEndpoint.
 
-client-tokens
+client-token
 
 This attribute contains a list of tokens that the client will used to
 authenticate itself.  Each token may be a string up to 500 characters
