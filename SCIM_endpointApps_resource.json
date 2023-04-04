@@ -1,0 +1,56 @@
+{  
+  "id": "urn:ietf:params:scim:schemas:core:2.0:EndpointApp",
+  "name": "EndpointApp",
+  "description": "Endpoint application and their credentials",
+  "attributes" : [
+    {
+      "name": "applicationType",
+      "type": "string",
+      "description": "This attribute will only contain two values; 'deviceControl' or 'telemetry'.",
+      "multivalues": false,
+      "required": true,
+      "caseExact": false,
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none"
+    },
+    {
+      "name": "applicationName",
+      "type": "string",
+      "description": "Human readable name of the application.",
+      "multivalues": false,
+      "required": true,
+      "caseExact": false,
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none"
+    },
+    {
+      "name": "certificate",
+      "type": "string",
+      "description": "Certficate of the application.",
+      "multivalues": false,
+      "required": false,
+      "caseExact": false,
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none"
+    },
+    {
+      "name": "client-token",
+      "type": "string",
+      "description": "This attribute contains a token that the client will use to authenticate itself.  Each token may be a string up to 500 characters in length.",
+      "multivalues": false,
+      "required": false,
+      "caseExact": false,
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none"
+    }
+  ],
+  "meta" : {
+    "resourceType" : "Schema",
+    "location" :
+      "/v2/Schemas/urn:ietf:params:scim:schemas:core:2.0:Device"
+  }
+}
