@@ -186,7 +186,7 @@ schema specifies the metadata about a resource type (see section 6 of
 and several extension schemas. The core schema provides a minimal 
 resource representation, whereas extension schemas extend the core 
 schema depending on the device's capability. The JSON schema for Device
-resource type is in {{device-resource-schema}}.
+resource type is in {{resource-schema}}.
 
 
 ## Common Attributes
@@ -272,14 +272,102 @@ An example of a device SCIM object is as follows:
 ~~~~~~~~~
 
 The schema for the device is presented in JSON format in Section
-{{device-core-schema-json}}, while the openAPI representation is provided in 
-Section {{device-core-schema-openapi-representation}}.
+{{endpointapp-schema-json}}, while the openAPI representation is provided in 
+Section {{endpointappsext-extension-schema-openapi-representation}}.
 
 Device Groups
 =============
 
 Device groups are created using the SCIM groups as defined in
 {{!RFC7643}} Section 4.2.
+
+
+Resource Type EndpointApp
+=========================
+This section defines a new resource type, 'EndpointApp'. The 
+"ResourceType" schema specifies the metadata about a resource type 
+(see section 6 of {{!RFC7643}}). The resource "EndpointApp" represents
+partner applications that can control and/or receive data from the
+devices. The JSON schema for EndpointApp resource type is in {{resource-schema}}.
+The attributes comprising EndpointsApp are listed in {{endpointapp-schema}}.
+The "EndpointApp" are included in the enpoint applications extension 
+("endpointAppsExt") {{endpointsappext-schema}}.
+
+
+SCIM EndpointApp Schema {#endpointapp-schema}
+=======================
+The schema for "EndpointApp" is identified using the schema URI:
+"urn:ietf:params:scim:schemas:core:2.0:EndpointApp". The following
+attributes are defined in this schema.
+
+## Common Attributes
+
+The EndpointApp schema contains three common attributes as defined in the
+{{!RFC7643}}.
+
+## Singular Attributes
+
+applicationType
+
+This attribute is of type "string" and represents the type of 
+application. It will only contain two values; 'deviceControl' 
+or 'telemetry'. 'deviceControl' is the application send commands
+to control the device. 'telemetry' is the application that receives
+data from the device. The attribute is required, and is not 
+case-sensitive. The is attribute readOnly and should be returned 
+by default. No uniqueness constraints are imposed on this attribute.
+
+applicationName
+
+The "applicationName" attribute is of type "string" and represents a
+human readable name for the application. This attribute is required and
+mutable. The attribute should be returned by default and there is no 
+uniqueness contraint on the attribute.
+
+certificate
+
+This attribute is type "string" and represents a x509certificate that may 
+be used for authentication of the application. It is mutable, not 
+required, case sensitive and returned by default if exists. The 
+uniqueness is enforced by the manufacturer. 
+
+client-token
+
+This attribute type string contains a token that the client will use 
+to authenticate itself.  Each token may be a string up to 500 
+characters in length. It is mutable, required, case sensitive 
+and returned by default if exists. The uniqueness is enforced by 
+the manufacturer. 
+
+~~~
++===================+=======+=====+======+=========+========+========+
+| Attribute         | Multi | Req | Case | Mutable | Return | Unique |
+|                   | Value |     | Exact|         |        |        |
++===================+=======+=====+======+=========+========+========+
+| applicationType   |   F   |  T  |  F   |   R     |  Def   |  None  |
++-------------------+-------+-----+------+---------+--------+--------+
+| applicationName   |   F   |  T  |  F   |   RW    |  Def   |  None  |
++-------------------+-------+-----+------+---------+--------+--------+
+| certificate       |   F   |  F  |  T   |   RW    |  Def   |  Manuf |
++-------------------+-------+-----+------+---------+--------+--------+
+| client-token      |   F   |  T  |  T   |   RW    |  Def   |  Manuf |
++-------------------+-------+-----+------+---------+--------+--------+
+~~~
+{: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required,
+T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufactirer
+and Def = Default)"}
+
+An example of a endpointApp SCIM object is as follows:
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include examples/SCIM_endpointapp_schema_object.ftxt}
+<CODE ENDS>
+~~~~~~~~~
+
+The schema for the endpointApp is presented in JSON format in Section
+{{endpointappsext-extension-schema-json}}, while the openAPI representation is provided in 
+Section {{endpointappsext-extension-schema-openapi-representation}}.
 
 
 SCIM Device Extensions
@@ -418,24 +506,27 @@ message exchange. It is not required. It is mutable and returned by
 default if it exists.
 
 ~~~
-+===================+=======+=====+======+=========+========+========+
-| Attribute         | Multi | Req | Case | Mutable | Return | Unique |
-|                   | Value |     | Exact|         |        |        |
-+===================+=======+=====+======+=========+========+========+
-| deviceMacAddress  |   F   |  T  |  F   |   RW    |  Def   | Manuf  |
-+-------------------+-------+-----+------+---------+--------+--------+
-| addressType       |   F   |  T  |  F   |   RW    |  Def   | None   |
-+-------------------+-------+-----+------+---------+--------+--------+
-| irk               |   F   |  F  |  F   |   RW    |  Def   | Manuf  |
-+-------------------+-------+-----+------+---------+--------+--------+
-| versionSupport    |   T   |  T  |  F   |   RW    |  Def   | None   |
-+-------------------+-------+-----+------+---------+--------+--------+
-| pairingMethods    |   T   |  T  |  T   |   RW    |  Def   | None   |
-+-------------------+-------+-----+------+---------+--------+--------+
++====================+=======+=====+======+=========+========+========+
+| Attribute          | Multi | Req | Case | Mutable | Return | Unique |
+|                    | Value |     | Exact|         |        |        |
++====================+=======+=====+======+=========+========+========+
+| deviceMacAddress   |   F   |  T  |  F   |   RW    |  Def   | Manuf  |
++--------------------+-------+-----+------+---------+--------+--------+
+| isRandom           |   F   |  T  |  F   |   RW    |  Def   | None   |
++--------------------+-------+-----+------+---------+--------+--------+
+| sepBroadcastAdd    |   F   |  T  |  F   |   RW    |  Def   | None   |
++--------------------+-------+-----+------+---------+--------+--------+
+| irk                |   F   |  F  |  F   |   RW    |  Def   | Manuf  |
++--------------------+-------+-----+------+---------+--------+--------+
+| versionSupport     |   T   |  T  |  F   |   RW    |  Def   | None   |
++--------------------+-------+-----+------+---------+--------+--------+
+| pairingMethods     |   T   |  T  |  T   |   RW    |  Def   | None   |
++--------------------+-------+-----+------+---------+--------+--------+
 ~~~
 {: #tabBLE title="Characteristics of BLE extension schema attributes. 
-(Req = Required, T = True, F = False, RW = ReadWrite, Def = Default, 
-and Manuf = Manufacturer)."}
+sepBroadcastAdd is short for separateBroadcastaddress. (Req = Required,
+T = True, F = False, RW = ReadWrite, Def = Default, and 
+Manuf = Manufacturer)."}
 
 An example of a device object with BLE extension is as follows:
 
@@ -605,95 +696,84 @@ representation is provided in Section [](#zigbee-extension-schema-openapi-repres
 
 
 
-## The Endpoint Applications Extension Schema
+## The Endpoint Applications Extension Schema {#endpointsappext-schema}
 
 Sometimes non-IP devices such as those using BLE or Zigbee require an
 application gateway interface to manage them. SCIM clients MUST NOT
 specify this to describe native IP-based devices.
 
-The device schema is a base schema upon which specific onboarding // FIXME no it's not
-technology schemas are built. This extension provides two complex
-attributes deviceControl, and dataReceiver to represent
-two types of partner endpoint applications, device
-control, and data receiver applications, respectively. 
-The extension is identified using the following schema URI:
+endpointAppsExt provides the list application that connect to 
+enterprise gateway. The endpointAppsExt has one multivalued attribute 
+and two singular attributes. The extension is identified using the
+following schema URI:
 
-urn:ietf:params:scim:schemas:extension:endpointApps:2.0:Device // FIXME
+urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Device
 
-### "deviceControl" Complex Attribute
-
-A complex attribute representing the application responsible for
-controlling the device. Device control applications provide access
-control for the device. It determines which other applications can
-access the data from the device. Depending on the use case, there can
-be more than one device control application. deviceControl has two 
-sub-attributes: (i) a multvalued client-tokens
-attribute and (ii) a singular attribute called
-enterpriseEndpoint.
-
-client-token
-
-This attribute contains a list of tokens that the client will used to
-authenticate itself.  Each token may be a string up to 500 characters
-in length. This attribute is a multivalued string which is required,
-case-sensitive, mutable, and returned by default.
-
-\[\[ We probably need something better here. \]\]
+### Singular Attributes
 
 
-enterpriseEndpoint
+DeviceControlEnterpriseEndpoint
 
-Device control apps use the URL of the enterprise endpoint to reach
-the network gateway. When the enterprise receives the SCIM object from
+Device control apps use this URL of the enterprise endpoint to reach
+the enterprise gateway. When the enterprise receives the SCIM object from
 the onboarding app, it adds this attribute to it and sends it back as
 a response to the onboarding app. This attribute is required,
-case-sensitive, mutable, and returned by default.
+case-sensitive, mutable, and returned by default. The uniqueness is
+enforced by the enterprise.
+
+telemetryEnterpriseEndpoint
+
+Telemetry apps use this URL of the enterprise endpoint to reach
+the enterprise gateway. When the enterprise receives the SCIM object from
+the onboarding app, it adds this attribute to it and sends it back as
+a response to the onboarding app. This attribute is required,
+case-sensitive, mutable, and returned by default. The uniqueness is
+enforced by the enterprise.
 
 
-### "dataReceiver" Complex Attribute
+### Multivalued Attribute
 
-A complex attribute representing the application(s) that receive data
-from the device. Depending on the use case, there can be more than one
-data receiver application. "dataReceiver" has two sub-attributes: 
-(i) a multi-valued attribute called client-tokens, and (ii) a singular
-attribute called enterpriseEndpoint.
+applications
 
-client-token
+This is a complex multivalued attribute. It represents a list of 
+endpoint applications i.e., deviceControl and telemetry. Each entry in
+the list comprises two attributes including "value" and "$ref". 
 
-This attribute contains a list of tokens that the client will used to
-authenticate itself.  Each token may be a string up to 500 characters
-in length. This attribute is a multivalued string which is required,
-case-sensitive, mutable, and returned by default.
+value
 
-\[\[ We probably need something better here. \]\]
+It is the identifier of the endpoint application formated as UUID. It
+is same as the common attribute "$id" of the resource "endpointApp".
+It is readOnly, required, case insensitive and returned by default.
 
-enterpriseEndpoint
+$ref
 
-Data receiver apps use the URL of the enterprise endpoint to reach the
-network gateway. When the enterprise receives the SCIM object from the
-onboarding app, it adds this attribute to it and sends it back as a
-response to the onboarding app. This attribute is required,
-case-sensitive, mutable, and returned by default.
+It is the reference to the respective endpointApp resource object 
+stored in the SCIM server. It is readOnly, required, case sensitive
+and returned by default.
 
 ~~~
 +====================+=======+=====+======+=========+========+========+
 | Attribute          | Multi | Req | Case | Mutable | Return | Unique |
 |                    | Value |     | Exact|         |        |        |
 +====================+=======+=====+======+=========+========+========+
-| client-tokens      |   T   |  T  |  T   |   RW    |  Def   | None   |
+| DevContEntEndpoint |   F   |  T  |  T   |   RW    |  Def   | Ent    |
 +--------------------+-------+-----+------+---------+--------+--------+
-| enterpriseEndpoint |   F   |  T  |  T   |   RW    |  Def   | None   |
+| telEntEndpoint     |   F   |  T  |  T   |   RW    |  Def   | Ent    |
 +--------------------+-------+-----+------+---------+--------+--------+
-| deviceControl      |   F   |  T  |  F   |   RW    |  Def   | Manuf  |
+| applications       |   T   |  T  |  F   |   RW    |  Def   | None   |
 +--------------------+-------+-----+------+---------+--------+--------+
-| dataReceiver       |   F   |  T  |  F   |   RW    |  Def   | None   |
+| value              |   F   |  T  |  F   |   R     |  Def   | None   |
++--------------------+-------+-----+------+---------+--------+--------+
+| $ref               |   F   |  T  |  F   |   R     |  Def   | None   |
 +--------------------+-------+-----+------+---------+--------+--------+
 ~~~
-{: #tabEndpointApps title="Characteristics of EndpointApps extension schema 
-attributes. (Req = Required, T = True, F = False, RW = ReadWrite,
-Def = Default, and Manuf = Manufacturer)."}
+{: #tabEndpointAppsExt title="Characteristics of EndpointAppsExt extension schema 
+attributes. DevContEntEndpoint represents attribute 
+DeviceControlEnterpriseEndpoint and telEntEndpoint represents 
+telemetryEnterpriseEndpoint. (Req = Required, T = True, F = False, 
+R = ReadOnly, RW = ReadWrite, Ent = Enterprise, and Def = Default)."}
 
-An example of a device object with endpointApps extension is below:
+An example of a device object with endpointAppsExt extension is below:
 
 ~~~~~~~~
 <CODE BEGINS>
@@ -701,17 +781,15 @@ An example of a device object with endpointApps extension is below:
 <CODE ENDS>
 ~~~~~~~~
 
-The schema for the endpointApps extension along with BLE extension is 
-presented in JSON format in Section {{endpointapps-extension-schema-json}}, while 
-the openAPI representation is provided in Section {{endpointapps-extension-schema-openapi-representation}}.
-
-
+The schema for the endpointAppsExt extension along with BLE extension is 
+presented in JSON format in Section {{endpointappsext-extension-schema-json}}, while 
+the openAPI representation is provided in Section {{endpointappsext-extension-schema-openapi-representation}}.
 
 
 Schema JSON Representation
 =============================
 
-## Device Resource Schema {#device-resource-schema}
+## Resource Schema {#resource-schema}
 
 ~~~~~~~~~
 <CODE BEGINS>
@@ -721,6 +799,20 @@ Schema JSON Representation
 
 ## Device Core Schema JSON {#device-core-schema-json}
 
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include SCIM_device_core_schema_representation.ftxt}
+<CODE ENDS>
+~~~~~~~~~
+
+## EndpointApp Schema JSON {#endpointapp-schema-json}
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include SCIM_endpointApp_schema_representation.ftxt}
+<CODE ENDS>
+~~~~~~~~~
 
 ~~~~~~~~~
 <CODE BEGINS>
@@ -749,7 +841,7 @@ Schema JSON Representation
 <CODE ENDS>
 ~~~~~~~~~
 
-## EndpointApps JSON Extension Schema {#endpointapps-extension-schema-json}
+## EndpointAppsExt JSON Extension Schema {#endpointappsext-extension-schema-json}
 ~~~~~~~~~
 <CODE BEGINS>
 {::include extensions/SCIM_endpoint_extension_schema.ftxt}
@@ -839,7 +931,7 @@ OpenAPI representation of zigbee extension schema is as follows:
 <CODE ENDS>
 ~~~~~~~~
 
-## EndpointApps Extension Schema OpenAPI Representation {#endpointapps-extension-schema-openapi-representation}
+## EndpointAppsExt Extension Schema OpenAPI Representation {#endpointappsext-extension-schema-openapi-representation}
 OpenAPI representation of endpoint Apps schema is as follows:
 
 ~~~~~~~~

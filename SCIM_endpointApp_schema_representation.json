@@ -10,7 +10,7 @@
       "multivalues": false,
       "required": true,
       "caseExact": false,
-      "mutability": "readWrite",
+      "mutability": "readOnly",
       "returned": "default",
       "uniqueness": "none"
     },
@@ -31,7 +31,7 @@
       "description": "Certficate of the application.",
       "multivalues": false,
       "required": false,
-      "caseExact": false,
+      "caseExact": true,
       "mutability": "readWrite",
       "returned": "default",
       "uniqueness": "none"
@@ -41,8 +41,8 @@
       "type": "string",
       "description": "This attribute contains a token that the client will use to authenticate itself.  Each token may be a string up to 500 characters in length.",
       "multivalues": false,
-      "required": false,
-      "caseExact": false,
+      "required": true,
+      "caseExact": true,
       "mutability": "readWrite",
       "returned": "default",
       "uniqueness": "none"

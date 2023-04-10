@@ -1,67 +1,56 @@
 components:
   schemas:
-    EndpointAppsExtension:
+    EndpointAppsExt:
       type: object
       properties:
-        deviceControl:
-          $ref: '#/components/schemas/deviceControl'
-        dataReceiver:
-          $ref: '#/components/schemas/dataReceiver'
-      
-    deviceControl:
-      type: object
-      properties:
-        client-tokens:
-          type: array
-          items:
-            type: string
-          description: This attribute contains a list of tokens that 
-                       the client will used to authenticate itself. 
-                       Each token may be a string up to 500
-                       octets in length.
+        applications:
+          $ref: '#/components/schemas/applications'
+        
+        DeviceControlEnterpriseEndpoint:
+          type: string
+          format: url
+          description: The URL of the enterprise endpoint which device
+                       control apps use to reach enterprise network 
+                       gateway.
           nullable: false
           readOnly: false
           writeOnly: false
-        enterpriseEndpoint:
+        
+        telemetryEnterpriseEndpoint:
           type: string
-          format: uri
-          description: The URL of the enterprise endpoint which
-                       device control apps uses to reach enterprise
-                       network gateway. When enterprise receives the
-                       SCIM object from onboarding app, it adds this 
-                       attribute to the object and sends back the 
-                       object as response back to the onboarding
-                       app.
+          format: url
+          description: The URL of the enterprise endpoint which 
+                       telemetry apps use to reach enterprise network 
+                       gateway.
           nullable: false
           readOnly: false
+          writeOnly: false
+
+      required:
+        - applications
+        - DeviceControlEnterpriseEndpoint
+        - telemetryEnterpriseEndpoint
+        
+    applications:
+      type: array
+      items:
+        value:
+          type: string
+          description: The identifier of the endpointApp.
+          nullable: false
+          readOnly: true
+          writeOnly: false
+        ref:
+          type: string
+          format: uri
+          description: The URI of the corresponding 'EndpointApp' 
+                      resource which will control or obtain data from 
+                      the device.
+          nullable: false
+          readOnly: true
           writeOnly: false
       required:
-        - client-tokens
-        - enterpriseEndpoint
+        - value
+        - ref
 
-    dataReceiver:
-      properties:
-        client-tokens:
-          type: array
-          items:
-            type: string
-          description: This attribute contains a list of tokens that 
-                       the client will used to authenticate itself. 
-                       Each token may be a string up to 500 octets
-                       in length.
-          nullable: false
-          readOnly: false
-          writeOnly: false
-
-        enterpriseEndpoint:
-          type: string
-          format: uri
-          description: The URL of the enterprise endpoint which data
-                       receiver apps uses to reach enterprise network
-                       gateway. When enterprise receives the SCIM
-                       object from onboarding app, it adds this
-                       attribute to the object and sends back the
-                      object as response back to the onboarding app.
-          nullable: false
-          readOnly: false
-          writeOnly: false
+   
