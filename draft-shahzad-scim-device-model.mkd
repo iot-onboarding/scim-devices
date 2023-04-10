@@ -357,7 +357,10 @@ the manufacturer.
 T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufactirer
 and Def = Default)"}
 
-An example of a endpointApp SCIM object is as follows:
+An example of a endpointApp SCIM object is as follows. Note that the
+values of attributes certificate and client-token are shrinked for 
+brevity and are not representative of the actual length of these 
+attributes.
 
 ~~~~~~~~~
 <CODE BEGINS>
