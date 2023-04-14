@@ -26,22 +26,57 @@
       "uniqueness": "none"
     },
     {
-      "name": "certificate",
-      "type": "string",
-      "description": "Certficate of the application.",
+      "name": "certificateInfo",
+      "type": "complex",
+      "description": "Contains x509 certificate's subject name and root CA information associated with the device control or telemetry app.",
       "multivalues": false,
       "required": false,
-      "caseExact": true,
+      "caseExact": false,
       "mutability": "readWrite",
       "returned": "default",
-      "uniqueness": "none"
+      "uniqueness": "none",
+      "subAttributes" : [
+        {
+          "name" : "rootCN",
+          "type" : "string",
+          "description" : "A root certificate common name.",
+          "multiValued" : false,
+          "required" : true,
+          "caseExact" : true,
+          "mutability" : "readOnly",
+          "returned" : "default",
+          "uniqueness" : "none"
+        },
+        {
+          "name" : "subjectName",
+          "type" : "string",
+          "description" : "Also known as the Common Name (CN), the Subject Name is a field in the X.509 certificate that identifies the primary domain or IP address for which the certificate is issued.",
+          "multiValued" : false,
+          "required" : false,
+          "caseExact" : true,
+          "mutability" : "readOnly",
+          "returned" : "default",
+          "uniqueness" : "none"
+        },
+        {
+          "name" : "subjectAlternativeName",
+          "type" : "string",
+          "description" : "This attribute allows for the inclusion of multiple domain names and IP addresses in a single certificate. This enables the certificate to be used for multiple related domains or IPs without the need for separate certificates for each.",
+          "multiValued" : true,
+          "required" : false,
+          "caseExact" : true,
+          "mutability" : "readOnly",
+          "returned" : "default",
+          "uniqueness" : "none"
+        }
+      ]
     },
     {
       "name": "client-token",
       "type": "string",
       "description": "This attribute contains a token that the client will use to authenticate itself.  Each token may be a string up to 500 characters in length.",
       "multivalues": false,
-      "required": true,
+      "required": false,
       "caseExact": true,
       "mutability": "readWrite",
       "returned": "default",

@@ -3,8 +3,12 @@
   "id": "e9e30dba-f08f-4109-8486-d5c6a3316212",
   "applicationType": "deviceControl",
   "applicationName": "Device Control App 1",
-  "certificate": "vujygCYTCIYJHGVYUJTCVY",
-  "client-token": "GJHCJGCJGHCGFYJTFVYJ",
+  "certificateInfo": {
+      "rootCN": "DigiCert Global Root CA",
+      "subjectName": "wwww.example.com",
+      "subjectAlternativeName": ["xyz.example.com", "abc.example.com"]
+  },
+  "client-token": null,
   "meta": {
     "resourceType": "EndpointApp",
     "created": "2022-01-23T04:56:22Z",

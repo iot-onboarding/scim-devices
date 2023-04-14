@@ -1,0 +1,150 @@
+components:
+  schemas:
+    EndpointApp:
+      title: EndpointApp
+      description: Endpoint application resource
+      type: object
+      properties:
+        applicationType:
+          type: string
+          description: "This attribute will only contain two values;
+                       'deviceControl' or 'telemetry'."
+          nullable: false
+          readOnly: true
+          writeOnly: false
+
+        applicationName:
+          type: string
+          description: Human readable name of the application.
+          nullable: false
+          readOnly: false
+          writeOnly: false
+        
+      required:
+        - applicationType
+        - applicationName
+
+      additionalProperties: true
+      oneOf:
+        - $ref: '#/components/schemas/client-token'
+        - $ref: '#/components/schemas/certificateInfo'
+
+      allOf:
+        - $ref: '#/components/schemas/CommonAttributes'
+
+    client-token:
+      type: string
+      description: "This attribute contains a token that the client
+                    will use to authenticate itself. Each token may
+                    be a string up to 500 characters in length."
+      nullable: true
+      readOnly: false
+      writeOnly: false
+
+    certificateInfo:
+      type: object
+      description: "Contains x509 certificate's subject name and 
+                    root CA information associated with the device
+                    control or telemetry app."
+      properties:
+        rootCN:
+          type: string
+          description: "A root certificate common name."
+          nullable: false
+          readOnly: true
+          writeOnly: false
+
+        subjectName:
+          type: string
+          description: "Also known as the Common Name (CN), the
+                        Subject Name is a field in the X.509 
+                        certificate that identifies the primary
+                        domain or IP address for which the
+                        certificate is issued."
+          nullable: false
+          readOnly: true
+          writeOnly: false
+
+        subjectAlternativeName:
+          type: array
+          items:
+            type: string
+          description: "This attribute allows for the inclusion of
+                        multiple domain names and IP addresses in a
+                        single certificate. This enables the 
+                        certificate to be used for multiple related
+                        domains or IPs without the need for 
+                        separate certificates for each. "
+          nullable: true
+          readOnly: true
+          writeOnly: false
+      required:
+      - rootCN
+
+    CommonAttributes:
+      type: object
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+            enum:
+              - urn:ietf:params:scim:schemas:core:2.0:Device
+          description: The list of schemas that define the resource.
+          nullable: false
+        id:
+          type: string
+          format: uri
+          description: The unique identifier for a resource.
+          nullable: false
+          readOnly: true
+          writeOnly: false
+        externalId:
+          type: string
+          description: An identifier for the resource that is defined
+                       by the provisioning client.
+          nullable: true
+          readOnly: false
+          writeOnly: false
+        meta:
+          type: object
+          readOnly: true
+          properties:
+            resourceType:
+              type: string
+              description: The name of the resource type of the 
+                           resource.
+              nullable: false
+              readOnly: true
+              writeOnly: false
+            location:
+              type: string
+              format: uri
+              description: The URI of the resource being returned.
+              nullable: false
+              readOnly: true
+              writeOnly: false
+            created:
+              type: string
+              format: date-time
+              description: The date and time the resource was added
+                           to the service provider.
+              nullable: false
+              readOnly: true
+              writeOnly: false
+            lastModified:
+              type: string
+              format: date-time
+              description: The most recent date and time that the 
+                           details of this resource were updated at
+                           the service provider.
+              nullable: false
+              readOnly: true
+              writeOnly: false
+            version:
+              type: string
+              description: The version of the resource. 
+              nullable: true
+              readOnly: true
+              writeOnly: false
+          additionalProperties: false

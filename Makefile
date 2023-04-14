@@ -37,6 +37,7 @@ YAML=	openapi/SCIM_BLE_extension_schema.yml \
 	openapi/SCIM_endpoint_extension_schema.yml \
 	openapi/SCIM_zigbee_extension_schema.yml \
 	openapi/device_schema.yml \
+	openapi/endpointapp_schema.yml \
 
 
 all: $(DOCS)

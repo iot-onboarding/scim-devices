@@ -272,8 +272,8 @@ An example of a device SCIM object is as follows:
 ~~~~~~~~~
 
 The schema for the device is presented in JSON format in Section
-{{endpointapp-schema-json}}, while the openAPI representation is provided in 
-Section {{endpointappsext-extension-schema-openapi-representation}}.
+{{device-schema-json}}, while the openAPI representation is provided in 
+Section {{device-schema-openapi-representation}}.
 
 Device Groups
 =============
@@ -324,20 +324,42 @@ human readable name for the application. This attribute is required and
 mutable. The attribute should be returned by default and there is no 
 uniqueness contraint on the attribute.
 
-certificate
-
-This attribute is type "string" and represents a x509certificate that may 
-be used for authentication of the application. It is mutable, not 
-required, case sensitive and returned by default if exists. The 
-uniqueness is enforced by the manufacturer. 
-
 client-token
 
 This attribute type string contains a token that the client will use 
 to authenticate itself.  Each token may be a string up to 500 
 characters in length. It is mutable, required, case sensitive 
-and returned by default if exists. The uniqueness is enforced by 
-the manufacturer. 
+and returned by default if exists.
+
+## Complex Attribute
+
+certificateInfo
+
+It is the complex attribute that Contains x509 certificate's subject
+name and root CA information associated with the device control or 
+telemetry app. It further has three attributes that are described 
+below.
+
+rootCN
+
+It is the root certificate common name. This attribute is required,
+read only, singular and case sensitive.
+
+subjectName
+
+Also known as the Common Name (CN), the Subject Name is a field in the
+X.509 certificate that identifies the primary domain or IP address for
+which the certificate is issued. This attribute is not required,
+read only, singular and case sensitive.
+
+subjectAlternativeName
+
+This attribute allows for the inclusion of multiple domain names and
+IP addresses in a single certificate. This enables the certificate to
+be used for multiple related domains or IPs without the need for 
+separate certificates for each. This attribute is not required,
+read only, multivalued and case sensitive.
+
 
 ~~~
 +===================+=======+=====+======+=========+========+========+
@@ -348,19 +370,30 @@ the manufacturer.
 +-------------------+-------+-----+------+---------+--------+--------+
 | applicationName   |   F   |  T  |  F   |   RW    |  Def   |  None  |
 +-------------------+-------+-----+------+---------+--------+--------+
-| certificate       |   F   |  F  |  T   |   RW    |  Def   |  Manuf |
+| client-token      |   F   |  T  |  T   |   RW    |  Def   |  None  |
 +-------------------+-------+-----+------+---------+--------+--------+
-| client-token      |   F   |  T  |  T   |   RW    |  Def   |  Manuf |
+| certificateInfo   |   F   |  F  |  F   |   R     |  Def   |  None  |
 +-------------------+-------+-----+------+---------+--------+--------+
+| rootCN            |   F   |  T  |  T   |   R     |  Def   |  None  |
++-------------------+-------+-----+------+---------+--------+--------+
+| subjectName       |   F   |  F  |  T   |   R     |  Def   |  None  |
++-------------------+-------+-----+------+---------+--------+--------+
+| subjectAltName    |   T   |  F  |  T   |   R     |  Def   |  None  |
++-------------------+-------+-----+------+---------+--------+--------+
+
 ~~~
 {: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required,
 T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufactirer
 and Def = Default)"}
 
-An example of a endpointApp SCIM object is as follows. Note that the
-values of attributes certificate and client-token are shrinked for 
-brevity and are not representative of the actual length of these 
-attributes.
+Note that attributes client-token and certificateInfo are used for the
+authentication of the application. Both SHALL NOT exist together in the
+SCIM object. Either client-token or certificateInfo SHALL be present
+in the SCIM object.
+
+An example of a endpointApp SCIM object is as follows. Note that since
+certificateInfo is present in the example, client-token attribute is 
+NULL. 
 
 ~~~~~~~~~
 <CODE BEGINS>
@@ -369,8 +402,8 @@ attributes.
 ~~~~~~~~~
 
 The schema for the endpointApp is presented in JSON format in Section
-{{endpointappsext-extension-schema-json}}, while the openAPI representation is provided in 
-Section {{endpointappsext-extension-schema-openapi-representation}}.
+{{endpointapp-schema-json}}, while the openAPI representation is provided in 
+Section {{endpointapp-schema-openapi-representation}}.
 
 
 SCIM Device Extensions
@@ -800,7 +833,7 @@ Schema JSON Representation
 <CODE ENDS>
 ~~~~~~~~~
 
-## Device Core Schema JSON {#device-core-schema-json}
+## Device Core Schema JSON {#device-schema-json}
 
 
 ~~~~~~~~~
@@ -817,11 +850,6 @@ Schema JSON Representation
 <CODE ENDS>
 ~~~~~~~~~
 
-~~~~~~~~~
-<CODE BEGINS>
-{::include SCIM_device_core_schema_representation.ftxt}
-<CODE ENDS>
-~~~~~~~~~
 
 ## BLE Extension Schema JSON
 ~~~~~~~~~
@@ -897,7 +925,7 @@ Draft -00:
 APPENDIX
 =========
 
-## Device Core Schema OpenAPI Representation {#device-core-schema-openapi-representation}
+## Device Core Schema OpenAPI Representation {#device-schema-openapi-representation}
 OpenAPI representation of device core schema is as follows:
 
 ~~~~~~~~~
@@ -905,6 +933,16 @@ OpenAPI representation of device core schema is as follows:
 {::include openapi/device_schema.yml}
 <CODE ENDS>
 ~~~~~~~~~
+
+
+## EndpointApp Schema OpenAPI Representation {#endpointapp-schema-openapi-representation}
+OpenAPI representation of endpointApp schema is as follows:
+
+~~~~~~~~
+<CODE BEGINS>
+{::include openapi/endpointapp_schema.yml}
+<CODE ENDS>
+~~~~~~~~
 
 
 ## BLE Extension Schema OpenAPI Representation
@@ -935,7 +973,8 @@ OpenAPI representation of zigbee extension schema is as follows:
 ~~~~~~~~
 
 ## EndpointAppsExt Extension Schema OpenAPI Representation {#endpointappsext-extension-schema-openapi-representation}
-OpenAPI representation of endpoint Apps schema is as follows:
+OpenAPI representation of endpoint Apps extension schema 
+is as follows:
 
 ~~~~~~~~
 <CODE BEGINS>
