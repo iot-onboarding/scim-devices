@@ -44,6 +44,17 @@
       "location": "https://example.com/v2/ResourceTypes/Device",
       "resourceType": "ResourceType"
     }
+  },
+  {
+    "schemas": ["urn:ietf:params:scim:schemas:core:2.0:ResourceType"],
+    "id": "EndpointApp",
+    "name": "EndpointApp",
+    "endpoint": "/EndpointApp",
+    "description": "Endpoint application such as device control and telemetry.",
+    "schema": "urn:ietf:params:scim:schemas:core:2.0:EndpointApp",
+    "meta": {
+      "location": "https://example.com/v2/ResourceTypes/EndpointApp",
+      "resourceType": "ResourceType"
+    }
   }
-
 ]

@@ -26,6 +26,7 @@ components:
           nullable: false
           readOnly: false
           writeOnly: false
+
         deviceMacAddress:
           type: string
           description: It is the public MAC address assigned by the 
@@ -36,7 +37,7 @@ components:
           readOnly: false
           writeOnly: false
 
-        addressType:
+        isRandom:
           type: boolean
           description: AddressType flag is taken from the BLE core 
                        specifications 5.3. If FALSE, the device is 
@@ -46,6 +47,17 @@ components:
           nullable: false
           readOnly: false
           writeOnly: false
+        
+        separateBroadcastAddress:
+          type: string
+          description: "When present, this address is used for 
+                        broadcasts/advertisements.  This value MUST NOT
+                        be set when an IRK is provided.  Its form is 
+                        the same as deviceMa`cAddress."
+          nullable: false
+          readOnly: false
+          writeOnly: false
+
         irk:
           type: string
           description: Identity resolving key, which is unique for 
