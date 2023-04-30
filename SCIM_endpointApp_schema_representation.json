@@ -72,13 +72,13 @@
       ]
     },
     {
-      "name": "client-token",
+      "name": "clientToken",
       "type": "string",
       "description": "This attribute contains a token that the client will use to authenticate itself.  Each token may be a string up to 500 characters in length.",
       "multivalues": false,
       "required": false,
       "caseExact": true,
-      "mutability": "readWrite",
+      "mutability": "readOnly",
       "returned": "default",
       "uniqueness": "none"
     }

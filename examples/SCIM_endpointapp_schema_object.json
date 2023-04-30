@@ -8,7 +8,7 @@
       "subjectName": "wwww.example.com",
       "subjectAlternativeName": ["xyz.example.com", "abc.example.com"]
   },
-  "client-token": null,
+  "clientToken": null,
   "meta": {
     "resourceType": "EndpointApp",
     "created": "2022-01-23T04:56:22Z",

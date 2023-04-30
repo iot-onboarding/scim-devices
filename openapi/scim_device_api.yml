@@ -21,9 +21,9 @@ components:
                   items:
                     type: string
                     enum:
-                      - urn:ietf:params:scim:schemas:extension:endpointApps:2.0:Device
-                urn:ietf:params:scim:schemas:extension:endpointApps:2.0:Device:
-                  $ref: './SCIM_endpoint_extension_schema.yml#/components/schemas/EndpointAppsExtension'
+                      - urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Device
+                urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Device:
+                  $ref: './SCIM_endpoint_extension_schema.yml#/components/schemas/EndpointAppsExt'
                   required: true
 
 paths:
@@ -101,3 +101,39 @@ paths:
       responses:
         "204":
           description: No Content
+  /EndpointApps:
+    post:
+      summary: Create a new endpoint app
+      operationId: createEndpointApp
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: "./endpointapp_schema.yml#/components/schemas/EndpointApp"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/scim+json:
+              schema:
+                $ref: "./endpointapp_schema.yml#/components/schemas/EndpointApp"
+  /EndpointApps/{id}:
+    get:
+      summary: Get an endpoint app by ID
+      description: Returns a single endpoint app by its ID.
+      operationId: getEndpointAppById
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the endpoint app to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/scim+json:
+              schema:
+                $ref: "./endpointapp_schema.yml#/components/schemas/EndpointApp"
