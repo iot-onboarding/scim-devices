@@ -40,7 +40,7 @@
         "$ref" : "https://example.com/v2/EndpointApp/e9e30dba-f08f-4109-8486-d5c6a3316333"
       }
     ],
-    "DeviceControlEnterpriseEndpoint": "https//enterprise.com/device_control_app_endpoint/",
+    "deviceControlEnterpriseEndpoint": "https//enterprise.com/device_control_app_endpoint/",
     "telemetryEnterpriseEndpoint": "https//enterprise.com/telemetry_app_endpoint/"
      
   },

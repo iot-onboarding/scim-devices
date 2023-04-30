@@ -7,7 +7,7 @@
       "name": "applications",
       "type": "complex",
       "description": "Includes references to two types of application that connect with entrprise, i.e., deviceControl and telemetry.",
-      "multivalues": false,
+      "multivalues": true,
       "required": true,
       "caseExact": false,
       "mutability": "readWrite",
@@ -40,13 +40,13 @@
       ]
     },
     {
-      "name": "DeviceControlEnterpriseEndpoint",
+      "name": "deviceControlEnterpriseEndpoint",
       "type": "reference",
       "description": "The URL of the enterprise endpoint which device control apps use to reach enterprise network gateway.",
       "multivalues": false,
       "required": true,
       "caseExact": true,
-      "mutability": "readWrite",
+      "mutability": "readOnly",
       "returned": "default",
       "uniqueness": "Enterprise"
     },
@@ -57,7 +57,7 @@
       "multivalues": false,
       "required": true,
       "caseExact": true,
-      "mutability": "readWrite",
+      "mutability": "readOnly",
       "returned": "default",
       "uniqueness": "Enterprise"
     }

@@ -10,7 +10,7 @@ components:
           description: "This attribute will only contain two values;
                        'deviceControl' or 'telemetry'."
           nullable: false
-          readOnly: true
+          readOnly: false
           writeOnly: false
 
         applicationName:
@@ -26,19 +26,19 @@ components:
 
       additionalProperties: true
       oneOf:
-        - $ref: '#/components/schemas/client-token'
+        - $ref: '#/components/schemas/clientToken'
         - $ref: '#/components/schemas/certificateInfo'
 
       allOf:
         - $ref: '#/components/schemas/CommonAttributes'
 
-    client-token:
+    clientToken:
       type: string
       description: "This attribute contains a token that the client
                     will use to authenticate itself. Each token may
                     be a string up to 500 characters in length."
       nullable: true
-      readOnly: false
+      readOnly: true
       writeOnly: false
 
     certificateInfo:
@@ -89,7 +89,7 @@ components:
           items:
             type: string
             enum:
-              - urn:ietf:params:scim:schemas:core:2.0:Device
+              - urn:ietf:params:scim:schemas:core:2.0:EndpointApp
           description: The list of schemas that define the resource.
           nullable: false
         id:
@@ -98,13 +98,6 @@ components:
           description: The unique identifier for a resource.
           nullable: false
           readOnly: true
-          writeOnly: false
-        externalId:
-          type: string
-          description: An identifier for the resource that is defined
-                       by the provisioning client.
-          nullable: true
-          readOnly: false
           writeOnly: false
         meta:
           type: object
