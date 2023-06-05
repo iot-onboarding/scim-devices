@@ -461,6 +461,13 @@ A string value, Identity resolving key, which is unique for every
 device. It is used to resolve the random address. It is required when 
 addressType is TRUE. It is mutable and return by default.
 
+mobility
+
+A boolean attribute to enable mobility on BLE device. If set to True, 
+the BLE device will automatically connect to the closest AP. For 
+example, BLE device is connected with AP-1 and moves out of range but 
+comes in range of AP-2, it will be disconnected with AP-1 and connects 
+with AP-2. It is returned by default and mutable.
 
 ### Multivalued Attributes
 
@@ -555,6 +562,8 @@ default if it exists.
 | irk                |   F   |  F  |  F   |   RW    |  Def   | Manuf  |
 +--------------------+-------+-----+------+---------+--------+--------+
 | versionSupport     |   T   |  T  |  F   |   RW    |  Def   | None   |
++--------------------+-------+-----+------+---------+--------+--------+
+| mobility           |   F   |  F  |  F   |   RW    |  Def   | None   |
 +--------------------+-------+-----+------+---------+--------+--------+
 | pairingMethods     |   T   |  T  |  T   |   RW    |  Def   | None   |
 +--------------------+-------+-----+------+---------+--------+--------+

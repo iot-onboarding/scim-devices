@@ -10,6 +10,7 @@
     "deviceMacAddress": "2C:54:91:88:C9:E2",
     "isRandom": false,
     "separateBroadcastAddress": ["AA:BB:88:77:22:11", "AA:BB:88:77:22:12"], 
+    "mobility": true,
     "pairingMethods": ["urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device",
         "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device",
         "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device",
