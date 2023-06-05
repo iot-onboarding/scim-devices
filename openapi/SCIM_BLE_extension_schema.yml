@@ -66,6 +66,17 @@ components:
           nullable: true
           readOnly: false
           writeOnly: false
+        mobility:
+          type: boolean
+          description: If set to True, the BLE device will 
+                       automatically connect to the closest AP. For 
+                       example, BLE device is connected with AP-1 and 
+                       moves out of range but comes in range of AP-2, 
+                       it will be disconnected with AP-1 and connects 
+                       with AP-2.
+          nullable: false
+          readOnly: false
+          writeOnly: false
         pairingMethods:
           type: array
           items:
