@@ -3,6 +3,14 @@
 Welcome to the SCIM extension for Devices.  This effort extends RFC
 7643 to be useful for provisioning operations on devices.
 
+# Vendor versions
+
+There are early versions of this model that vendors may have
+implemented.  These are tagged by branch.  Vendors may submit requests
+to add a branch.  Correctness of those branches is the responsibility
+of the vendor.
+
+
 Please feel free to contribute under the following terms:
 
 # Note Well

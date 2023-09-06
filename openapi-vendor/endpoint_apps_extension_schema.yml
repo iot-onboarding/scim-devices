@@ -1,0 +1,25 @@
+components:
+  schemas:
+    EndpointAppsExtension:
+      type: object
+      properties:
+        onboardingUrl:
+          type: string
+          nullable: false
+          example: onboarding-app
+        deviceControlUrl:
+          type: array
+          nullable: false
+          items:
+            type: string
+          example: 
+            - control-app-1
+            - control-app-2
+        dataReceiverUrl:
+          type: array
+          nullable: false
+          items:
+            type: string
+          example: 
+            - data-app-1
+            - data-app-2

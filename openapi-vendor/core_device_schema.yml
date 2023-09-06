@@ -1,0 +1,41 @@
+components:
+  schemas:
+    Device:
+      title: Device
+      description: Device account
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The unique identifier for a resource.
+          nullable: false
+          readOnly: true
+          writeOnly: false
+        deviceDisplayName:
+          type: string
+          description: "Human readable name of the device, suitable
+                        for displaying to end-users. For example,
+                       'BLE Heart Monitor' etc."
+          nullable: false
+          readOnly: false
+          writeOnly: false
+          example: BLE Heart Monitor
+        adminState:
+          type: boolean
+          description: A mutable boolean value indicating the device
+                       administrative status. If set TRUE, the
+                       commands (such as connect, disconnect,
+                       subscribe) that control app sends to the
+                       controller for the devices will be processeed
+                       by the controller.  If set FALSE, any command
+                       comming from the control app for the device
+                       will be rejected by the controller.
+          nullable: false
+          readOnly: false
+          writeOnly: false
+          example: true
+      required:
+        - id
+        - deviceDisplayName
+        - adminState

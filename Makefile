@@ -1,6 +1,6 @@
-DOCS=	draft-ietf-emu-scim-device-model.txt \
-	draft-ietf-emu-scim-device-model.xml \
-	draft-ietf-emu-scim-device-model.html
+DOCS=	draft-ietf-scim-device-model.txt \
+	draft-ietf-scim-device-model.xml \
+	draft-ietf-scim-device-model.html
 
 FTXT= extensions/SCIM_BLE_extension_schema.ftxt \
 	extensions/SCIM_DPP_extension_schema.ftxt \
@@ -43,7 +43,7 @@ YAML=	openapi/SCIM_BLE_extension_schema.yml \
 all: $(DOCS)
 
 %.xml:	%.mkd extensions/README.md $(FTXT) $(YAML) \
-	draft-ietf-emu-scim-device-model.mkd
+	draft-ietf-scim-device-model.mkd
 	kramdown-rfc2629 -3 $< > $@
 %.html %.txt:	%.xml
 	xml2rfc --html $<

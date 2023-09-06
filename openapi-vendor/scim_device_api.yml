@@ -1,0 +1,125 @@
+openapi: 3.0.3
+info:
+  title: SCIM API
+  description: APIs using the SCIM interface
+  version: 1.0.0
+
+servers:
+  - url: https://{base_url}/scim/v2
+    description: Test server
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+  schemas:
+    BleDeviceResource:
+      type: object
+      allOf:
+        - type: object
+          properties:
+            schemas:
+              type: array
+              example:
+                - urn:ietf:params:scim:schemas:core:2.0:Device
+                - urn:ietf:params:scim:schemas:extension:ble:2.0:Device
+                - urn:ietf:params:scim:schemas:extension:endpointapps:2.0:Device
+              items:
+                type: string
+                uniqueItems: true
+              description: The list of schemas that define the resource.
+              nullable: false
+        - $ref: "./core_device_schema.yml#/components/schemas/Device"
+        - type: object
+          properties:
+            urn:ietf:params:scim:schemas:extension:ble:2.0:Device:
+              $ref: "./ble_extension_schema.yml#/components/schemas/BleDeviceExtension"
+              required: true
+            urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Device:
+              $ref: "./endpoint_apps_extension_schema.yml#/components/schemas/EndpointAppsExtension"
+              required: true
+
+paths:
+  /Devices:
+    post:
+      summary: Create a new device
+      operationId: createDevice
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: "#/components/schemas/BleDeviceResource"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/scim+json:
+              schema:
+                $ref: "#/components/schemas/BleDeviceResource"
+  /Devices/{id}:
+    get:
+      summary: Get a BLE device by ID
+      description: Returns a single BLE device by its ID.
+      operationId: getDeviceById
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the device to return.
+          required: true
+          schema:
+            type: string
+        - name: onboardApp
+          in: query
+          description: Onboarding App ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/scim+json:
+              schema:
+                $ref: "#/components/schemas/BleDeviceResource"
+    delete:
+      summary: Delete a device
+      description: Deletes a device.
+      operationId: deleteDevice
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the device to delete.
+          required: true
+          schema:
+            type: string
+        - name: onboardApp
+          in: query
+          description: Onboarding App ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/scim+json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: The unique identifier for a resource.
+                    nullable: false
+                    readOnly: true
+                    writeOnly: false
+                  message: 
+                    type: string
+                    enum:
+                      - Un-onboarded successfully
