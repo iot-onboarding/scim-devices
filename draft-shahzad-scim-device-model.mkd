@@ -324,7 +324,7 @@ human readable name for the application. This attribute is required and
 mutable. The attribute should be returned by default and there is no 
 uniqueness contraint on the attribute.
 
-client-token
+clientToken
 
 This attribute type string contains a token that the client will use 
 to authenticate itself.  Each token may be a string up to 500 
@@ -370,9 +370,9 @@ read only, multivalued and case sensitive.
 +-------------------+-------+-----+------+---------+--------+--------+
 | applicationName   |   F   |  T  |  F   |   RW    |  Def   |  None  |
 +-------------------+-------+-----+------+---------+--------+--------+
-| client-token      |   F   |  T  |  T   |   RW    |  Def   |  None  |
+| clientToken       |   F   |  T  |  T   |   R     |  Def   |  None  |
 +-------------------+-------+-----+------+---------+--------+--------+
-| certificateInfo   |   F   |  F  |  F   |   R     |  Def   |  None  |
+| certificateInfo   |   F   |  F  |  F   |   RW    |  Def   |  None  |
 +-------------------+-------+-----+------+---------+--------+--------+
 | rootCN            |   F   |  T  |  T   |   R     |  Def   |  None  |
 +-------------------+-------+-----+------+---------+--------+--------+
@@ -386,13 +386,13 @@ read only, multivalued and case sensitive.
 T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufactirer
 and Def = Default)"}
 
-Note that attributes client-token and certificateInfo are used for the
+Note that attributes clientToken and certificateInfo are used for the
 authentication of the application. Both SHALL NOT exist together in the
-SCIM object. Either client-token or certificateInfo SHALL be present
+SCIM object. Either clientToken or certificateInfo SHALL be present
 in the SCIM object.
 
 An example of a endpointApp SCIM object is as follows. Note that since
-certificateInfo is present in the example, client-token attribute is 
+certificateInfo is present in the example, clientToken attribute is 
 NULL. 
 
 ~~~~~~~~~
@@ -480,7 +480,7 @@ scalability of pairing methods in the future, they are represented as
 extensions to incorporate various attributes that are part of the
 respective pairing process. Pairing method extensions are nested
 inside the BLE extension. It is required, case sensitive, mutable, and 
-returned by deafult.
+returned by default.
 
 ### BLE Pairing Method Extensions
 
@@ -748,7 +748,7 @@ urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Device
 ### Singular Attributes
 
 
-DeviceControlEnterpriseEndpoint
+deviceControlEnterpriseEndpoint
 
 Device control apps use this URL of the enterprise endpoint to reach
 the enterprise gateway. When the enterprise receives the SCIM object from
@@ -792,9 +792,9 @@ and returned by default.
 | Attribute          | Multi | Req | Case | Mutable | Return | Unique |
 |                    | Value |     | Exact|         |        |        |
 +====================+=======+=====+======+=========+========+========+
-| DevContEntEndpoint |   F   |  T  |  T   |   RW    |  Def   | Ent    |
+| devContEntEndpoint |   F   |  T  |  T   |   R     |  Def   | Ent    |
 +--------------------+-------+-----+------+---------+--------+--------+
-| telEntEndpoint     |   F   |  T  |  T   |   RW    |  Def   | Ent    |
+| telEntEndpoint     |   F   |  T  |  T   |   R     |  Def   | Ent    |
 +--------------------+-------+-----+------+---------+--------+--------+
 | applications       |   T   |  T  |  F   |   RW    |  Def   | None   |
 +--------------------+-------+-----+------+---------+--------+--------+
@@ -805,7 +805,7 @@ and returned by default.
 ~~~
 {: #tabEndpointAppsExt title="Characteristics of EndpointAppsExt extension schema 
 attributes. DevContEntEndpoint represents attribute 
-DeviceControlEnterpriseEndpoint and telEntEndpoint represents 
+deviceControlEnterpriseEndpoint and telEntEndpoint represents 
 telemetryEnterpriseEndpoint. (Req = Required, T = True, F = False, 
 R = ReadOnly, RW = ReadWrite, Ent = Enterprise, and Def = Default)."}
 

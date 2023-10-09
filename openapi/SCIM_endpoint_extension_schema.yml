@@ -6,14 +6,14 @@ components:
         applications:
           $ref: '#/components/schemas/applications'
         
-        DeviceControlEnterpriseEndpoint:
+        deviceControlEnterpriseEndpoint:
           type: string
           format: url
           description: The URL of the enterprise endpoint which device
                        control apps use to reach enterprise network 
                        gateway.
           nullable: false
-          readOnly: false
+          readOnly: true
           writeOnly: false
         
         telemetryEnterpriseEndpoint:
@@ -23,12 +23,12 @@ components:
                        telemetry apps use to reach enterprise network 
                        gateway.
           nullable: false
-          readOnly: false
+          readOnly: true
           writeOnly: false
 
       required:
         - applications
-        - DeviceControlEnterpriseEndpoint
+        - deviceControlEnterpriseEndpoint
         - telemetryEnterpriseEndpoint
         
     applications:
