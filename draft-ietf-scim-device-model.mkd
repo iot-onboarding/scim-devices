@@ -912,21 +912,6 @@ Schema JSON Representation
 <CODE ENDS>
 ~~~~~~~~~
 
-
-   The following sections provide representations of schemas for both
-   SCIM resources and service provider schemas.  Note that the JSON
-   representation has been modified for readability and to fit the
-   specification format.
-
-8.7.1.  Resource Schema Representation
-
-   The following is intended as an example of the SCIM schema
-   representation in JSON format for SCIM resources.  Where permitted,
-   individual values and schema MAY change.  This example includes
-   schema representations for "User", "Group", and "EnterpriseUser";
-   other schema representations are possible.
-
-
 Security Considerations
 =======================
 
@@ -934,26 +919,34 @@ Because provisioning operations are senstive, each client must be
 appropriately authenticated.  Certain objects may be read-only or
 not visible based on who is connected.
 
-\[ More to be added here. \]
+Devices provisioned with this model may be completely controlled by
+the administrator of the SCIM server, depending on how those systems
+are defined.  For instance, if BLE passkeys are provided, the device
+can be connected to, and perhaps paired with.  Any additional security
+must be provided at higher application layers.  For example, if client
+applications wish to keep private information to and from the device,
+they should encrypt that information over-the-top.
+
 
 IANA Considerations
 ===================
 
+
 TBD
+
+--- back
 
 Changes from Earlier Versions
 =============================
 
 Draft -01:
 
-  *  Doh! We forgot the core device schemea!
+  *  Doh! We forgot the core device scheme!
 
 Draft -00:
 
   * Initial revision
 
-
---- middle
 
 # OpenAPI representation
 
@@ -1016,12 +1009,3 @@ is as follows:
 {::include openapi/SCIM_endpoint_extension_schema.yml}
 <CODE ENDS>
 ~~~~~~~~
-
-# Changes
-
- - 04 openapi model and narrative clarified.
- - 05 typos
-
-# TBD
-
-Fido
