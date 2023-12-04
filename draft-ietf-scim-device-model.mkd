@@ -577,9 +577,33 @@ An example of a device object with BLE extension is as follows:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include examples/SCIM_device_ble_object.ftxt}
+{::include examples/SCIM_device_ble_object_v1.ftxt}
 <CODE ENDS>
 ~~~~~~~~
+
+In the above example, the pairing method is "pairingPassKey", which implies
+that this BLE device pairs using only a passkey. In another example below,
+the pairing method is "pairingOOB," implying that this BLE device uses the
+out-of-band pairing method.
+
+~~~~~~~~
+<CODE BEGINS>
+{::include examples/SCIM_device_ble_object_v2.ftxt}
+<CODE ENDS>
+~~~~~~~~
+
+However, a device can have more than one pairing method. Support for multiple
+pairing methods is also provided by the multi-valued attribute pairingMethods.
+In the example below, the BLE device can pair with both passkey and OOB pairing
+methods.
+
+~~~~~~~~
+<CODE BEGINS>
+{::include examples/SCIM_device_ble_object_v3.ftxt}
+<CODE ENDS>
+~~~~~~~~
+
+
 
 The schema for the BLE extension is presented in JSON format in Section 
 [](#ble-extension-schema-json), while the openAPI representation is provided in 

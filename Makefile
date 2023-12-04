@@ -8,7 +8,9 @@ FTXT= extensions/SCIM_BLE_extension_schema.ftxt \
 	extensions/SCIM_zigbee_extension_schema.ftxt \
 	SCIM_resource_type.ftxt \
 	examples/README.md examples/SCIM_device_core_schema_object.ftxt \
-	examples/SCIM_device_ble_object.ftxt \
+	examples/SCIM_device_ble_object_v1.ftxt \
+	examples/SCIM_device_ble_object_v2.ftxt \
+	examples/SCIM_device_ble_object_v3.ftxt \
 	examples/SCIM_device_dpp_object.ftxt \
 	examples/SCIM_device_zigbee_object.ftxt \
 	SCIM_device_core_schema_representation.ftxt \
@@ -23,7 +25,9 @@ JSON= 	extensions/SCIM_BLE_extension_schema.json \
 	extensions/SCIM_zigbee_extension_schema.json \
 	SCIM_resource_type.json \
 	examples/SCIM_device_core_schema_object.json \
-	examples/SCIM_device_ble_object.json \
+	examples/SCIM_device_ble_object_v1.json \
+	examples/SCIM_device_ble_object_v2.json \
+	examples/SCIM_device_ble_object_v3.json \
 	examples/SCIM_device_dpp_object.json \
 	examples/SCIM_device_zigbee_object.json \
 	examples/SCIM_device_endpoints_with_ble_object.json \
