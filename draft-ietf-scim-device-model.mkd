@@ -448,7 +448,7 @@ device is using a public MAC address. If TRUE, the device uses a
 Random address resolved using IRK. This attribute is not required, it is 
 mutable, and returned by default.  Its default value is FALSE.
 
-separateBroadcastaddress
+separateBroadcastAddress
 
 When present, this address is used for broadcasts/advertisements.
 This value MUST NOT be set when an IRK is provided.  Its form is the
@@ -557,7 +557,7 @@ default if it exists.
 +--------------------+-------+-----+------+---------+--------+--------+
 | isRandom           |   F   |  T  |  F   |   RW    |  Def   | None   |
 +--------------------+-------+-----+------+---------+--------+--------+
-| sepBroadcastAdd    |   F   |  T  |  F   |   RW    |  Def   | None   |
+| sepBroadcastAdd    |   T   |  T  |  F   |   RW    |  Def   | None   |
 +--------------------+-------+-----+------+---------+--------+--------+
 | irk                |   F   |  F  |  F   |   RW    |  Def   | Manuf  |
 +--------------------+-------+-----+------+---------+--------+--------+
@@ -569,7 +569,7 @@ default if it exists.
 +--------------------+-------+-----+------+---------+--------+--------+
 ~~~
 {: #tabBLE title="Characteristics of BLE extension schema attributes. 
-sepBroadcastAdd is short for separateBroadcastaddress. (Req = Required,
+sepBroadcastAdd is short for separateBroadcastAddress. (Req = Required,
 T = True, F = False, RW = ReadWrite, Def = Default, and 
 Manuf = Manufacturer)."}
 
