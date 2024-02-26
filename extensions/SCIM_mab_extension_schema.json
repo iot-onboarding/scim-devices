@@ -1,0 +1,22 @@
+{  
+  "id": "urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device",
+  "name": "ethernetMabExtension",
+  "description": "Device extension schema for MAC authentication Bypass.",
+  "attributes" : [
+      {
+        "name": "deviceMacAddress",
+        "type": "string",
+        "description": "It is the public MAC address assigned by the manufacturer. It is unique 48 bit value. The regex pattern is ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.",
+        "multivalues": false,
+        "required": true,
+        "caseExact": false,
+        "mutability": "readWrite",
+        "returned": "default",
+        "uniqueness": "Manufacturer"
+      }
+  ],
+  "meta" : {
+    "resourceType" : "Schema",
+    "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device"
+  }
+}

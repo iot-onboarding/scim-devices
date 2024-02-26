@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-ietf-scim-device-model-02
+docname: draft-ietf-scim-device-model-03
 submissionType: IETF
 category: std
 
@@ -703,13 +703,57 @@ The schema for the DPP extension is presented in JSON format in Section
 [](#dpp-extension-schema-json), while the openAPI representation is provided 
 in Section [](#dpp-extension-schema-openapi-representation).
 
+## Ethernet MAB Extension
+
+This extension enables a legacy means of (very) weak authentication,
+known as MAC Authenticated Bypass (MAB), that is supported in many wired
+ethernet solutions.  If the MAC address is known, then the device may
+be permitted (perhaps limited) access.  The extension is identified
+by the following URI:
+
+urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device
+
+### Single Attribute
+
+This extension has a singular attribute:
+
+deviceMacAddress
+
+This is the Ethernet address to be provisioned onto the network.  It
+takes the identical form as found in both the BLE and DPP extensions.
+
+~~~
++====================+=======+=====+======+=========+========+========+
+| Attribute          | Multi | Req | Case | Mutable | Return | Unique |
+|                    | Value |     | Exact|         |        |        |
++====================+=======+=====+======+=========+========+========+
+| deviceMacAddress   |   F   |  T  |  F   |   RW    |  Def   | None   |
++--------------------+-------+-----+------+---------+--------+--------+
+~~~
+{: #tabMAB title="Characteristics of MAB extension schema attributes
+(Req = Required, T = True, F = False, RW = ReadWrite, and 
+Def = Default)"}
+
+An example of a device object with Zigbee extension is shown below:
+
+~~~~~~~~
+<CODE BEGINS>
+{::include examples/SCIM_device_mab_object.ftxt}
+<CODE ENDS>
+~~~~~~~~
+
+The schema for the Zigbee extension is presented in JSON format in
+Section [](#ethernet-mab-extension-schema-json), while the openAPI
+representation is provided in Section [](#ethernet-mab-extension-schema-openapi-representation).
+
+
 
 ## Zigbee Extension
-
 
 A schema that extends the device schema to enable the provisioning of 
 Zigbee devices. The extension is identified using the following 
 schema URI:
+
 
 urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device
 
@@ -898,6 +942,13 @@ Schema JSON Representation
 <CODE ENDS>
 ~~~~~~~~~
 
+## Ethernet MAB Extension Schema JSON
+~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_MAB_extension_schema.ftxt}
+<CODE ENDS>
+~~~~~
+
 ## Zigbee Extension Schema JSON
 ~~~~~~~~~
 <CODE BEGINS>
@@ -988,6 +1039,15 @@ OpenAPI representation of DPP extension schema is as follows:
 ~~~~~~~~
 <CODE BEGINS>
 {::include openapi/SCIM_DPP_extension_schema.yml}
+<CODE ENDS>
+~~~~~~~~
+
+## Ethernet MAB Extension Schema OpenAPI Representation
+OpenAPI representation of Ethernet MAB extension schema is as follows:
+
+~~~~~~~~
+<CODE BEGINS>
+{::include openapi/SCIM_MAB_extension_schema.yml}
 <CODE ENDS>
 ~~~~~~~~
 

@@ -6,12 +6,14 @@ FTXT= extensions/SCIM_BLE_extension_schema.ftxt \
 	extensions/SCIM_DPP_extension_schema.ftxt \
 	extensions/SCIM_endpoint_extension_schema.ftxt \
 	extensions/SCIM_zigbee_extension_schema.ftxt \
+	extensions/SCIM_mab_extension_schema.ftxt \
 	SCIM_resource_type.ftxt \
 	examples/README.md examples/SCIM_device_core_schema_object.ftxt \
 	examples/SCIM_device_ble_object_v1.ftxt \
 	examples/SCIM_device_ble_object_v2.ftxt \
 	examples/SCIM_device_ble_object_v3.ftxt \
 	examples/SCIM_device_dpp_object.ftxt \
+	examples/SCIM_device_mab_object.ftxt \
 	examples/SCIM_device_zigbee_object.ftxt \
 	SCIM_device_core_schema_representation.ftxt \
 	examples/SCIM_device_endpoints_with_ble_object.ftxt \
@@ -22,6 +24,7 @@ FTXT= extensions/SCIM_BLE_extension_schema.ftxt \
 JSON= 	extensions/SCIM_BLE_extension_schema.json \
 	extensions/SCIM_DPP_extension_schema.json \
 	extensions/SCIM_endpoint_extension_schema.json \
+	extensions/SCIM_mab_extension_schema.json \
 	extensions/SCIM_zigbee_extension_schema.json \
 	SCIM_resource_type.json \
 	examples/SCIM_device_core_schema_object.json \
@@ -29,6 +32,7 @@ JSON= 	extensions/SCIM_BLE_extension_schema.json \
 	examples/SCIM_device_ble_object_v2.json \
 	examples/SCIM_device_ble_object_v3.json \
 	examples/SCIM_device_dpp_object.json \
+	examples/SCIM_device_mab_object.json \
 	examples/SCIM_device_zigbee_object.json \
 	examples/SCIM_device_endpoints_with_ble_object.json \
 	examples/SCIM_endpointapp_schema_object.json \
@@ -39,6 +43,7 @@ JSON= 	extensions/SCIM_BLE_extension_schema.json \
 YAML=	openapi/SCIM_BLE_extension_schema.yml \
 	openapi/SCIM_DPP_extension_schema.yml \
 	openapi/SCIM_endpoint_extension_schema.yml \
+	openapi/SCIM_MAB_extension_schema.yml \
 	openapi/SCIM_zigbee_extension_schema.yml \
 	openapi/device_schema.yml \
 	openapi/endpointapp_schema.yml \

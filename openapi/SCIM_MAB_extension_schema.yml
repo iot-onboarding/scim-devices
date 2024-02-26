@@ -1,0 +1,30 @@
+components:
+  schemas:
+    EthernetMABDevice:
+      type: object
+      description: Ethernet MAC Authenticated Bypass
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+            enum:
+              - urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device
+        urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device:
+          $ref: '#/components/schemas/EthernetMABDeviceExtension'
+          required: true
+    EthernetMABDeviceExtension:
+      type: object
+      properties:
+        deviceMacAddress:
+          type: string
+          description: It is the public MAC address assigned by the 
+                       manufacturer. It is unique 48 bit value. The
+                       regex pattern is 
+                       ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.
+          nullable: false
+          readOnly: false
+          writeOnly: false
+      required:
+        - deviceMacAddress
+      description: Device extension schema for Ethernet-MAB
