@@ -734,7 +734,7 @@ takes the identical form as found in both the BLE and DPP extensions.
 (Req = Required, T = True, F = False, RW = ReadWrite, and 
 Def = Default)"}
 
-An example of a device object with Zigbee extension is shown below:
+An example of a device object with EthernetMAB extension is shown below:
 
 ~~~~~~~~
 <CODE BEGINS>
@@ -742,10 +742,50 @@ An example of a device object with Zigbee extension is shown below:
 <CODE ENDS>
 ~~~~~~~~
 
-The schema for the Zigbee extension is presented in JSON format in
+The schema for the EthernetMAB extension is presented in JSON format in
 Section [](#ethernet-mab-extension-schema-json), while the openAPI
 representation is provided in Section [](#ethernet-mab-extension-schema-openapi-representation).
 
+## Fido Device Onboarding Extension
+
+This extension specifies a voucher to be used by a Fido Device Onboarding
+(FDO) owner process, so that a trusted introduction can be made using that
+mechanism.
+
+urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Device
+
+### Single Attribute
+
+This extension has a singular attribute:
+
+fdoVoucher
+
+The voucher is formated as a PEM-encoded object in accordance with the FDO
+specification (citation needed).
+
+~~~
++====================+=======+=====+======+=========+========+========+
+| Attribute          | Multi | Req | Case | Mutable | Return | Unique |
+|                    | Value |     | Exact|         |        |        |
++====================+=======+=====+======+=========+========+========+
+| fdoVoucher         |   F   |  T  |  F   |   RW    |  Def   | None   |
++--------------------+-------+-----+------+---------+--------+--------+
+~~~
+{: #tabFDO title="Characteristics of FDO extension schema attributes
+(Req = Required, T = True, F = False, RW = ReadWrite, and 
+Def = Default)"}
+
+An example of a device object with FDO extension is shown below:
+
+~~~~~~~~
+<CODE BEGINS>
+{::include examples/SCIM_device_fdo_object.ftxt}
+<CODE ENDS>
+~~~~~~~~
+
+The schema for the FDO extension is presented in JSON format in
+Section [](#fdo-extension-schema-json), while the openAPI
+representation is provided in Section [](#fdo-extension-schema-openapi-representation).
 
 
 ## Zigbee Extension
@@ -949,6 +989,13 @@ Schema JSON Representation
 <CODE ENDS>
 ~~~~~
 
+## FDO Extension Schema JSON
+~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_FDO_extension_schema.ftxt}
+<CODE ENDS>
+~~~~~
+
 ## Zigbee Extension Schema JSON
 ~~~~~~~~~
 <CODE BEGINS>
@@ -1048,6 +1095,15 @@ OpenAPI representation of Ethernet MAB extension schema is as follows:
 ~~~~~~~~
 <CODE BEGINS>
 {::include openapi/SCIM_MAB_extension_schema.yml}
+<CODE ENDS>
+~~~~~~~~
+
+## FDO Extension Schema OpenAPI Representation
+OpenAPI representation of FDO extension schema is as follows:
+
+~~~~~~~~
+<CODE BEGINS>
+{::include openapi/SCIM_FDO_extension_schema.yml}
 <CODE ENDS>
 ~~~~~~~~
 
