@@ -34,7 +34,7 @@ author:
     city: Raleigh, NC
     code: 27695-8206
     country: USA
-    email: hiqbal@ncsu.edu
+    email: hassaniqbal931@gmail.com
  -
     ins: E. Lear
     name: Eliot Lear
@@ -61,13 +61,23 @@ normative:
         org: Wi-Fi Alliance
     date: 2020
 
+  FDO11:
+    title: FIDO Device Onboading Specification 1.1
+    author:
+     -
+       org: FIDO Alliance
+    date: April 19, 2022
+
+informative:
+    ID.brinckman-nipc:
+ 
 --- abstract
 
 The initial core schema for SCIM (System for Cross Identity
 Management) was designed for provisioning users.  This memo specifies
 schema extensions that enables provisioning of devices, using various
-underlying bootstrapping systems, such as Wifi EasyConnect, RFC 8366
-vouchers, and BLE passcodes.
+underlying bootstrapping systems, such as Wifi EasyConnect, FIDO
+device onboarding vouchers, BLE passcodes, and MAC authenticated bypass.
 
 --- middle
 
@@ -154,10 +164,9 @@ that may be returned.
 Schema Description
 ------------------
 
-RFC 7643 does not prescribe a language to describe a schema. We
-have chosen the JSON schema language {{!I-D.bhutton-json-schema}} for
-this purpose.  This implies that use of XML for this device extension
-is not supported.
+RFC 7643 does not prescribe a language to describe a schema. We have
+chosen the JSON schema language {{!I-D.bhutton-json-schema}} for this
+purpose.  the use of XML for this SCIM devices is not supported.
 
 Several additional schemas specify specific onboarding mechanisms,
 such as BLE and Wifi Easy Connect.
@@ -166,8 +175,8 @@ such as BLE and Wifi Easy Connect.
 
 Attributes defined in the device core schema and extensions comprise
 characteristics and SCIM datatypes defined in Sections 2.2 and 2.3 of
-the {{!RFC7643}}. This RFC does not define new characteristics and
-datatypes for the SCIM attributes.
+the {{!RFC7643}}. This specifciation does not define new
+characteristics and datatypes for the SCIM attributes.
 
 Terminology
 -----------
@@ -180,7 +189,8 @@ appear in all capitals, as shown here.
 
 ResourceType Device
 ====================
-This section defines a new resource type, 'Device'. The "ResourceType" 
+
+A new resource type 'Device' is specified. The "ResourceType" 
 schema specifies the metadata about a resource type (see section 6 of 
 {{!RFC7643}}). The resource "Devices" comprises a core device schema 
 and several extension schemas. The core schema provides a minimal 
@@ -214,7 +224,7 @@ SCIM Core Device Schema
 
 The core device schema provides the minimal representation of a
 resource "Device". It contains only those attributes that any device
-may need. Not all attributes are optional.  The core schema for
+may need, and only one attribute is required.  The core schema for
 "Device" is identified using the schema URI:
 "urn:ietf:params:scim:schemas:core:2.0:Device". The following
 attributes are defined in the device core schema.
@@ -226,19 +236,19 @@ deviceDisplayName
 This attribute is of type "string" and provides a human-readable name 
 for a device. It is intended to be displayed to end-users and should be
 suitable for that purpose. The attribute is not required, and is not 
-case-sensitive. The attribute may be modified and should be returned 
+case-sensitive. It may be modified and SHOULD be returned 
 by default. No uniqueness constraints are imposed on this attribute.
 
 adminState
 
-The "adminState" attribute is of type "boolean" and is a mutable 
-attribute. If set to TRUE, the commands such as connect, disconnect, 
-subscribe that control app sends to the controller for the devices 
-will be processed by the controller. If set to FALSE, any command 
-coming from the control app for the device will be rejected by the 
-controller. This attribute is required and mutable. The attribute 
-should be returned by default and there is uniqueness contraint 
-on the attribute.
+The "adminState" attribute is of type "boolean" and is a mutable
+attribute, and is required. If set to TRUE, it means that this device
+is intended to be operational.  Attempts to control or access a device
+where this value is set to FALSE may fail.  For example, when used in
+conjunction with NIPC {{?I-D.brinckman-nipc}}, commands such as
+connect, disconnect, subscribe that control app sends to the
+controller for the devices any command coming from the control app for
+the device will be rejected by the controller.
 
 mudUrl
 
@@ -249,16 +259,16 @@ may be used as described in {{!RFC8520}}. This attribute is case
 sensitive and returned by default.
 
 ~~~
-+===================+=======+=====+======+=========+========+========+
-| Attribute         | Multi | Req | Case | Mutable | Return | Unique |
-|                   | Value |     | Exact|         |        |        |
-+===================+=======+=====+======+=========+========+========+
-| deviceDisplayName |   F   |  F  |  F   |   RW    |  Def   |  None  |
-+-------------------+-------+-----+------+---------+--------+--------+
-| adminState        |   F   |  T  |  F   |   RW    |  Def   |  None  |
-+-------------------+-------+-----+------+---------+--------+--------+
-| mudUrl            |   F   |  F  |  T   |   RW    |  Def   |  None  |
-+-------------------+-------+-----+------+---------+--------+--------+
++==================+=======+=====+======+=========+========+========+
+| Attribute        | Multi | Req | Case | Mutable | Return | Unique |
+|                  | Value |     | Exact|         |        |        |
++==================+=======+=====+======+=========+========+========+
+| deviceDisplayNam |   F   |  F  |  F   |   RW    |  Def   |  None  |
++------------------+-------+-----+------+---------+--------+--------+
+| adminState       |   F   |  T  |  F   |   RW    |  Def   |  None  |
++------------------+-------+-----+------+---------+--------+--------+
+| mudUrl           |   F   |  F  |  T   |   RW    |  Def   |  None  |
++------------------+-------+-----+------+---------+--------+--------+
 ~~~
 {: #tabDevice title="Characteristics of device schema attributes. (Req = Required,
 T = True, F = False, RW = ReadWrite, and Def = Default)"}
@@ -284,11 +294,13 @@ Device groups are created using the SCIM groups as defined in
 
 Resource Type EndpointApp
 =========================
+
 This section defines a new resource type, 'EndpointApp'. The 
 "ResourceType" schema specifies the metadata about a resource type 
 (see section 6 of {{!RFC7643}}). The resource "EndpointApp" represents
-partner applications that can control and/or receive data from the
+client applications that can control and/or receive data from the
 devices. The JSON schema for EndpointApp resource type is in {{resource-schema}}.
+
 The attributes comprising EndpointsApp are listed in {{endpointapp-schema}}.
 The "EndpointApp" are included in the endpoint applications extension 
 ("endpointAppsExt") {{endpointsappext-schema}}.
@@ -329,7 +341,7 @@ clientToken
 This attribute type string contains a token that the client will use 
 to authenticate itself.  Each token may be a string up to 500 
 characters in length. It is mutable, required, case sensitive 
-and returned by default if exists.
+and returned by default if it exists.
 
 ## Complex Attribute
 
@@ -362,24 +374,24 @@ read only, multivalued and case sensitive.
 
 
 ~~~
-+===================+=======+=====+======+=========+========+========+
-| Attribute         | Multi | Req | Case | Mutable | Return | Unique |
-|                   | Value |     | Exact|         |        |        |
-+===================+=======+=====+======+=========+========+========+
-| applicationType   |   F   |  T  |  F   |   R     |  Def   |  None  |
-+-------------------+-------+-----+------+---------+--------+--------+
-| applicationName   |   F   |  T  |  F   |   RW    |  Def   |  None  |
-+-------------------+-------+-----+------+---------+--------+--------+
-| clientToken       |   F   |  T  |  T   |   R     |  Def   |  None  |
-+-------------------+-------+-----+------+---------+--------+--------+
-| certificateInfo   |   F   |  F  |  F   |   RW    |  Def   |  None  |
-+-------------------+-------+-----+------+---------+--------+--------+
-| rootCN            |   F   |  T  |  T   |   R     |  Def   |  None  |
-+-------------------+-------+-----+------+---------+--------+--------+
-| subjectName       |   F   |  F  |  T   |   R     |  Def   |  None  |
-+-------------------+-------+-----+------+---------+--------+--------+
-| subjectAltName    |   T   |  F  |  T   |   R     |  Def   |  None  |
-+-------------------+-------+-----+------+---------+--------+--------+
++========================+=====+======+=========+========+========+
+| Attribute      | Multi | Req | Case | Mutable | Return | Unique |
+|                | Value |     | Exact|         |        |        |
++================+=======+=====+======+=========+========+========+
+| applicationType|   F   |  T  |  F   |   R     |  Def   |  None  |
++----------------+-------+-----+------+---------+--------+--------+
+| applicationName|   F   |  T  |  F   |   RW    |  Def   |  None  |
++----------------+-------+-----+------+---------+--------+--------+
+| clientToken    |   F   |  T  |  T   |   R     |  Def   |  None  |
++----------------+-------+-----+------+---------+--------+--------+
+| certificateInfo|   F   |  F  |  F   |   RW    |  Def   |  None  |
++----------------+-------+-----+------+---------+--------+--------+
+| rootCN         |   F   |  T  |  T   |   R     |  Def   |  None  |
++----------------+-------+-----+------+---------+--------+--------+
+| subjectName    |   F   |  F  |  T   |   R     |  Def   |  None  |
++----------------+-------+-----+------+---------+--------+--------+
+| subjectAltName |   T   |  F  |  T   |   R     |  Def   |  None  |
++----------------+-------+-----+------+---------+--------+--------+
 
 ~~~
 {: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required,
@@ -549,24 +561,24 @@ message exchange. It is not required. It is mutable and returned by
 default if it exists.
 
 ~~~
-+====================+=======+=====+======+=========+========+========+
-| Attribute          | Multi | Req | Case | Mutable | Return | Unique |
-|                    | Value |     | Exact|         |        |        |
-+====================+=======+=====+======+=========+========+========+
-| deviceMacAddress   |   F   |  T  |  F   |   RW    |  Def   | Manuf  |
-+--------------------+-------+-----+------+---------+--------+--------+
-| isRandom           |   F   |  T  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
-| sepBroadcastAdd    |   T   |  T  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
-| irk                |   F   |  F  |  F   |   RW    |  Def   | Manuf  |
-+--------------------+-------+-----+------+---------+--------+--------+
-| versionSupport     |   T   |  T  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
-| mobility           |   F   |  F  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
-| pairingMethods     |   T   |  T  |  T   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
++=================+=======+=====+======+=========+========+========+
+| Attribute       | Multi | Req | Case | Mutable | Return | Unique |
+|                 | Value |     | Exact|         |        |        |
++=================+=======+=====+======+=========+========+========+
+| deviceMacAddress|   F   |  T  |  F   |   RW    |  Def   | Manuf  |
++-----------------+-------+-----+------+---------+--------+--------+
+| isRandom        |   F   |  T  |  F   |   RW    |  Def   | None   |
++-----------------+-------+-----+------+---------+--------+--------+
+| sepBroadcastAdd |   T   |  T  |  F   |   RW    |  Def   | None   |
++-----------------+-------+-----+------+---------+--------+--------+
+| irk             |   F   |  F  |  F   |   RW    |  Def   | Manuf  |
++-----------------+-------+-----+------+---------+--------+--------+
+| versionSupport  |   T   |  T  |  F   |   RW    |  Def   | None   |
++-----------------+-------+-----+------+---------+--------+--------+
+| mobility        |   F   |  F  |  F   |   RW    |  Def   | None   |
++-----------------+-------+-----+------+---------+--------+--------+
+| pairingMethods  |   T   |  T  |  T   |   RW    |  Def   | None   |
++-----------------+-------+-----+------+---------+--------+--------+
 ~~~
 {: #tabBLE title="Characteristics of BLE extension schema attributes. 
 sepBroadcastAdd is short for separateBroadcastAddress. (Req = Required,
@@ -670,22 +682,22 @@ class/channel. For example, \['81/1','115/36'\]. This attribute
 is optional, case insensitive, mutable, and returned by default.
 
 ~~~
-+====================+=======+=====+======+=========+========+========+
-| Attribute          | Multi | Req | Case | Mutable | Return | Unique |
-|                    | Value |     | Exact|         |        |        |
-+====================+=======+=====+======+=========+========+========+
-| dppVersion         |   F   |  T  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
-| bootstrapKey       |   F   |  T  |  T   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
-| deviceMacAddress   |   F   |  F  |  F   |   RW    |  Def   | Manuf  |
-+--------------------+-------+-----+------+---------+--------+--------+
-| serialNumber       |   F   |  F  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
-| bootstrappingMethod|   T   |  F  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
-| classChannel       |   T   |  F  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
++====================+=====+===+======+=========+========+========+
+| Attribute          |Multi|Req| Case | Mutable | Return | Unique |
+|                    |Value|   | Exact|         |        |        |
++====================+=====+===+======+=========+========+========+
+| dppVersion         |  F  | T |  F   |   RW    |  Def   | None   |
++--------------------+-----+---+------+---------+--------+--------+
+| bootstrapKey       |  F  | T |  T   |   RW    |  Def   | None   |
++--------------------+-----+---+------+---------+--------+--------+
+| deviceMacAddress   |  F  | F |  F   |   RW    |  Def   | Manuf  |
++--------------------+-----+---+------+---------+--------+--------+
+| serialNumber       |  F  | F |  F   |   RW    |  Def   | None   |
++--------------------+-----+---+------+---------+--------+--------+
+| bootstrappingMethod|  T  | F |  F   |   RW    |  Def   | None   |
++--------------------+-----+---+------+---------+--------+--------+
+| classChannel       |  T  | F |  F   |   RW    |  Def   | None   |
++--------------------+-----+---+------+---------+--------+--------+
 ~~~
 {: #tabDPP title="Characteristics of DPP extension schema attributes. 
 (Req = Required, T = True, F = False, RW = ReadWrite, Def = Default,
@@ -723,12 +735,12 @@ This is the Ethernet address to be provisioned onto the network.  It
 takes the identical form as found in both the BLE and DPP extensions.
 
 ~~~
-+====================+=======+=====+======+=========+========+========+
-| Attribute          | Multi | Req | Case | Mutable | Return | Unique |
-|                    | Value |     | Exact|         |        |        |
-+====================+=======+=====+======+=========+========+========+
-| deviceMacAddress   |   F   |  T  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
++=================+=======+=====+======+=========+========+========+
+| Attribute       | Multi | Req | Case | Mutable | Return | Unique |
+|                 | Value |     | Exact|         |        |        |
++=================+=======+=====+======+=========+========+========+
+| deviceMacAddress|   F   |  T  |  F   |   RW    |  Def   | None   |
++-----------------+-------+-----+------+---------+--------+--------+
 ~~~
 {: #tabMAB title="Characteristics of MAB extension schema attributes
 (Req = Required, T = True, F = False, RW = ReadWrite, and 
@@ -749,8 +761,7 @@ representation is provided in Section [](#ethernet-mab-extension-schema-openapi-
 ## Fido Device Onboarding Extension
 
 This extension specifies a voucher to be used by a Fido Device Onboarding
-(FDO) owner process, so that a trusted introduction can be made using that
-mechanism.
+(FDO) owner process {{FDO11}}, so that a trusted introduction can be made using that mechanism.
 
 urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Device
 
@@ -764,12 +775,12 @@ The voucher is formated as a PEM-encoded object in accordance with the FDO
 specification (citation needed).
 
 ~~~
-+====================+=======+=====+======+=========+========+========+
-| Attribute          | Multi | Req | Case | Mutable | Return | Unique |
-|                    | Value |     | Exact|         |        |        |
-+====================+=======+=====+======+=========+========+========+
-| fdoVoucher         |   F   |  T  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
++=================+=======+=====+======+=========+========+========+
+| Attribute       | Multi | Req | Case | Mutable | Return | Unique |
+|                 | Value |     | Exact|         |        |        |
++=================+=======+=====+======+=========+========+========+
+| fdoVoucher      |   F   |  T  |  F   |   RW    |  Def   | None   |
++-----------------+-------+-----+------+---------+--------+--------+
 ~~~
 {: #tabFDO title="Characteristics of FDO extension schema attributes
 (Req = Required, T = True, F = False, RW = ReadWrite, and 
@@ -822,14 +833,14 @@ by the device. For example, \[3.0\]. This attribute is required, case
 insensitive, mutable, and returned by default.
 
 ~~~
-+====================+=======+=====+======+=========+========+========+
-| Attribute          | Multi | Req | Case | Mutable | Return | Unique |
-|                    | Value |     | Exact|         |        |        |
-+====================+=======+=====+======+=========+========+========+
-| deviceEui64Address |   F   |  T  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
-| versionSupport     |   T   |  T  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
++===================+=====+=====+======+=========+========+========+
+| Attribute         |Multi| Req | Case | Mutable | Return | Unique |
+|                   |Value|     | Exact|         |        |        |
++===================+=====+=====+======+=========+========+========+
+| deviceEui64Address|  F  |  T  |  F   |   RW    |  Def   | None   |
++-------------------+-----+-----+------+---------+--------+--------+
+| versionSupport    |  T  |  T  |  F   |   RW    |  Def   | None   |
++-------------------+-----+-----+------+---------+--------+--------+
 ~~~
 {: #tabZigbee title="Characteristics of Zigbee extension schema attributes.
 (Req = Required, T = True, F = False, RW = ReadWrite, and 
@@ -905,20 +916,20 @@ stored in the SCIM server. It is readOnly, required, case sensitive
 and returned by default.
 
 ~~~
-+====================+=======+=====+======+=========+========+========+
-| Attribute          | Multi | Req | Case | Mutable | Return | Unique |
-|                    | Value |     | Exact|         |        |        |
-+====================+=======+=====+======+=========+========+========+
-| devContEntEndpoint |   F   |  T  |  T   |   R     |  Def   | Ent    |
-+--------------------+-------+-----+------+---------+--------+--------+
-| telEntEndpoint     |   F   |  T  |  T   |   R     |  Def   | Ent    |
-+--------------------+-------+-----+------+---------+--------+--------+
-| applications       |   T   |  T  |  F   |   RW    |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
-| value              |   F   |  T  |  F   |   R     |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
-| $ref               |   F   |  T  |  F   |   R     |  Def   | None   |
-+--------------------+-------+-----+------+---------+--------+--------+
++====================+=====+=====+======+=========+========+========+
+| Attribute          |Multi| Req | Case | Mutable | Return | Unique |
+|                    |Value|     | Exact|         |        |        |
++====================+=====+=====+======+=========+========+========+
+| devContEntEndpoint |  F  |  T  |  T   |   R     |  Def   | Ent    |
++--------------------+-----+-----+------+---------+--------+--------+
+| telEntEndpoint     |  F  |  T  |  T   |   R     |  Def   | Ent    |
++--------------------+-----+-----+------+---------+--------+--------+
+| applications       |  T  |  T  |  F   |   RW    |  Def   | None   |
++--------------------+-----+-----+------+---------+--------+--------+
+| value              |  F  |  T  |  F   |   R     |  Def   | None   |
++--------------------+-----+-----+------+---------+--------+--------+
+| $ref               |  F  |  T  |  F   |   R     |  Def   | None   |
++--------------------+-----+-----+------+---------+--------+--------+
 ~~~
 {: #tabEndpointAppsExt title="Characteristics of EndpointAppsExt extension schema 
 attributes. DevContEntEndpoint represents attribute 
@@ -1056,7 +1067,7 @@ OpenAPI representation of device core schema is as follows:
 
 ~~~~~~~~~
 <CODE BEGINS>
-{::include openapi/device_schema.yml}
+{::include openapi/device_schema.fyml}
 <CODE ENDS>
 ~~~~~~~~~
 
@@ -1066,7 +1077,7 @@ OpenAPI representation of endpointApp schema is as follows:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include openapi/endpointapp_schema.yml}
+{::include openapi/endpointapp_schema.fyml}
 <CODE ENDS>
 ~~~~~~~~
 
@@ -1076,7 +1087,7 @@ OpenAPI representation of BLE extension schema is as follows:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include openapi/SCIM_BLE_extension_schema.yml}
+{::include openapi/SCIM_BLE_extension_schema.fyml}
 <CODE ENDS>
 ~~~~~~~~
 
@@ -1085,7 +1096,7 @@ OpenAPI representation of DPP extension schema is as follows:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include openapi/SCIM_DPP_extension_schema.yml}
+{::include openapi/SCIM_DPP_extension_schema.fyml}
 <CODE ENDS>
 ~~~~~~~~
 
@@ -1094,7 +1105,7 @@ OpenAPI representation of Ethernet MAB extension schema is as follows:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include openapi/SCIM_MAB_extension_schema.yml}
+{::include openapi/SCIM_MAB_extension_schema.fyml}
 <CODE ENDS>
 ~~~~~~~~
 
@@ -1103,7 +1114,7 @@ OpenAPI representation of FDO extension schema is as follows:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include openapi/SCIM_FDO_extension_schema.yml}
+{::include openapi/SCIM_FDO_extension_schema.fyml}
 <CODE ENDS>
 ~~~~~~~~
 
@@ -1112,7 +1123,7 @@ OpenAPI representation of zigbee extension schema is as follows:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include openapi/SCIM_zigbee_extension_schema.yml}
+{::include openapi/SCIM_zigbee_extension_schema.fyml}
 <CODE ENDS>
 ~~~~~~~~
 
@@ -1122,6 +1133,6 @@ is as follows:
 
 ~~~~~~~~
 <CODE BEGINS>
-{::include openapi/SCIM_endpoint_extension_schema.yml}
+{::include openapi/SCIM_endpoint_extension_schema.fyml}
 <CODE ENDS>
 ~~~~~~~~

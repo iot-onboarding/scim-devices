@@ -51,12 +51,21 @@ YAML=	openapi/SCIM_BLE_extension_schema.yml \
 	openapi/SCIM_FDO_extension_schema.yml \
 	openapi/SCIM_zigbee_extension_schema.yml \
 	openapi/device_schema.yml \
-	openapi/endpointapp_schema.yml \
+	openapi/endpointapp_schema.yml
+
+FYAML=	openapi/SCIM_BLE_extension_schema.fyml \
+	openapi/SCIM_DPP_extension_schema.fyml \
+	openapi/SCIM_endpoint_extension_schema.fyml \
+	openapi/SCIM_MAB_extension_schema.fyml \
+	openapi/SCIM_FDO_extension_schema.fyml \
+	openapi/SCIM_zigbee_extension_schema.fyml \
+	openapi/device_schema.fyml \
+	openapi/endpointapp_schema.fyml
 
 
 all: $(DOCS)
 
-%.xml:	%.mkd extensions/README.md $(FTXT) $(YAML) \
+%.xml:	%.mkd extensions/README.md $(FTXT) $(FYAML) \
 	draft-ietf-scim-device-model.mkd
 	kramdown-rfc2629 -3 $< > $@
 %.html %.txt:	%.xml
@@ -64,4 +73,7 @@ all: $(DOCS)
 	xml2rfc --text $<
 
 %.ftxt: %.json $(JSON)
+	python3 fold.py < $< > $@
+
+%.fyml: %.yml $(YAML)
 	python3 fold.py < $< > $@
