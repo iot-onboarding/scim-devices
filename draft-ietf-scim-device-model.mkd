@@ -415,9 +415,6 @@ device schema based on the device's capability (communication stack).
 This RFC presents an additional hierarchical level by introducing
 extensions within an extension.  See below for more details.
 
-\[\[ DISCUSS: Is this okay with the working group? \]\]
-
-
 ## BLE Extension
 
 This schema extends the device schema to represent the devices
@@ -1003,8 +1000,22 @@ they should encrypt that information over-the-top.
 IANA Considerations
 ===================
 
-TBD
+The IANA is requested to add the following additions to the "SCIM
+Schema URIs for Data Resources" registry as follows:
 
+| URN | Name | Reference |
+| --- | ---  | --------  | 
+| urn:ietf:params:scim:schemas:core:2.0:Device | Core Device Schema | This memo |
+| urn:ietf:params:scim:schemas:extension: ble:2.0:Device | BLE Extension | This memo |
+| urn:ietf:params:scim:schemas:extension: ethernet-mab:2.0:Device| Ethernet MAB | This memo |
+| urn:ietf:params:scim:schemas:extension: fido-device-onboard:2.0:Device | Fido Device Onboard | This memo|
+| urn:ietf:params:scim:schemas:extension: dpp:2.0:Device | Device Provisioning Protocol | This memo |
+| urn:ietf:params:scim:schemas:extension: endpointAppsExt:2.0:Device| Application Endpoint Extension | This memo|
+| urn:ietf:params:scim:schemas:extension: pairingJustWorks:2.0:Device | Just Works Auth BLE |This memo|
+| urn:ietf:params:scim:schemas:extension: pairingOOB:2.0:Device| Out of Band Pairing for BLE |This memo|
+| urn:ietf:params:scim:schemas:extension: pairingPassKey:2.0:Device | Passkey Pairing for BLE |This memo|
+
+Note that the line break in URNs should be removed, as should this comment.
 --- back
 
 Changes from Earlier Versions
