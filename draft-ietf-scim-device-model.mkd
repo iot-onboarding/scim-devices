@@ -106,7 +106,6 @@ being passed about the device is neither state nor device configuration
 information, but only information necessary to bootstrap trust so that
 the device may establish connectivity.
 
-
 Protocol Participants
 ---------------------
 
@@ -258,18 +257,14 @@ value is case sensitive and not unique. When present, this attribute
 may be used as described in {{!RFC8520}}. This attribute is case 
 sensitive and returned by default.
 
-~~~
-+==================+=======+=====+======+=========+========+========+
-| Attribute        | Multi | Req | Case | Mutable | Return | Unique |
-|                  | Value |     | Exact|         |        |        |
-+==================+=======+=====+======+=========+========+========+
-| deviceDisplayNam |   F   |  F  |  F   |   RW    |  Def   |  None  |
-+------------------+-------+-----+------+---------+--------+--------+
+
+| Attribute  | Multi Value | Req | Case Exact| Mutable | Return | Unique |
+|------------------|-------|-----|------|---------|--------|--------|
+| deviceDisplayName |   F   |  F  |  F   |   RW    |  Def   |  None  |
+|------------------|-------|-----|------|---------|--------|--------|
 | adminState       |   F   |  T  |  F   |   RW    |  Def   |  None  |
-+------------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | mudUrl           |   F   |  F  |  T   |   RW    |  Def   |  None  |
-+------------------+-------+-----+------+---------+--------+--------+
-~~~
 {: #tabDevice title="Characteristics of device schema attributes. (Req = Required,
 T = True, F = False, RW = ReadWrite, and Def = Default)"}
 
@@ -372,28 +367,21 @@ be used for multiple related domains or IPs without the need for
 separate certificates for each. This attribute is not required,
 read only, multivalued and case sensitive.
 
-
-~~~
-+========================+=====+======+=========+========+========+
-| Attribute      | Multi | Req | Case | Mutable | Return | Unique |
-|                | Value |     | Exact|         |        |        |
-+================+=======+=====+======+=========+========+========+
+| Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
+|------------------|-------|-----|------|---------|--------|--------|
 | applicationType|   F   |  T  |  F   |   R     |  Def   |  None  |
-+----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | applicationName|   F   |  T  |  F   |   RW    |  Def   |  None  |
-+----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | clientToken    |   F   |  T  |  T   |   R     |  Def   |  None  |
-+----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | certificateInfo|   F   |  F  |  F   |   RW    |  Def   |  None  |
-+----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | rootCN         |   F   |  T  |  T   |   R     |  Def   |  None  |
-+----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | subjectName    |   F   |  F  |  T   |   R     |  Def   |  None  |
-+----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | subjectAltName |   T   |  F  |  T   |   R     |  Def   |  None  |
-+----------------+-------+-----+------+---------+--------+--------+
-
-~~~
 {: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required,
 T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufactirer
 and Def = Default)"}
@@ -560,26 +548,21 @@ confirmationNumber  An integer which some solutions require in RESTful
 message exchange. It is not required. It is mutable and returned by 
 default if it exists.
 
-~~~
-+=================+=======+=====+======+=========+========+========+
-| Attribute       | Multi | Req | Case | Mutable | Return | Unique |
-|                 | Value |     | Exact|         |        |        |
-+=================+=======+=====+======+=========+========+========+
+| Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
+|------------------|-------|-----|------|---------|--------|--------|
 | deviceMacAddress|   F   |  T  |  F   |   RW    |  Def   | Manuf  |
-+-----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | isRandom        |   F   |  T  |  F   |   RW    |  Def   | None   |
-+-----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | sepBroadcastAdd |   T   |  T  |  F   |   RW    |  Def   | None   |
-+-----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | irk             |   F   |  F  |  F   |   RW    |  Def   | Manuf  |
-+-----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | versionSupport  |   T   |  T  |  F   |   RW    |  Def   | None   |
-+-----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | mobility        |   F   |  F  |  F   |   RW    |  Def   | None   |
-+-----------------+-------+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | pairingMethods  |   T   |  T  |  T   |   RW    |  Def   | None   |
-+-----------------+-------+-----+------+---------+--------+--------+
-~~~
 {: #tabBLE title="Characteristics of BLE extension schema attributes. 
 sepBroadcastAdd is short for separateBroadcastAddress. (Req = Required,
 T = True, F = False, RW = ReadWrite, Def = Default, and 
@@ -734,14 +717,9 @@ deviceMacAddress
 This is the Ethernet address to be provisioned onto the network.  It
 takes the identical form as found in both the BLE and DPP extensions.
 
-~~~
-+=================+=======+=====+======+=========+========+========+
-| Attribute       | Multi | Req | Case | Mutable | Return | Unique |
-|                 | Value |     | Exact|         |        |        |
-+=================+=======+=====+======+=========+========+========+
+| Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
+|------------------|-------|-----|------|---------|--------|--------|
 | deviceMacAddress|   F   |  T  |  F   |   RW    |  Def   | None   |
-+-----------------+-------+-----+------+---------+--------+--------+
-~~~
 {: #tabMAB title="Characteristics of MAB extension schema attributes
 (Req = Required, T = True, F = False, RW = ReadWrite, and 
 Def = Default)"}
@@ -774,14 +752,9 @@ fdoVoucher
 The voucher is formated as a PEM-encoded object in accordance with the FDO
 specification (citation needed).
 
-~~~
-+=================+=======+=====+======+=========+========+========+
-| Attribute       | Multi | Req | Case | Mutable | Return | Unique |
-|                 | Value |     | Exact|         |        |        |
-+=================+=======+=====+======+=========+========+========+
+| Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
+|------------------|-------|-----|------|---------|--------|--------|
 | fdoVoucher      |   F   |  T  |  F   |   RW    |  Def   | None   |
-+-----------------+-------+-----+------+---------+--------+--------+
-~~~
 {: #tabFDO title="Characteristics of FDO extension schema attributes
 (Req = Required, T = True, F = False, RW = ReadWrite, and 
 Def = Default)"}
@@ -832,16 +805,11 @@ An array of strings of all the Zigbee versions supported
 by the device. For example, \[3.0\]. This attribute is required, case 
 insensitive, mutable, and returned by default.
 
-~~~
-+===================+=====+=====+======+=========+========+========+
-| Attribute         |Multi| Req | Case | Mutable | Return | Unique |
-|                   |Value|     | Exact|         |        |        |
-+===================+=====+=====+======+=========+========+========+
+| Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
+|------------------|-------|-----|------|---------|--------|--------|
 | deviceEui64Address|  F  |  T  |  F   |   RW    |  Def   | None   |
-+-------------------+-----+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | versionSupport    |  T  |  T  |  F   |   RW    |  Def   | None   |
-+-------------------+-----+-----+------+---------+--------+--------+
-~~~
 {: #tabZigbee title="Characteristics of Zigbee extension schema attributes.
 (Req = Required, T = True, F = False, RW = ReadWrite, and 
 Def = Default)"}
@@ -915,22 +883,17 @@ It is the reference to the respective endpointApp resource object
 stored in the SCIM server. It is readOnly, required, case sensitive
 and returned by default.
 
-~~~
-+====================+=====+=====+======+=========+========+========+
-| Attribute          |Multi| Req | Case | Mutable | Return | Unique |
-|                    |Value|     | Exact|         |        |        |
-+====================+=====+=====+======+=========+========+========+
+| Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
+|------------------|-------|-----|------|---------|--------|--------|
 | devContEntEndpoint |  F  |  T  |  T   |   R     |  Def   | Ent    |
-+--------------------+-----+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | telEntEndpoint     |  F  |  T  |  T   |   R     |  Def   | Ent    |
-+--------------------+-----+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | applications       |  T  |  T  |  F   |   RW    |  Def   | None   |
-+--------------------+-----+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | value              |  F  |  T  |  F   |   R     |  Def   | None   |
-+--------------------+-----+-----+------+---------+--------+--------+
+|------------------|-------|-----|------|---------|--------|--------|
 | $ref               |  F  |  T  |  F   |   R     |  Def   | None   |
-+--------------------+-----+-----+------+---------+--------+--------+
-~~~
 {: #tabEndpointAppsExt title="Characteristics of EndpointAppsExt extension schema 
 attributes. DevContEntEndpoint represents attribute 
 deviceControlEnterpriseEndpoint and telEntEndpoint represents 
@@ -1039,7 +1002,6 @@ they should encrypt that information over-the-top.
 
 IANA Considerations
 ===================
-
 
 TBD
 
