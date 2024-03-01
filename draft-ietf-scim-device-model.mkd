@@ -1021,6 +1021,15 @@ Note that the line break in URNs should be removed, as should this comment.
 Changes from Earlier Versions
 =============================
 
+Draft -03:
+  * Add MAB, FDO
+  * Some grammar improvements
+  * fold OpenAPI
+  * IANA considerations
+
+Draft -02:
+  *  Clean up examples
+  *  Move openapi to appendix
 Draft -01:
 
   *  Doh! We forgot the core device scheme!
