@@ -73,7 +73,7 @@ all: $(DOCS)
 	xml2rfc --text $<
 
 %.ftxt: %.json $(JSON)
-	python3 fold.py < $< > $@
+	@python3 fold.py < $< > $@
 
 %.fyml: %.yml $(YAML)
-	python3 fold.py < $< > $@
+	@python3 fold.py < $< > $@

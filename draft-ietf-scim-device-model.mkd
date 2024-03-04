@@ -68,9 +68,6 @@ normative:
        org: FIDO Alliance
     date: April 19, 2022
 
-informative:
-    I-D.brinckman-nipc:
- 
 --- abstract
 
 The initial core schema for SCIM (System for Cross Identity

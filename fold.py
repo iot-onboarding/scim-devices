@@ -25,7 +25,7 @@ def fold(line):
         pt=maxlen-1
         while ((not line[pt] in [' ', '+', '-','(',')', ':']) and pt > 0):
             pt=pt-1
-        if pt == 0 or re.match('^\s+$',line[0:pt]):
+        if pt == 0 or re.match(r'^\s+$',line[0:pt]):
             # we tried playing nice, but there's a key or something
             # that just needs to be folded.  Just split the line.
             pt=maxlen-5
