@@ -1,6 +1,6 @@
 [
   {  
-    "id": "urn:ietf:params:scim:schemas:extension:ble:2.0:Device",
+    "id": "urn:ietf:params:scim:schemas:extension:ble:2.0:Devices",
     "name": "bleExtension",
     "description": "Ble extension for device account",
     "attributes" : [
@@ -84,20 +84,20 @@
     ],
     "meta" : {
       "resourceType" : "Schema",
-      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:ble:2.0:Device"
+      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:ble:2.0:Devices"
     }
   },
   {
-    "id": "urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device",
+    "id": "urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Devices",
     "name": "nullPairing",
     "description": "Null pairing method for ble. It is included for the devices that do not have a pairing method.",
     "meta" : {
       "resourceType" : "Schema",
-      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device"
+      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Devices"
     }
   },
   {
-    "id": "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device",
+    "id": "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Devices",
     "name": "pairingJustWorks",
     "description": "Just works pairing method for ble.",
     "attributes" : [
@@ -115,11 +115,11 @@
     ],
     "meta" : {
       "resourceType" : "Schema",
-      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device"
+      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Devices"
     }
   },
   {
-    "id": "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device",
+    "id": "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Devices",
     "name": "pairingPassKey",
     "description": "Pass key pairing method for ble.",
     "attributes" : [
@@ -137,11 +137,11 @@
     ],
     "meta" : {
       "resourceType" : "Schema",
-      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device"
+      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Devices"
     }
   },
   {
-    "id": "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device",
+    "id": "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Devices",
     "name": "pairingOOB",
     "description": "Pass key pairing method for ble.",
     "attributes" : [
@@ -181,7 +181,7 @@
     ],
     "meta" : {
       "resourceType" : "Schema",
-      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device"
+      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Devices"
     }
   }
 ]

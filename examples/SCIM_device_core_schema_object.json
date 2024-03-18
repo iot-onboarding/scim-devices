@@ -1,10 +1,10 @@
 {
-        "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Device"],
+        "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Devices"],
         "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
         "deviceDisplayName": "BLE Heart Monitor",
         "adminState": true,
         "meta": {
-          "resourceType": "Device",
+          "resourceType": "Devices",
       "created": "2022-01-23T04:56:22Z",
           "lastModified": "2022-05-13T04:42:34Z",
           "version": "W\/\"a330bc54f0671c9\"", 

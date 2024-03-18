@@ -1,16 +1,16 @@
 components:
   schemas:
-    BleDevice:
+    BleDevices:
       type: object
-      description: BLE Device schema.
+      description: BLE Devices schema.
       properties:
         schemas:
           type: array
           items:
             type: string
             enum:
-              - urn:ietf:params:scim:schemas:extension:ble:2.0:Device
-        urn:ietf:params:scim:schemas:extension:ble:2.0:Device:
+              - urn:ietf:params:scim:schemas:extension:ble:2.0:Devices
+        urn:ietf:params:scim:schemas:extension:ble:2.0:Devices:
           $ref: '#/components/schemas/BleDeviceExtension'
           required: true
     BleDeviceExtension:
@@ -86,16 +86,16 @@ components:
           nullable: true
           readOnly: false
           writeOnly: false
-        urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device:
+        urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Devices:
           $ref: '#/components/schemas/NullPairing'
           required: false
-        urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device:
+        urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Devices:
           $ref: '#/components/schemas/PairingJustWorks'
           required: false
-        urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device:
+        urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Devices:
           $ref: '#/components/schemas/PairingPassKey'
           required: false
-        urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device:
+        urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Devices:
           $ref: '#/components/schemas/PairingOOB'
           required: false
       required:

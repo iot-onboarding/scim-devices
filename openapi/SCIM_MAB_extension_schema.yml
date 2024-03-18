@@ -9,8 +9,8 @@ components:
           items:
             type: string
             enum:
-              - urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device
-        urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device:
+              - urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Devices
+        urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Devices:
           $ref: '#/components/schemas/EthernetMABDeviceExtension'
           required: true
     EthernetMABDeviceExtension:

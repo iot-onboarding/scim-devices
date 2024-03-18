@@ -1,7 +1,7 @@
 {  
-  "id": "urn:ietf:params:scim:schemas:core:2.0:Device",
-  "name": "Device",
-  "description": "Device account",
+  "id": "urn:ietf:params:scim:schemas:core:2.0:Devices",
+  "name": "Devices",
+  "description": "Device entry",
   "attributes" : [
     {
       "name": "deviceDisplayName",
@@ -40,6 +40,6 @@
   "meta" : {
     "resourceType" : "Schema",
     "location" :
-      "/v2/Schemas/urn:ietf:params:scim:schemas:core:2.0:Device"
+      "/v2/Schemas/urn:ietf:params:scim:schemas:core:2.0:Devices"
   }
 }

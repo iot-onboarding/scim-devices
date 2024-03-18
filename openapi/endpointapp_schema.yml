@@ -1,7 +1,7 @@
 components:
   schemas:
     EndpointApp:
-      title: EndpointApp
+      title: EndpointApps
       description: Endpoint application resource
       type: object
       properties:
@@ -89,7 +89,7 @@ components:
           items:
             type: string
             enum:
-              - urn:ietf:params:scim:schemas:core:2.0:EndpointApp
+              - urn:ietf:params:scim:schemas:core:2.0:EndpointApps
           description: The list of schemas that define the resource.
           nullable: false
         id:

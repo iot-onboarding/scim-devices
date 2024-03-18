@@ -1,18 +1,18 @@
 {
-  "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Device",
-     "urn:ietf:params:scim:schemas:extension:ble:2.0:Device"],
+  "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Devices",
+     "urn:ietf:params:scim:schemas:extension:ble:2.0:Devices"],
 
   "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
   "deviceDisplayName": "BLE Heart Monitor",
   "adminState": true,
-  "urn:ietf:params:scim:schemas:extension:ble:2.0:Device" : {       
+  "urn:ietf:params:scim:schemas:extension:ble:2.0:Devices" : {       
     "versionSupport": ["5.3"],
     "deviceMacAddress": "2C:54:91:88:C9:E2",
     "isRandom": false,
     "separateBroadcastAddress": ["AA:BB:88:77:22:11", "AA:BB:88:77:22:12"], 
     "mobility": true,
-    "pairingMethods": ["urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device"],
-    "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device" : {
+    "pairingMethods": ["urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Devices"],
+    "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Devices" : {
       "key": 123456
     }         
   },

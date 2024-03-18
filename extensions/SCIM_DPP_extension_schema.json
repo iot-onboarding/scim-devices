@@ -1,5 +1,5 @@
 {  
-    "id": "urn:ietf:params:scim:schemas:extension:dpp:2.0:Device",
+    "id": "urn:ietf:params:scim:schemas:extension:dpp:2.0:Devices",
     "name": "dppExtension",
     "description": "Device extension schema for DPP",
     "attributes" : [
@@ -73,6 +73,6 @@
     ],
     "meta" : {
       "resourceType" : "Schema",
-      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:dpp:2.0:Device"
+      "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:dpp:2.0:Devices"
     }
   }

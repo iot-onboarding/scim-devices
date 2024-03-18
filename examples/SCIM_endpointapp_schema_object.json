@@ -1,5 +1,5 @@
 {
-  "schemas": ["urn:ietf:params:scim:schemas:core:2.0:EndpointApp"],
+  "schemas": ["urn:ietf:params:scim:schemas:core:2.0:EndpointApps"],
   "id": "e9e30dba-f08f-4109-8486-d5c6a3316212",
   "applicationType": "deviceControl",
   "applicationName": "Device Control App 1",
@@ -10,7 +10,7 @@
   },
   "clientToken": null,
   "meta": {
-    "resourceType": "EndpointApp",
+    "resourceType": "EndpointApps",
     "created": "2022-01-23T04:56:22Z",
     "lastModified": "2022-05-13T04:42:34Z",
     "version": "W\/\"a330bc54f0671c9\"", 

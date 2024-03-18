@@ -1,6 +1,6 @@
 components:
   schemas:
-    ZigbeeDevice:
+    ZigbeeDevices:
       type: object
       description: Zigbee Device schema.
       properties:
@@ -9,8 +9,8 @@ components:
           items:
             type: string
             enum:
-              - urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device
-        urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device:
+              - urn:ietf:params:scim:schemas:extension:zigbee:2.0:Devices
+        urn:ietf:params:scim:schemas:extension:zigbee:2.0:Devices:
           $ref: '#/components/schemas/ZigbeeDeviceExtension'
           required: true
     ZigbeeDeviceExtension:

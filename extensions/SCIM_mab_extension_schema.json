@@ -1,5 +1,5 @@
 {  
-  "id": "urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device",
+  "id": "urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Devices",
   "name": "ethernetMabExtension",
   "description": "Device extension schema for MAC authentication Bypass.",
   "attributes" : [
@@ -17,6 +17,6 @@
   ],
   "meta" : {
     "resourceType" : "Schema",
-    "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device"
+    "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Devices"
   }
 }

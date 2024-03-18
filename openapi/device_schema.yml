@@ -1,7 +1,7 @@
 components:
   schemas:
-    Device:
-      title: Device
+    Devices:
+      title: Devices
       description: Device account
       type: object
       properties:
@@ -48,7 +48,7 @@ components:
           items:
             type: string
             enum:
-              - urn:ietf:params:scim:schemas:core:2.0:Device
+              - urn:ietf:params:scim:schemas:core:2.0:Devices
           description: The list of schemas that define the resource.
           nullable: false
         id:

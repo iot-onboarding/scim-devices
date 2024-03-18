@@ -1,6 +1,6 @@
 {  
-  "id": "urn:ietf:params:scim:schemas:core:2.0:EndpointApp",
-  "name": "EndpointApp",
+  "id": "urn:ietf:params:scim:schemas:core:2.0:EndpointApps",
+  "name": "EndpointApps",
   "description": "Endpoint application and their credentials",
   "attributes" : [
     {
@@ -86,6 +86,6 @@
   "meta" : {
     "resourceType" : "Schema",
     "location" :
-      "/v2/Schemas/urn:ietf:params:scim:schemas:core:2.0:Device"
+      "/v2/Schemas/urn:ietf:params:scim:schemas:core:2.0:Devices"
   }
 }

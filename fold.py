@@ -5,7 +5,7 @@ from sys import stdin
 
 def fold(line):
     indent=False
-    maxlen=68
+    maxlen=65
     if len(line) < maxlen:
         print(line)
         return

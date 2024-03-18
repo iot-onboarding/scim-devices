@@ -1,5 +1,5 @@
 {  
-  "id": "urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Device",
+  "id": "urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Devices",
   "name": "endpointAppsExt",
   "description": "Extension for partner endpoint applications that can onboard, control, and communicate with the device.",
   "attributes" : [
@@ -64,6 +64,6 @@
   ],
   "meta" : {
     "resourceType" : "Schema",
-    "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Device"
+    "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Devices"
   }
 }

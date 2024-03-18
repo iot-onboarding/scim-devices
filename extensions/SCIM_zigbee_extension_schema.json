@@ -1,5 +1,5 @@
 {  
-  "id": "urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device",
+  "id": "urn:ietf:params:scim:schemas:extension:zigbee:2.0:Devices",
   "name": "zigbeeExtension",
   "description": "Device extension schema for zigbee.",
   "attributes" : [
@@ -28,6 +28,6 @@
   ],
   "meta" : {
     "resourceType" : "Schema",
-    "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device"
+    "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:zigbee:2.0:Devices"
   }
 }

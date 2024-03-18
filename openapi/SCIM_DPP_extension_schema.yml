@@ -1,6 +1,6 @@
 components:
   schemas:
-    DppDevice:
+    DppDevices:
       type: object
       description: DPP device extension schema
       properties:
@@ -9,8 +9,8 @@ components:
           items:
             type: string
             enum:
-              - urn:ietf:params:scim:schemas:extension:dpp:2.0:Device
-        urn:ietf:params:scim:schemas:extension:dpp:2.0:Device:
+              - urn:ietf:params:scim:schemas:extension:dpp:2.0:Devices
+        urn:ietf:params:scim:schemas:extension:dpp:2.0:Devices:
           $ref: '#/components/schemas/DppDeviceExtension'
           required: true
     DppDeviceExtension:

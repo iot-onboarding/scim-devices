@@ -9,11 +9,11 @@ components:
     DeviceResource:
       type: object
       allOf:
-        - $ref: "./device_schema.yml#/components/schemas/Device"
+        - $ref: "./device_schema.yml#/components/schemas/Devices"
         - anyOf:
-            - $ref: "./SCIM_BLE_extension_schema.yml#/components/schemas/BleDevice"
-            - $ref: "./SCIM_zigbee_extension_schema.yml#/components/schemas/ZigbeeDevice"
-            - $ref: "./SCIM_DPP_extension_schema.yml#/components/schemas/DppDevice"
+            - $ref: "./SCIM_BLE_extension_schema.yml#/components/schemas/BleDevices"
+            - $ref: "./SCIM_zigbee_extension_schema.yml#/components/schemas/ZigbeeDevices"
+            - $ref: "./SCIM_DPP_extension_schema.yml#/components/schemas/DppDevices"
             - type: object
               properties:
                 schemas:

@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-ietf-scim-device-model-03
+docname: draft-ietf-scim-device-model-04
 submissionType: IETF
 category: std
 
@@ -191,13 +191,13 @@ schema specifies the metadata about a resource type (see section 6 of
 {{!RFC7643}}). The resource "Devices" comprises a core device schema 
 and several extension schemas. The core schema provides a minimal 
 resource representation, whereas extension schemas extend the core 
-schema depending on the device's capability. The JSON schema for Device
+schema depending on the device's capability. The JSON schema for Devices
 resource type is in {{resource-schema}}.
 
 
 ## Common Attributes
 
-The Device schema contains three common attributes as defined in the
+The Devices schema contains three common attributes as defined in the
 {{!RFC7643}}.
 
 id
@@ -215,14 +215,14 @@ Meta is a complex attribute and is required (see section 3.1 of {{!RFC7643}}).
 
 
 
-SCIM Core Device Schema
+SCIM Core Devices Schema
 =======================
 
-The core device schema provides the minimal representation of a
-resource "Device". It contains only those attributes that any device
+The core devices schema provides the minimal representation of a
+resource "Devices". It contains only those attributes that any device
 may need, and only one attribute is required.  The core schema for
-"Device" is identified using the schema URI:
-"urn:ietf:params:scim:schemas:core:2.0:Device". The following
+"Devices" is identified using the schema URI:
+"urn:ietf:params:scim:schemas:core:2.0:Devices". The following
 attributes are defined in the device core schema.
 
 ## Singular Attributes
@@ -284,24 +284,24 @@ Device groups are created using the SCIM groups as defined in
 {{!RFC7643}} Section 4.2.
 
 
-Resource Type EndpointApp
-=========================
+Resource Type EndpointApps
+==========================
 
-This section defines a new resource type, 'EndpointApp'. The 
+This section defines a new resource type, 'EndpointApps'. The 
 "ResourceType" schema specifies the metadata about a resource type 
-(see section 6 of {{!RFC7643}}). The resource "EndpointApp" represents
+(see section 6 of {{!RFC7643}}). The resource "EndpointApps" represents
 client applications that can control and/or receive data from the
-devices. The JSON schema for EndpointApp resource type is in {{resource-schema}}.
+devices. The JSON schema for EndpointApps resource type is in {{resource-schema}}.
 
-The attributes comprising EndpointsApp are listed in {{endpointapp-schema}}.
-The "EndpointApp" are included in the endpoint applications extension 
+The attributes comprising EndpointApps are listed in {{endpointapp-schema}}.
+"EndpointApps" is included in the endpoint applications extension 
 ("endpointAppsExt") {{endpointsappext-schema}}.
 
 
-SCIM EndpointApp Schema {#endpointapp-schema}
+SCIM EndpointApps Schema {#endpointapp-schema}
 =======================
-The schema for "EndpointApp" is identified using the schema URI:
-"urn:ietf:params:scim:schemas:core:2.0:EndpointApp". The following
+The schema for "EndpointApps" is identified using the schema URI:
+"urn:ietf:params:scim:schemas:core:2.0:EndpointApps". The following
 attributes are defined in this schema.
 
 ## Common Attributes
@@ -388,7 +388,7 @@ authentication of the application. Both SHALL NOT exist together in the
 SCIM object. Either clientToken or certificateInfo SHALL be present
 in the SCIM object.
 
-An example of a endpointApp SCIM object is as follows. Note that since
+An example of a endpointApps SCIM object is as follows. Note that since
 certificateInfo is present in the example, clientToken attribute is 
 NULL. 
 
@@ -398,8 +398,8 @@ NULL.
 <CODE ENDS>
 ~~~~~~~~~
 
-The schema for the endpointApp is presented in JSON format in Section
-{{endpointapp-schema-json}}, while the openAPI representation is provided in 
+The schema for the endpointApps is presented in JSON format in Section
+{{endpointapp-schema-json}}, while the OpenAPI representation is provided in 
 Section {{endpointapp-schema-openapi-representation}}.
 
 
@@ -418,7 +418,7 @@ This schema extends the device schema to represent the devices
 supporting BLE. The extension is identified using the following 
 schema URI:
 
-urn:ietf:params:scim:schemas:extension:ble:2.0:Device
+urn:ietf:params:scim:schemas:extension:ble:2.0:Devices
 
 The attributes are as follows:
 
@@ -493,7 +493,7 @@ extension are are as follows.
 
 (i) pairingNull extension is identified using the following schema URI:
 
-urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device
+urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Devices
 
 pairingNull does not have any attribute. It allows pairing for BLE
 devices that do not require a pairing method.
@@ -501,7 +501,7 @@ devices that do not require a pairing method.
 (ii) pairingJustWorks extension is identified using the following 
 schema URI:
 
-urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device
+urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Devices
 
 Just works pairing method does not require a key to pair devices. For
 completeness, the key attribute is included and is set to 'null'. Key 
@@ -511,7 +511,7 @@ attribute is required, immutable, and return by default.
 (iii) pairingPassKey extension is identified using the following 
 schema URI:
 
-urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device
+urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Devices
 
 The pass key pairing method requires a 6-digit key to pair devices.
 This extension has one singular integer attribute, "key", which is 
@@ -525,7 +525,7 @@ as follows:
 (iv) pairingOOB extension is identified using the following 
 schema URI:
 
-urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device
+urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Devices
 
 The out-of-band pairing method includes three singular attributes,
 i.e., key, randomNumber, and confirmationNumber. 
@@ -605,7 +605,7 @@ A schema that extends the device schema to enable WiFi EasyConnect
 (otherwise known as Device Provisioning Protocol). The extension is 
 identified using the following schema URI:
 
-urn:ietf:params:scim:schemas:extension:dpp:2.0:Device
+urn:ietf:params:scim:schemas:extension:dpp:2.0:Devices
 
 The attributes in this extension are adopted from {{DPP2}}. The 
 attributes are as follows:
@@ -700,7 +700,7 @@ ethernet solutions.  If the MAC address is known, then the device may
 be permitted (perhaps limited) access.  The extension is identified
 by the following URI:
 
-urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device
+urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Devices
 
 ### Single Attribute
 
@@ -735,7 +735,7 @@ representation is provided in Section [](#ethernet-mab-extension-schema-openapi-
 This extension specifies a voucher to be used by a Fido Device Onboarding
 (FDO) owner process {{FDO11}}, so that a trusted introduction can be made using that mechanism.
 
-urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Device
+urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Devices
 
 ### Single Attribute
 
@@ -773,7 +773,7 @@ Zigbee devices. The extension is identified using the following
 schema URI:
 
 
-urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device
+urn:ietf:params:scim:schemas:extension:zigbee:2.0:Devices
 
 It has one singular attribute and one multivalued 
 attribute. The attributes are as follows:
@@ -833,7 +833,7 @@ enterprise gateway. The endpointAppsExt has one multivalued attribute
 and two singular attributes. The extension is identified using the
 following schema URI:
 
-urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Device
+urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Devices
 
 ### Singular Attributes
 
@@ -1002,21 +1002,26 @@ Schema URIs for Data Resources" registry as follows:
 
 | URN | Name | Reference |
 | --- | ---  | --------  | 
-| urn:ietf:params:scim:schemas:core:2.0:Device | Core Device Schema | This memo |
-| urn:ietf:params:scim:schemas:extension: ble:2.0:Device | BLE Extension | This memo |
-| urn:ietf:params:scim:schemas:extension: ethernet-mab:2.0:Device| Ethernet MAB | This memo |
-| urn:ietf:params:scim:schemas:extension: fido-device-onboard:2.0:Device | Fido Device Onboard | This memo|
-| urn:ietf:params:scim:schemas:extension: dpp:2.0:Device | Device Provisioning Protocol | This memo |
-| urn:ietf:params:scim:schemas:extension: endpointAppsExt:2.0:Device| Application Endpoint Extension | This memo|
-| urn:ietf:params:scim:schemas:extension: pairingJustWorks:2.0:Device | Just Works Auth BLE |This memo|
-| urn:ietf:params:scim:schemas:extension: pairingOOB:2.0:Device| Out of Band Pairing for BLE |This memo|
-| urn:ietf:params:scim:schemas:extension: pairingPassKey:2.0:Device | Passkey Pairing for BLE |This memo|
+| urn:ietf:params:scim:schemas:core: 2.0:Devices | Core Device Schema | This memo |
+| urn:ietf:params:scim:schemas:extension: ble:2.0:Devices | BLE Extension | This memo |
+| urn:ietf:params:scim:schemas:extension: ethernet-mab:2.0:Devices| Ethernet MAB | This memo |
+| urn:ietf:params:scim:schemas:extension: fido-device-onboard:2.0:Devices | Fido Device Onboard | This memo|
+| urn:ietf:params:scim:schemas:extension: dpp:2.0:Devices | Device Provisioning Protocol | This memo |
+| urn:ietf:params:scim:schemas:extension: endpointAppsExt:2.0:Devices| Application Endpoint Extension | This memo|
+| urn:ietf:params:scim:schemas:extension: pairingJustWorks:2.0:Devices | Just Works Auth BLE |This memo|
+| urn:ietf:params:scim:schemas:extension: pairingOOB:2.0:Devices| Out of Band Pairing for BLE |This memo|
+| urn:ietf:params:scim:schemas:extension: pairingPassKey:2.0:Devices | Passkey Pairing for BLE |This memo|
 
 Note that the line break in URNs should be removed, as should this comment.
 --- back
 
 Changes from Earlier Versions
 =============================
+
+Draft -04:
+  * Device->Devices, EndpointApp->EndpointApps
+  * voucher->fdoVoucher
+  
 
 Draft -03:
   * Add MAB, FDO
