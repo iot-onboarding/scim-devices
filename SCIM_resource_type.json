@@ -1,8 +1,8 @@
 [
   {
     "schemas": ["urn:ietf:params:scim:schemas:core:2.0:ResourceType"],
-    "id": "Devices",
-    "name": "Devices",
+    "id": "Device",
+    "name": "Device",
     "endpoint": "/Devices",
     "description": "Device Account",
     "schema": "urn:ietf:params:scim:schemas:core:2.0:Device",
