@@ -1,0 +1,19 @@
+{
+  "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Devices",
+     "urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Devices"],
+     
+  "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
+  "displayName": "Some random Ethernet Device",
+  "adminState": true,
+  "urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Devices" : {
+     "fdoVoucher": "{... voucher ...}",
+  },
+  
+  "meta": {
+    "resourceType": "Device",
+      "created": "2022-01-23T04:56:22Z",
+    "lastModified": "2022-05-13T04:42:34Z",
+    "version": "W\/\"a330bc54f0671c9\"", 
+    "location": "https://example.com/v2/Device/e9e30dba-f08f-4109-8486-d5c6a3316111"
+  }
+}

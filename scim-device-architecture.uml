@@ -1,0 +1,23 @@
+@startuml
+
+agent Supplier1 as "Supplier 1"
+agent Supplier2 as "Supplier 2"
+agent Supplier3 as "Supplier 3"
+agent SCIMserver as "SCIM Server"
+agent RFC8366 as "RFC 8366 Controller"
+agent BLE as "BLE Controller"
+agent EasyConnect as "EasyConnect Controller"
+agent RFC8366dev as "RFC 8366 Device"
+agent BLEDev as "BLE Device"
+agent DPPdev as "EasyConnect Device"
+
+Supplier1 -- SCIMserver
+Supplier2 -- SCIMserver
+Supplier3 -- SCIMserver
+SCIMserver -- RFC8366
+RFC8366 -- RFC8366dev
+SCIMserver -- BLE
+BLE -- BLEDev
+SCIMserver -- EasyConnect
+EasyConnect -- DPPdev
+@enduml

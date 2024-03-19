@@ -1,0 +1,22 @@
+{  
+  "id": "urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Devices",
+  "name": "FDOExtension",
+  "description": "Device extension schema for Fido Device Onboard.",
+  "attributes" : [
+      {
+        "name": "fdoVoucher",
+        "type": "string",
+        "description": "A Fido Voucher as Defined in the FDO specification"
+        "multivalues": false,
+        "required": true,
+        "caseExact": false,
+        "mutability": "readWrite",
+        "returned": "default",
+        "uniqueness": "Manufacturer"
+      }
+  ],
+  "meta" : {
+    "resourceType" : "Schema",
+    "location" : "/v2/Schemas/urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Devices"
+  }
+}
