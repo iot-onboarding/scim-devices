@@ -1007,7 +1007,8 @@ Schema URIs for Data Resources" registry as follows:
 
 | URN | Name | Reference |
 | --- | ---  | --------  | 
-| urn:ietf:params:scim:schemas:core:2.0:Device | Core Device Schema | This memo, [](#scim-core-device-schema)|
+| urn:ietf:params:scim:schemas:core: 2.0:Device| Core Device Schema | This memo, [](#scim-core-device-schema)|
+|urn:ietf:params:scim:schemas:core: 2.0:EndpointApp|Endpoint Application|This memo, {{endpointapp-schema}}|
 
 Note that the line break in URNs should be removed, as should this comment.
 
