@@ -5,7 +5,7 @@ components:
       description: Device account
       type: object
       properties:
-        deviceDisplayName:
+        displayName:
           type: string
           description: "Human readable name of the device, suitable
                         for displaying to end-users. For example,
@@ -13,7 +13,7 @@ components:
           nullable: true
           readOnly: false
           writeOnly: false
-        adminState:
+        active:
           type: boolean
           description: A mutable boolean value indicating the device
                        administrative status. If set TRUE, the
@@ -36,7 +36,7 @@ components:
           readOnly: false
           writeOnly: false
       required:
-        - adminState
+        - active
       additionalProperties: false
       allOf:
         - $ref: '#/components/schemas/CommonAttributes'
