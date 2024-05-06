@@ -12,7 +12,7 @@ components:
           nullable: false
           readOnly: true
           writeOnly: false
-        deviceDisplayName:
+        displayName:
           type: string
           description: "Human readable name of the device, suitable
                         for displaying to end-users. For example,
@@ -21,7 +21,7 @@ components:
           readOnly: false
           writeOnly: false
           example: BLE Heart Monitor
-        adminState:
+        active:
           type: boolean
           description: A mutable boolean value indicating the device
                        administrative status. If set TRUE, the
@@ -37,5 +37,5 @@ components:
           example: true
       required:
         - id
-        - deviceDisplayName
-        - adminState
+        - displayName
+        - active
