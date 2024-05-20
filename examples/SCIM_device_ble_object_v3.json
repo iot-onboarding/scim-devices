@@ -3,8 +3,8 @@
      "urn:ietf:params:scim:schemas:extension:ble:2.0:Device"],
 
   "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
-  "deviceDisplayName": "BLE Heart Monitor",
-  "adminState": true,
+  "displayName": "BLE Heart Monitor",
+  "active": true,
   "urn:ietf:params:scim:schemas:extension:ble:2.0:Device" : {       
     "versionSupport": ["5.3"],
     "deviceMacAddress": "2C:54:91:88:C9:E2",

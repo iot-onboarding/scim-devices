@@ -4,9 +4,9 @@
      
   "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
   "displayName": "Some random Ethernet Device",
-  "adminState": true,
+  "active": true,
   "urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Devices" : {
-     "fdoVoucher": "{... voucher ...}",
+     "fdoVoucher": "{... voucher ...}"
   },
   
   "meta": {

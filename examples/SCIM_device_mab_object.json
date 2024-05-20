@@ -4,9 +4,9 @@
      
   "id": "e9e30dba-f08f-4109-8486-d5c6a3316111",
   "displayName": "Some random Ethernet Device",
-  "adminState": true,
+  "active": true,
   "urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device" : {
-    "deviceMacAddress": "2C:54:91:88:C9:E2",
+    "deviceMacAddress": "2C:54:91:88:C9:E2"
   },
   
   "meta": {

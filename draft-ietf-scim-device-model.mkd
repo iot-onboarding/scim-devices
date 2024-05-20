@@ -71,7 +71,7 @@ normative:
 --- abstract
 
 The initial core schema for SCIM (System for Cross Identity
-Management) was designed for provisioning users.  This memo specifies
+Management) was designed for provisioning users. This memo specifies
 schema extensions that enables provisioning of devices, using various
 underlying bootstrapping systems, such as Wifi EasyConnect, FIDO
 device onboarding vouchers, BLE passcodes, and MAC authenticated bypass.
@@ -82,23 +82,23 @@ Introduction
 ============
 
 The Internet of Things presents a management challenge in many
-dimensions.  One of them is the ability to onboard and manage large
-number of devices.  There are many models for bootstrapping trust
-between devices and network deployments.  Indeed it is expected that
+dimensions. One of them is the ability to onboard and manage large
+number of devices. There are many models for bootstrapping trust
+between devices and network deployments. Indeed it is expected that
 different manufacturers will make use of different methods.
 
 SCIM (System for Cross Identity Management) {{!RFC7643}} {{!RFC7644}}
-defines a protocol and a schema for provisioning of users.  However,
-it can easily be extended to provision devices.  The protocol and core
-schema were designed to permit just such extensions.  Bulk operations
-are supported.  This is good because often devices are procured in
+defines a protocol and a schema for provisioning of users. However,
+it can easily be extended to provision devices. The protocol and core
+schema were designed to permit just such extensions. Bulk operations
+are supported. This is good because often devices are procured in
 bulk.
 
 Why SCIM for devices?
 ---------------------
 Some might ask why SCIM is well suited for this purpose and not, for
-example, NETCONF or RESTCONF with YANG.  After all, there are all sorts
-of existing models available.  The answer is that the only information
+example, NETCONF or RESTCONF with YANG. After all, there are all sorts
+of existing models available. The answer is that the only information
 being passed about the device is neither state nor device configuration
 information, but only information necessary to bootstrap trust so that
 the device may establish connectivity.
@@ -113,21 +113,21 @@ federated services such as sales, payment, or conferencing services
 would be the servers.
 
 In the device model, the roles are reversed, and may be somewhat more
-varied.  A deployment network management system gateway (NMS gateway)
+varied. A deployment network management system gateway (NMS gateway)
 plays the role of the server, receiving information about devices that
-are expected to be connected to its network.  That server will apply
+are expected to be connected to its network. That server will apply
 appropriate local policies regarding whether/how the device should be
 connected.
 
 The client may be one of a number of entities:
 
  - A vendor who is authorized to add devices to a network as part of
-   a sales transaction.  This is similar to the sales integration
+   a sales transaction. This is similar to the sales integration
    sometimes envisioned by Bootstrapping Remote Key Infrastructure
    (BRSKI) {{?RFC8995}}.
 
  - A client application that administrators or employees use to add,
-   remove, or get information about devices.  An example might be an
+   remove, or get information about devices. An example might be an
    tablet or phone app that scans Easyconnect QR codes.
 
 ~~~~~
@@ -150,11 +150,11 @@ The client may be one of a number of entities:
 ~~~~~
 {: #arch title="Basic Architecture"}
 
-In {{arch}}, the onboarding app provides the device particulars.  As
+In {{arch}}, the onboarding app provides the device particulars. As
 part of the response, the SCIM server might provide additional
 information, especially in the case of non-IP devices, where an
 application-layer gateway may need to be used to communicate with
-the device.  The control endpoint is one among a number of objects
+the device. The control endpoint is one among a number of objects
 that may be returned.
 
 Schema Description
@@ -162,7 +162,7 @@ Schema Description
 
 RFC 7643 does not prescribe a language to describe a schema. We have
 chosen the JSON schema language {{!I-D.bhutton-json-schema}} for this
-purpose.  the use of XML for this SCIM devices is not supported.
+purpose. The use of XML for this SCIM devices is not supported.
 
 Several additional schemas specify specific onboarding mechanisms,
 such as BLE and Wifi Easy Connect.
@@ -220,14 +220,14 @@ SCIM Core Device Schema
 
 The core device schema provides the minimal representation of a
 resource "Device". It contains only those attributes that any device
-may need, and only one attribute is required.  The core schema for
+may need, and only one attribute is required. The core schema for
 "Device" is identified using the schema URI:
 "urn:ietf:params:scim:schemas:core:2.0:Device". The following
 attributes are defined in the device core schema.
 
 ## Singular Attributes
 
-deviceDisplayName
+displayName
 
 This attribute is of type "string" and provides a human-readable name 
 for a device. It is intended to be displayed to end-users and should be
@@ -235,12 +235,12 @@ suitable for that purpose. The attribute is not required, and is not
 case-sensitive. It may be modified and SHOULD be returned 
 by default. No uniqueness constraints are imposed on this attribute.
 
-adminState
+active
 
-The "adminState" attribute is of type "boolean" and is a mutable
+The "active" attribute is of type "boolean" and is a mutable
 attribute, and is required. If set to TRUE, it means that this device
-is intended to be operational.  Attempts to control or access a device
-where this value is set to FALSE may fail.  For example, when used in
+is intended to be operational. Attempts to control or access a device
+where this value is set to FALSE may fail. For example, when used in
 conjunction with NIPC {{?I-D.brinckman-nipc}}, commands such as
 connect, disconnect, subscribe that control app sends to the
 controller for the devices any command coming from the control app for
@@ -255,13 +255,13 @@ may be used as described in {{!RFC8520}}. This attribute is case
 sensitive and returned by default.
 
 
-| Attribute  | Multi Value | Req | Case Exact| Mutable | Return | Unique |
-|------------------|-------|-----|------|---------|--------|--------|
-| deviceDisplayName |   F   |  F  |  F   |   RW    |  Def   |  None  |
-|------------------|-------|-----|------|---------|--------|--------|
-| adminState       |   F   |  T  |  F   |   RW    |  Def   |  None  |
-|------------------|-------|-----|------|---------|--------|--------|
-| mudUrl           |   F   |  F  |  T   |   RW    |  Def   |  None  |
+| Attribute   | Multi Value | Req | Case Exact| Mutable | Return | Unique |
+|-------------|-------|-----|------|---------|--------|--------|
+| displayName |   F   |  F  |  F   |   RW    |  Def   |  None  |
+|-------------|-------|-----|------|---------|--------|--------|
+| active      |   F   |  T  |  F   |   RW    |  Def   |  None  |
+|-------------|-------|-----|------|---------|--------|--------|
+| mudUrl      |   F   |  F  |  T   |   RW    |  Def   |  None  |
 {: #tabDevice title="Characteristics of device schema attributes. (Req = Required,
 T = True, F = False, RW = ReadWrite, and Def = Default)"}
 
@@ -331,7 +331,7 @@ uniqueness contraint on the attribute.
 clientToken
 
 This attribute type string contains a token that the client will use 
-to authenticate itself.  Each token may be a string up to 500 
+to authenticate itself. Each token may be a string up to 500 
 characters in length. It is mutable, required, case sensitive 
 and returned by default if it exists.
 
@@ -443,13 +443,13 @@ isRandom
 A boolean flag taken from the BLE core specification, 5.3. If FALSE, the
 device is using a public MAC address. If TRUE, the device uses a
 Random address resolved using IRK. This attribute is not required, it is 
-mutable, and returned by default.  Its default value is FALSE.
+mutable, and returned by default. Its default value is FALSE.
 
 separateBroadcastAddress
 
 When present, this address is used for broadcasts/advertisements.
-This value MUST NOT be set when an IRK is provided.  Its form is the
-same as deviceMacAddress.  It is not required, multivalued, mutable,
+This value MUST NOT be set when an IRK is provided. Its form is the
+same as deviceMacAddress. It is not required, multivalued, mutable,
 and returned by default.
 
 irk
@@ -489,7 +489,7 @@ returned by default.
 ### BLE Pairing Method Extensions
 
 The details on pairing methods and their associated attributes are in
-section 2.3 of {{BLE53}}.  This memo defines extensions for four
+section 2.3 of {{BLE53}}. This memo defines extensions for four
 pairing methods that are nested insided the BLE extension schema. Each 
 extension contains the common attributes [](#common-attributes). These 
 extension are are as follows.
@@ -699,8 +699,8 @@ in Section [](#dpp-extension-schema-openapi-representation).
 
 This extension enables a legacy means of (very) weak authentication,
 known as MAC Authenticated Bypass (MAB), that is supported in many wired
-ethernet solutions.  If the MAC address is known, then the device may
-be permitted (perhaps limited) access.  The extension is identified
+ethernet solutions. If the MAC address is known, then the device may
+be permitted (perhaps limited) access. The extension is identified
 by the following URI:
 
 urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device
@@ -711,7 +711,7 @@ This extension has a singular attribute:
 
 deviceMacAddress
 
-This is the Ethernet address to be provisioned onto the network.  It
+This is the Ethernet address to be provisioned onto the network. It
 takes the identical form as found in both the BLE and DPP extensions.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
@@ -956,14 +956,14 @@ Schema JSON Representation
 ## Ethernet MAB Extension Schema JSON
 ~~~~~
 <CODE BEGINS>
-{::include extensions/SCIM_MAB_extension_schema.ftxt}
+{::include extensions/SCIM_mab_extension_schema.ftxt}
 <CODE ENDS>
 ~~~~~
 
 ## FDO Extension Schema JSON
 ~~~~~
 <CODE BEGINS>
-{::include extensions/SCIM_FDO_extension_schema.ftxt}
+{::include extensions/SCIM_fdo_extension_schema.ftxt}
 <CODE ENDS>
 ~~~~~
 
@@ -981,18 +981,28 @@ Schema JSON Representation
 <CODE ENDS>
 ~~~~~~~~~
 
+## Representation of Schema  {#representation-of-schema}
+
+The following is the JSON representation of the Schema. Implementors MUST NOT vary from the schema definitions in their implementations.  They may choose not to implement a particular extension, but if they do, they MUST implement all mandatory elements, and they must implement optional elements as specified.
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include SCIM_schema.ftxt}
+<CODE ENDS>
+~~~~~~~~~
+
 Security Considerations
 =======================
 
 Because provisioning operations are senstive, each client must be
-appropriately authenticated.  Certain objects may be read-only or
+appropriately authenticated. Certain objects may be read-only or
 not visible based on who is connected.
 
 Devices provisioned with this model may be completely controlled by
 the administrator of the SCIM server, depending on how those systems
-are defined.  For instance, if BLE passkeys are provided, the device
-can be connected to, and perhaps paired with.  Any additional security
-must be provided at higher application layers.  For example, if client
+are defined. For instance, if BLE passkeys are provided, the device
+can be connected to, and perhaps paired with. Any additional security
+must be provided at higher application layers. For example, if client
 applications wish to keep private information to and from the device,
 they should encrypt that information over-the-top.
 
