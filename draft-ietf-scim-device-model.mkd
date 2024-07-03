@@ -94,6 +94,20 @@ schema were designed to permit just such extensions. Bulk operations
 are supported. This is good because often devices are procured in
 bulk.
 
+A primary purpose of this specification is to provision the network
+for onboarding and communications access to and from devices
+within a local deployment based on the underlying capabilities of
+those devices. The underlying security mechanisms of some devices
+range from non-existent such as the Bluetooth Low Energy (BLE) "Just
+Works" pairing method to a robust Fido Device Onboarding (FDO)
+mechanism.  Information from the SCIM server is dispatched to control
+functions based on selected schema extensions to enable these
+communications within a network.  The SCIM database is therefore
+essentially equivalent to a AAA database, and should be carefully
+treated as such.
+
+
+
 Why SCIM for devices?
 ---------------------
 Some might ask why SCIM is well suited for this purpose and not, for
