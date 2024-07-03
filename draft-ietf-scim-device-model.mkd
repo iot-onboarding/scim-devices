@@ -435,7 +435,7 @@ insensitive, and it is mutable and return as default. The regex
 pattern is the following:
 
 ~~~~~~
-^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}
+^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}$
 ~~~~~~
 
 isRandom
@@ -456,7 +456,7 @@ irk
 
 A string value, Identity resolving key, which is unique for every 
 device. It is used to resolve the random address. It is required when 
-addressType is TRUE. It is mutable and return by default.
+isRandom is TRUE. It is mutable and return by default.
 
 mobility
 
@@ -636,7 +636,7 @@ unique 48-bit value. This attribute is optional, case insensitive,
 mutable, and returned by default. The regex pattern is as follows:
 
 ~~~~~
-^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.
+^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}$
 ~~~~~
 
 serialNumber
@@ -791,7 +791,7 @@ This attribute is required, case insensitive, mutable, and returned by
 default. The regex pattern is as follows:
 
 ~~~~~
-^[0-9A-Fa-f]{16}$
+^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){7}$
 ~~~~~
 
 ### Multivalued Attribute
