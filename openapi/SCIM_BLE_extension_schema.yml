@@ -107,13 +107,6 @@ components:
 
     NullPairing:
       type: object
-      properties:
-        id:
-          type: string
-          description: The id of the null pairing schema.
-          nullable: false
-          readOnly: true
-          writeOnly: false
 
     PairingJustWorks:
       type: object

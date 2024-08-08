@@ -7,7 +7,7 @@
   "active": true,
   "urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device" : {
     "versionSupport": ["3.0"],
-    "deviceEui64Address": "50325FFFFEE76728"
+    "deviceEui64Address": "50:32:5F:FF:FE:E7:67:28"
   },
   
   "meta": {
