@@ -473,11 +473,11 @@ isRandom is TRUE. It is mutable and return by default.
 
 mobility
 
-A boolean attribute to enable mobility on BLE device. If set to True, 
-the BLE device will automatically connect to the closest AP. For 
-example, BLE device is connected with AP-1 and moves out of range but 
-comes in range of AP-2, it will be disconnected with AP-1 and connects 
-with AP-2. It is returned by default and mutable.
+A boolean attribute to enable BLE device mobility. If set to True, the
+network will attempt to navigate the BLE device to the closest AP.
+For example, BLE device is connected with AP-1 and moves out of range
+but comes in range of AP-2, it will be disconnected with AP-1 and
+connects with AP-2. It is returned by default and mutable.
 
 ### Multivalued Attributes
 
