@@ -314,6 +314,11 @@ The "EndpointApp" are included in the endpoint applications extension
 
 SCIM EndpointApp Schema {#endpointapp-schema}
 =======================
+
+The EndpointApp schema is used to authorize clients control
+or telemetry services for clients.  The schema identifies the application
+and how clients are to authenticate to the various services.
+
 The schema for "EndpointApp" is identified using the schema URI:
 "urn:ietf:params:scim:schemas:core:2.0:EndpointApp". The following
 attributes are defined in this schema.
@@ -347,36 +352,30 @@ clientToken
 This attribute type string contains a token that the client will use 
 to authenticate itself. Each token may be a string up to 500 
 characters in length. It is mutable, required, case sensitive 
-and returned by default if it exists.
+and returned by default if it exists.  The SCIM server should expect
+that client tokens will be shared by the SCIM client with other
+components within the client's infrastructure.
 
-## Complex Attribute
+## Complex Attributes
 
-certificateInfo
+### certificateInfo
 
-It is the complex attribute that Contains x509 certificate's subject
-name and root CA information associated with the device control or 
-telemetry app. It further has three attributes that are described 
-below.
+It is the complex attribute that contains x509 certificate's subject
+name and root CA information associated with application clients that
+will connect for purposes of device control or telemetry.
 
-rootCN
+rootPublicKey
 
-It is the root certificate common name. This attribute is required,
-read only, singular and case sensitive.
+this is the base64 encoding of the public key of a certficate that is
+used to sign certificates that may used for client application access.
 
 subjectName
 
-Also known as the Common Name (CN), the Subject Name is a field in the
-X.509 certificate that identifies the primary domain or IP address for
-which the certificate is issued. This attribute is not required,
-read only, singular and case sensitive.
-
-subjectAlternativeName
-
-This attribute allows for the inclusion of multiple domain names and
-IP addresses in a single certificate. This enables the certificate to
-be used for multiple related domains or IPs without the need for 
-separate certificates for each. This attribute is not required,
-read only, multivalued and case sensitive.
+If present, this field contains a dnsName, as specified in Section
+4.2.1.6 of {{!RFC5280}}.  It is NOT expected that the dnsName will
+necessarily bind to the incoming IP address of the application client.
+This attribute is not required, read only, singular and case
+sensitive.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -388,23 +387,23 @@ read only, multivalued and case sensitive.
 |------------------|-------|-----|------|---------|--------|--------|
 | certificateInfo|   F   |  F  |  F   |   RW    |  Def   |  None  |
 |------------------|-------|-----|------|---------|--------|--------|
-| rootCN         |   F   |  T  |  T   |   R     |  Def   |  None  |
+| rootPublicKey    |   F   |  T  |  T   |   R     |  Def   |  None  |
 |------------------|-------|-----|------|---------|--------|--------|
 | subjectName    |   F   |  F  |  T   |   R     |  Def   |  None  |
-|------------------|-------|-----|------|---------|--------|--------|
-| subjectAltName |   T   |  F  |  T   |   R     |  Def   |  None  |
-{: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required,
-T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufactirer
-and Def = Default)"}
+{: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required, T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufacturer and Def = Default)"}
 
-Note that attributes clientToken and certificateInfo are used for the
-authentication of the application. Both SHALL NOT exist together in the
-SCIM object. Either clientToken or certificateInfo SHALL be present
-in the SCIM object.
+Note that either clientToken and certificateInfo are used for the
+authentication of the application.  If certificateInfo is NOT present
+when an endpointApp is object created, then the server SHOULD return
+a clientToken.  Otherwise, if the server accepts the certificateInfo
+object for authentication, it SHOULD NOT return a clientToken.
+If the server accepts and produces a clientToken, then control and
+telemetry servers MUST validate both.  The SCIM client will know
+that this is the case based on the SCIM object that is returned.
 
-An example of a endpointApp SCIM object is as follows. Note that since
-certificateInfo is present in the example, clientToken attribute is 
-NULL. 
+certificateInfo is preferred in situations where client functions
+are federated such that different clients may connect for different
+purposes.
 
 ~~~~~~~~~
 <CODE BEGINS>
@@ -567,7 +566,7 @@ default if it exists.
 |------------------|-------|-----|------|---------|--------|--------|
 | sepBroadcastAdd |   T   |  T  |  F   |   RW    |  Def   | None   |
 |------------------|-------|-----|------|---------|--------|--------|
-| irk             |   F   |  F  |  F   |   RW    |  Def   | Manuf  |
+| irk             |   F   |  F  |  F   |   WO    |  Nev   | Manuf  |
 |------------------|-------|-----|------|---------|--------|--------|
 | versionSupport  |   T   |  T  |  F   |   RW    |  Def   | None   |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -576,8 +575,8 @@ default if it exists.
 | pairingMethods  |   T   |  T  |  T   |   RW    |  Def   | None   |
 {: #tabBLE title="Characteristics of BLE extension schema attributes. 
 sepBroadcastAdd is short for separateBroadcastAddress. (Req = Required,
-T = True, F = False, RW = ReadWrite, Def = Default, and 
-Manuf = Manufacturer)."}
+T = True, F = False, RW = ReadWrite, WO=Write Only, Def = Default,
+Nev = Never, and Manuf = Manufacturer)."}
 
 An example of a device object with BLE extension is as follows:
 
@@ -682,7 +681,7 @@ is optional, case insensitive, mutable, and returned by default.
 +====================+=====+===+======+=========+========+========+
 | dppVersion         |  F  | T |  F   |   RW    |  Def   | None   |
 +--------------------+-----+---+------+---------+--------+--------+
-| bootstrapKey       |  F  | T |  T   |   RW    |  Def   | None   |
+| bootstrapKey       |  F  | T |  T   |   WO    |  Nev   | None   |
 +--------------------+-----+---+------+---------+--------+--------+
 | deviceMacAddress   |  F  | F |  F   |   RW    |  Def   | Manuf  |
 +--------------------+-----+---+------+---------+--------+--------+
@@ -694,8 +693,8 @@ is optional, case insensitive, mutable, and returned by default.
 +--------------------+-----+---+------+---------+--------+--------+
 ~~~
 {: #tabDPP title="Characteristics of DPP extension schema attributes. 
-(Req = Required, T = True, F = False, RW = ReadWrite, Def = Default,
-and Manuf = Manufacturer)."}
+(Req = Required, T = True, F = False, RW = ReadWrite, WO = Write Only,
+Def = Default, Nev = Never, and Manuf = Manufacturer)."}
 
 An example of a device object with DPP extension is below:
 
@@ -765,10 +764,10 @@ specification (citation needed).
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
-| fdoVoucher      |   F   |  T  |  F   |   RW    |  Def   | None   |
+| fdoVoucher      |   F   |  T  |  F   |   WO    |  Nev   | None   |
 {: #tabFDO title="Characteristics of FDO extension schema attributes
-(Req = Required, T = True, F = False, RW = ReadWrite, and 
-Def = Default)"}
+(Req = Required, T = True, F = False, WO = WriteOnly, and 
+Nev = Never)"}
 
 An example of a device object with FDO extension is shown below:
 
@@ -1008,9 +1007,45 @@ The following is the JSON representation of the Schema. Implementors MUST NOT va
 Security Considerations
 =======================
 
-Because provisioning operations are senstive, each client must be
+Because provisioning operations are sensitive, each client must be
 appropriately authenticated. Certain objects may be read-only or
 not visible based on who is connected.
+
+Each operation has its own security considerations.
+
+## Object Creation
+
+Object creation in this framedwork grants a device access to the
+infrastructure and will to a greater or lesser extent grant the
+infrastructure access to the device.  When IP-layer access is
+provisioned, then the access will be at the IP layer.  For non-IP
+layer access, such as provisioning of BLE devices, the access may
+be to the entire device.  The explicit grant is made when the
+credentials of the device are shared with the SCIM server.
+
+## Object Deletion
+
+Once granted, even if the object is removed, the server may or may not
+act on that removal.  The deletion of the object is a signal of intent
+by the application that it no longer expects the device to be on the
+network.  It is strictly up to the SCIM server and its back end policy
+to decide whether or not to revoke access to the infrastructure.  Any
+access grant by the device must be separately handled.
+
+## Read operations
+
+Read operations are necessary in order for an application to sync its
+state to know what devices it is expected to manage.  Only clients
+that have created objects or those they authorize SHOULD have the
+ability to read those objects.
+
+## Update Operations
+
+Update operations may be necessary if a device has been modified
+in some way.  The same access control policy for read operations is
+RECOMMENDED here.
+
+## Higher level protection for certain systems
 
 Devices provisioned with this model may be completely controlled by
 the administrator of the SCIM server, depending on how those systems

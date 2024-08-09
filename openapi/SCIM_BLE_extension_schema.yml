@@ -65,7 +65,7 @@ components:
                        address.
           nullable: true
           readOnly: false
-          writeOnly: false
+          writeOnly: true
         mobility:
           type: boolean
           description: If set to True, the BLE device will 
@@ -133,7 +133,7 @@ components:
                        The pattern of key is ^[0-9]{6}$.
           nullable: false
           readOnly: false
-          writeOnly: false
+          writeOnly: true
       required:
         - key
 
@@ -152,14 +152,14 @@ components:
           description: Nonce added to the key
           nullable: false
           readOnly: false
-          writeOnly: false
+          writeOnly: true
         confirmationNumber:
           type: integer
           description: Some solutions require a confirmation number 
                        in the RESTful message exchange.
           nullable: true
           readOnly: false
-          writeOnly: false
+          writeOnly: true
       required:
         - key
         - randomNumber

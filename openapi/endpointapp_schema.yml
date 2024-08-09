@@ -47,9 +47,9 @@ components:
                     root CA information associated with the device
                     control or telemetry app."
       properties:
-        rootCN:
+        rootPublicKey:
           type: string
-          description: "A root certificate common name."
+          description: "The base64 encoding of the root public key."
           nullable: false
           readOnly: true
           writeOnly: false
