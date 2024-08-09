@@ -37,9 +37,9 @@
       "uniqueness": "none",
       "subAttributes" : [
         {
-          "name" : "rootCN",
+          "name" : "rootPublicKey",
           "type" : "string",
-          "description" : "A root certificate common name.",
+          "description" : "The base64 encoding of the public key of the CA",
           "multiValued" : false,
           "required" : true,
           "caseExact" : true,
@@ -50,22 +50,11 @@
         {
           "name" : "subjectName",
           "type" : "string",
-          "description" : "Also known as the Common Name (CN), the Subject Name is a field in the X.509 certificate that identifies the primary domain or IP address for which the certificate is issued.",
+          "description" : "A Common Name (CN) of the form of CN = dnsName",
           "multiValued" : false,
           "required" : false,
           "caseExact" : true,
-          "mutability" : "readOnly",
-          "returned" : "default",
-          "uniqueness" : "none"
-        },
-        {
-          "name" : "subjectAlternativeName",
-          "type" : "string",
-          "description" : "This attribute allows for the inclusion of multiple domain names and IP addresses in a single certificate. This enables the certificate to be used for multiple related domains or IPs without the need for separate certificates for each.",
-          "multiValued" : true,
-          "required" : false,
-          "caseExact" : true,
-          "mutability" : "readOnly",
+          "mutability" : "readWrite",
           "returned" : "default",
           "uniqueness" : "none"
         }
