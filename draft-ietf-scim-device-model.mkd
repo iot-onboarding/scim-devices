@@ -368,14 +368,20 @@ rootPublicKey
 
 this is the base64 encoding of the public key of a certficate that is
 used to sign certificates that may used for client application access.
+This object is not required, singular, case sensitive, and read/write.
+If not present, a set of trust anchors may be configured out of band.
 
 subjectName
 
 If present, this field contains a dnsName, as specified in Section
 4.2.1.6 of {{!RFC5280}}.  It is NOT expected that the dnsName will
 necessarily bind to the incoming IP address of the application client.
-This attribute is not required, read only, singular and case
-sensitive.
+This attribute is not required, read write, singular and NOT case
+sensitive.  This name may also appear as an subjectAlternateName (SAN)
+of type dnsName, in which case the subject MUST be ignored.  If
+multiple dnsNames are present, it is left to server implementations to
+address any authorization conflicts associated with those names.
+
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -387,9 +393,9 @@ sensitive.
 |------------------|-------|-----|------|---------|--------|--------|
 | certificateInfo|   F   |  F  |  F   |   RW    |  Def   |  None  |
 |------------------|-------|-----|------|---------|--------|--------|
-| rootPublicKey    |   F   |  T  |  T   |   R     |  Def   |  None  |
+| rootPublicKey    |   F   |  F  |  T   |   RW    |  Def   |  None  |
 |------------------|-------|-----|------|---------|--------|--------|
-| subjectName    |   F   |  F  |  T   |   R     |  Def   |  None  |
+| subjectName    |   F   |  T  |  T   |   RW     |  Def   |  None  |
 {: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required, T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufacturer and Def = Default)"}
 
 Note that either clientToken and certificateInfo are used for the
@@ -469,7 +475,7 @@ irk
 
 A string value, Identity resolving key, which is unique for every 
 device. It is used to resolve the random address. It is required when 
-isRandom is TRUE. It is mutable and return by default.
+isRandom is TRUE. It is mutable and never returned.
 
 mobility
 
