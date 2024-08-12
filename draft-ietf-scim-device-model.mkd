@@ -480,10 +480,10 @@ isRandom is TRUE. It is mutable and never returned.
 mobility
 
 A boolean attribute to enable BLE device mobility. If set to True, the
-network will attempt to navigate the BLE device to the closest AP.
-For example, BLE device is connected with AP-1 and moves out of range
-but comes in range of AP-2, it will be disconnected with AP-1 and
-connects with AP-2. It is returned by default and mutable.
+device could be expected to move within a network of APs.  For
+example, BLE device is connected with AP-1 and moves out of range but
+comes in range of AP-2, it will be disconnected with AP-1 and connects
+with AP-2. It is returned by default and mutable.
 
 ### Multivalued Attributes
 
@@ -1017,17 +1017,22 @@ Because provisioning operations are sensitive, each client must be
 appropriately authenticated. Certain objects may be read-only or
 not visible based on who is connected.
 
-Each operation has its own security considerations.
+## SCIM operations
 
-## Object Creation
+An attacker that has authenticated to a trusted SCIM client could
+manipulate portions of the SCIM database.  To be clear on the risks,
+we discuss each operation below:
 
-Object creation in this framedwork grants a device access to the
+### Object Creation
+
+Object creation in this framework grants a device access to the
 infrastructure and will to a greater or lesser extent grant the
 infrastructure access to the device.  When IP-layer access is
 provisioned, then the access will be at the IP layer.  For non-IP
 layer access, such as provisioning of BLE devices, the access may
 be to the entire device.  The explicit grant is made when the
 credentials of the device are shared with the SCIM server.
+
 
 ## Object Deletion
 
@@ -1041,15 +1046,18 @@ access grant by the device must be separately handled.
 ## Read operations
 
 Read operations are necessary in order for an application to sync its
-state to know what devices it is expected to manage.  Only clients
-that have created objects or those they authorize SHOULD have the
-ability to read those objects.
+state to know what devices it is expected to manage.  An attacker with
+access to SCIM objects may gain access to the devices themselves.  To
+prevent one SCIM client from interfering with devices that it has no
+business managing, only clients that have created objects or those
+they authorize SHOULD have the ability to read those objects.
 
 ## Update Operations
 
-Update operations may be necessary if a device has been modified
-in some way.  The same access control policy for read operations is
-RECOMMENDED here.
+Update operations may be necessary if a device has been modified in
+some way.  Attackers with update access may be able to disable network
+access to devices or device access to networks.  To avoid this, the
+same access control policy for read operations is RECOMMENDED here.
 
 ## Higher level protection for certain systems
 
@@ -1060,6 +1068,12 @@ can be connected to, and perhaps paired with. Any additional security
 must be provided at higher application layers. For example, if client
 applications wish to keep private information to and from the device,
 they should encrypt that information over-the-top.
+
+## Logging
+
+An attacker could learn what devices are on a network by examining
+SCIM logs.  Due to the sensitive nature of SCIM operations, logs
+SHOILD be encrypted both on the disk and in transit.
 
 IANA Considerations
 ===================
