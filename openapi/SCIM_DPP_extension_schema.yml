@@ -40,7 +40,7 @@ components:
                        characters.
           nullable: false
           readOnly: false
-          writeOnly: false
+          writeOnly: true
         deviceMacAddress:
           type: string
           description: The MAC address assigned by the manufacturer.

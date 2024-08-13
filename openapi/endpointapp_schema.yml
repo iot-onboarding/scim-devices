@@ -47,11 +47,11 @@ components:
                     root CA information associated with the device
                     control or telemetry app."
       properties:
-        rootCN:
+        rootPublicKey:
           type: string
-          description: "A root certificate common name."
+          description: "The base64 encoding of the root public key."
           nullable: false
-          readOnly: true
+          readOnly: false
           writeOnly: false
 
         subjectName:
@@ -62,24 +62,11 @@ components:
                         domain or IP address for which the
                         certificate is issued."
           nullable: false
-          readOnly: true
+          readOnly: false
           writeOnly: false
 
-        subjectAlternativeName:
-          type: array
-          items:
-            type: string
-          description: "This attribute allows for the inclusion of
-                        multiple domain names and IP addresses in a
-                        single certificate. This enables the 
-                        certificate to be used for multiple related
-                        domains or IPs without the need for 
-                        separate certificates for each. "
-          nullable: true
-          readOnly: true
-          writeOnly: false
       required:
-      - rootCN
+      - subjectName
 
     CommonAttributes:
       type: object

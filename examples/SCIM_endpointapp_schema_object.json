@@ -4,11 +4,9 @@
   "applicationType": "deviceControl",
   "applicationName": "Device Control App 1",
   "certificateInfo": {
-      "rootCN": "DigiCert Global Root CA",
-      "subjectName": "wwww.example.com",
-      "subjectAlternativeName": ["xyz.example.com", "abc.example.com"]
+      "rootPublicKey" : "MIIBIjAN...",
+      "subjectName": "wwww.example.com"
   },
-  "clientToken": null,
   "meta": {
     "resourceType": "EndpointApp",
     "created": "2022-01-23T04:56:22Z",
