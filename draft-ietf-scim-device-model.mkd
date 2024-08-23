@@ -364,12 +364,13 @@ It is the complex attribute that contains x509 certificate's subject
 name and root CA information associated with application clients that
 will connect for purposes of device control or telemetry.
 
-rootPublicKey
+rootCA
 
-this is the base64 encoding of the public key of a certficate that is
-used to sign certificates that may used for client application access.
-This object is not required, singular, case sensitive, and read/write.
-If not present, a set of trust anchors may be configured out of band.
+This is the base64 encoding of the public key of a certificate as
+described in {{!rfc4648}} Section 4.  It used as the trust anchor for
+certificates that may used for client application access.  This object
+is not required, singular, case sensitive, and read/write.  If not
+present, a set of trust anchors MUST be configured out of band.
 
 subjectName
 
