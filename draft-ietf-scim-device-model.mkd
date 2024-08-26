@@ -1127,6 +1127,12 @@ The initial table entries shall be as follows:
 Changes from Earlier Versions
 =============================
 
+Drafts 04-08:
+  * Lots of cleanup
+  * Security review responses
+  * Removal of a tab
+  * Dealing with certificate stuff
+
 Draft -03:
   * Add MAB, FDO
   * Some grammar improvements
