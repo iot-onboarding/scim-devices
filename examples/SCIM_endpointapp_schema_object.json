@@ -4,7 +4,7 @@
   "applicationType": "deviceControl",
   "applicationName": "Device Control App 1",
   "certificateInfo": {
-      "rootPublicKey" : "MIIBIjAN...",
+      "rootCA" : "MIIBIjAN...",
       "subjectName": "wwww.example.com"
   },
   "meta": {

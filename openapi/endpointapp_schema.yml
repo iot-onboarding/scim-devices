@@ -47,9 +47,10 @@ components:
                     root CA information associated with the device
                     control or telemetry app."
       properties:
-        rootPublicKey:
+        rootCA:
           type: string
-          description: "The base64 encoding of the root public key."
+          description: "The base64 encoding of a trust anchor
+	  	        certificate,as per RFC 4648 Section 4."
           nullable: false
           readOnly: false
           writeOnly: false
