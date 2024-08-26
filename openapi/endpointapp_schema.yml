@@ -50,7 +50,7 @@ components:
         rootCA:
           type: string
           description: "The base64 encoding of a trust anchor
-	  	        certificate,as per RFC 4648 Section 4."
+                        certificate,as per RFC 4648 Section 4."
           nullable: false
           readOnly: false
           writeOnly: false
