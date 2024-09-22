@@ -39,7 +39,7 @@
         {
           "name" : "rootCA",
           "type" : "string",
-          "description" : "The base64 encoding of the DER encoding of the CA",
+          "description" : "The base64 encoding of the DER encoding of the CA certificate",
           "multiValued" : false,
           "required" : false,
           "caseExact" : true,

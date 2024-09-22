@@ -2,7 +2,7 @@ components:
   schemas:
     DppDevice:
       type: object
-      description: DPP device extension schema
+      description: Wi-Fi Easy Connect (DPP) device extension schema
       properties:
         schemas:
           type: array

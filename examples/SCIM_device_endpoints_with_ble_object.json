@@ -12,25 +12,12 @@
     "separateBroadcastAddress": ["AA:BB:88:77:22:11", "AA:BB:88:77:22:12"],
     "mobility": false,
     "pairingMethods": [
-        "urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device",
-        "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device",
-        "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device",
-        "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device"],
-    "urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device": null,
-    "urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device": {
-      "key": null
-    },
+        "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device"]
     "urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device" : {
       "key": 123456
-    },
-    "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device": {
-      "key": "TheKeyvalueRetrievedFromOOB",
-      "randNumber": 238796813516896
     }         
   },
-
   "urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Device": {
-
     "applications": [
       {
         "value" : "e9e30dba-f08f-4109-8486-d5c6a3316212",
@@ -44,8 +31,6 @@
       "deviceControlEnterpriseEndpoint": "https://enterprise.com/device_control_app_endpoint/",
       "telemetryEnterpriseEndpoint": "https://enterprise.com/telemetry_app_endpoint/"
   },
-
-  
   "meta": {
     "resourceType": "Device",
       "created": "2022-01-23T04:56:22Z",

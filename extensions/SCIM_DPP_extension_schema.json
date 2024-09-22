@@ -1,7 +1,7 @@
 {  
     "id": "urn:ietf:params:scim:schemas:extension:dpp:2.0:Device",
     "name": "dppExtension",
-    "description": "Device extension schema for DPP",
+    "description": "Device extension schema for Wi-Fi Easy Connect / Device Provisioning Protocol (DPP)",
     "attributes" : [
       {
         "name": "dppVersion",
@@ -39,7 +39,8 @@
       {
         "name": "deviceMacAddress",
         "type": "string",
-        "description": "The MAC address assigned by the manufacturer. It is unique 48 bit value. The regex pattern is ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.",
+        "pattern": "^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}$",
+        "description": "A unique public MAC address assigned by the manufacturer.",
         "multivalues": false,
         "required": false,
         "caseExact": false,
