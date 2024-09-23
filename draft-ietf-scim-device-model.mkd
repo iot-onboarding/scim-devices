@@ -464,12 +464,13 @@ isRandom
 
 A boolean flag taken from the BLE core specification, 5.3. If FALSE,
 the device is using a public MAC address. If TRUE, the device uses a
-random address.  If an IRK is present, the address represents a
-resolvable private address.  Otherwise, the address is assumed to be a
-static private address.  Unresolvable private addresses are not
-supported by this specification.  This attribute is not required, it
-is mutable, and returned by default. Its default value is FALSE.  Note
-that unresolvable random MAC addresses are not supported.  Therefore,
+random address.  If an Idenifying Resolving Key (IRK) is present, the
+address represents a resolvable private address.  Otherwise, the
+address is assumed to be a static private address.  Unresolvable
+private addresses are not supported by this specification.  This
+attribute is not required, it is mutable, and returned by default. Its
+default value is FALSE.  Note that unresolvable random MAC addresses
+are not supported.  Therefore,
 
 separateBroadcastAddress
 
@@ -480,9 +481,10 @@ and returned by default.
 
 irk
 
-A string value, Identity resolving key, which is unique for every 
-device. It is used to resolve the random address. It is required when 
-isRandom is TRUE. It is mutable and never returned.
+A string value that specifies the identity resolving key (IRK), which
+is unique to each device. It is used to resolve private random
+address. It should only be provisioned when isRandom is TRUE. It is
+mutable and never returned.
 
 mobility
 
