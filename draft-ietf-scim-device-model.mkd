@@ -466,7 +466,7 @@ A boolean flag taken from the BLE core specification, 5.3. If FALSE,
 the device is using a public MAC address. If TRUE, the device uses a
 random address.  If an Idenifying Resolving Key (IRK) is present, the
 address represents a resolvable private address.  Otherwise, the
-address is assumed to be a random static address.  Unresolvable
+address is assumed to be a random static address.  Non-resolvable
 private addresses are not supported by this specification.  This
 attribute is not required. It is mutable, and is returned by default.
 The default value is FALSE.
