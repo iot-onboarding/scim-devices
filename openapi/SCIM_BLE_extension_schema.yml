@@ -42,8 +42,7 @@ components:
           description: AddressType flag is taken from the BLE core 
                        specifications 5.3. If FALSE, the device is 
                        using public MAC address. If TRUE, device is 
-                       using Random address which is resolved using
-                       the IRK.
+                       using a random address.
           nullable: false
           readOnly: false
           writeOnly: false

@@ -18,7 +18,8 @@
       {
         "name": "deviceMacAddress",
         "type": "string",
-        "description": "It is the public MAC address assigned by the manufacturer. It is unique 48 bit value. The regex pattern is ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.",
+        "pattern": "^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}$",
+        "description": "A unique public MAC address assigned by the manufacturer.",
         "multivalues": false,
         "required": true,
         "caseExact": false,
@@ -29,7 +30,7 @@
       {
         "name": "isRandom",
         "type": "boolean",
-          "description": "The isRandom flag is taken from the BLE core specifications 5.3. If TRUE, device is using Random address which is resolved using IRK.  If not present, the value is FALSE.",
+          "description": "The isRandom flag is taken from the BLE core specifications 5.3. If TRUE, device is using a random address.  Default value is false.",
         "multivalues": false,
         "required": false,
         "caseExact": false,

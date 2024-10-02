@@ -6,7 +6,8 @@
       {
         "name": "deviceMacAddress",
         "type": "string",
-        "description": "A MAC address assigned by the manufacturer. It is unique 48 bit value. The regex pattern is ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.",
+        "pattern": "^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}$",
+        "description": "A MAC address assigned by the manufacturer",
         "multivalues": false,
         "required": true,
         "caseExact": false,

@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-ietf-scim-device-model-08
+docname: draft-ietf-scim-device-model-09
 submissionType: IETF
 category: std
 
@@ -62,7 +62,7 @@ normative:
     date: 2020
 
   FDO11:
-    title: FIDO Device Onboading Specification 1.1
+    title: FIDO Device Onboard Specification 1.1
     author:
      -
        org: FIDO Alliance
@@ -73,7 +73,7 @@ normative:
 The initial core schema for SCIM (System for Cross Identity
 Management) was designed for provisioning users. This memo specifies
 schema extensions that enables provisioning of devices, using various
-underlying bootstrapping systems, such as Wifi EasyConnect, FIDO
+underlying bootstrapping systems, such as Wi-fi Easy Connect, FIDO
 device onboarding vouchers, BLE passcodes, and MAC authenticated bypass.
 
 --- middle
@@ -88,41 +88,42 @@ between devices and network deployments. Indeed it is expected that
 different manufacturers will make use of different methods.
 
 SCIM (System for Cross Identity Management) {{!RFC7643}} {{!RFC7644}}
-defines a protocol and a schema for provisioning of users. However,
-it can easily be extended to provision devices. The protocol and core
-schema were designed to permit just such extensions. Bulk operations
-are supported. This is good because often devices are procured in
-bulk.
+defines a protocol and a schema for provisioning of users. However, it
+can easily be extended to provision device credentials and other
+attributes into a network. The protocol and core schema were designed
+to permit just such extensions. Bulk operations are supported. This is
+good because often devices are procured in bulk.
 
 A primary purpose of this specification is to provision the network
-for onboarding and communications access to and from devices
-within a local deployment based on the underlying capabilities of
-those devices. The underlying security mechanisms of some devices
-range from non-existent such as the Bluetooth Low Energy (BLE) "Just
-Works" pairing method to a robust Fido Device Onboarding (FDO)
-mechanism.  Information from the SCIM server is dispatched to control
-functions based on selected schema extensions to enable these
-communications within a network.  The SCIM database is therefore
-essentially equivalent to a AAA database, and should be carefully
-treated as such.
+for onboarding and communications access to and from devices within a
+local deployment based on the underlying capabilities of those
+devices. The underlying security mechanisms of some devices range from
+non-existent such as the Bluetooth Low Energy (BLE) "Just Works"
+pairing method to a robust Fido Device Onboarding (FDO) mechanism.
+Information from the SCIM server is dispatched to control functions
+based on selected schema extensions to enable these communications
+within a network.  The SCIM database is therefore essentially
+equivalent to a network's Authentication, Authorization, and
+Accounting (AAA) database, and should be carefully treated as such.
 
 
 
 Why SCIM for devices?
 ---------------------
 Some might ask why SCIM is well suited for this purpose and not, for
-example, NETCONF or RESTCONF with YANG. After all, there are all sorts
-of existing models available. The answer is that the only information
-being passed about the device is neither state nor device configuration
-information, but only information necessary to bootstrap trust so that
-the device may establish connectivity.
+example, NETCONF {{?RFC6241}} or RESTCONF {{?RFC8040}} with YANG
+{{?RFC7950}}. After all, there are all sorts of existing models
+available. The answer is that the only information being passed about
+the device is neither state nor device configuration information, but
+only information necessary to bootstrap trust so that the device may
+establish connectivity.
 
 Protocol Participants
 ---------------------
 
 In the normal SCIM model, it was presumed that large federated
 deployments would be SCIM clients who provision and remove employees
-and contractors as they are enter and depart those deployments, and
+and contractors as they enter and depart those deployments, and
 federated services such as sales, payment, or conferencing services
 would be the servers.
 
@@ -142,7 +143,7 @@ The client may be one of a number of entities:
 
  - A client application that administrators or employees use to add,
    remove, or get information about devices. An example might be an
-   tablet or phone app that scans Easyconnect QR codes.
+   tablet or phone app that scans Wi-fi Easy Connect QR codes.
 
 ~~~~~
 
@@ -176,10 +177,10 @@ Schema Description
 
 RFC 7643 does not prescribe a language to describe a schema. We have
 chosen the JSON schema language {{!I-D.bhutton-json-schema}} for this
-purpose. The use of XML for this SCIM devices is not supported.
+purpose. The use of XML for SCIM devices is not supported.
 
 Several additional schemas specify specific onboarding mechanisms,
-such as BLE and Wifi Easy Connect.
+such as BLE and Wi-fi Easy Connect.
 
 ## Schema Representation
 
@@ -200,12 +201,12 @@ appear in all capitals, as shown here.
 ResourceType Device
 ====================
 
-A new resource type 'Device' is specified. The "ResourceType" 
-schema specifies the metadata about a resource type (see section 6 of 
-{{!RFC7643}}). The resource "Devices" comprises a core device schema 
-and several extension schemas. The core schema provides a minimal 
-resource representation, whereas extension schemas extend the core 
-schema depending on the device's capability. The JSON schema for Device
+A new resource type 'Device' is specified. The "ResourceType" schema
+specifies the metadata about a resource type (see section 6 of
+{{!RFC7643}}).  It comprises a core device schema and several
+extension schemas. The core schema provides a minimal resource
+representation, whereas extension schemas extend the core schema
+depending on the device's capability. The JSON schema for Device
 resource type is in {{resource-schema}}.
 
 
@@ -337,7 +338,7 @@ application. It will only contain two values; 'deviceControl'
 or 'telemetry'. 'deviceControl' is the application that sends commands
 to control the device. 'telemetry' is the application that receives
 data from the device. The attribute is required, and is not 
-case-sensitive. The is attribute readOnly and should be returned 
+case-sensitive. The attribute is readOnly and should be returned 
 by default. No uniqueness constraints are imposed on this attribute.
 
 applicationName
@@ -349,12 +350,13 @@ uniqueness contraint on the attribute.
 
 clientToken
 
-This attribute type string contains a token that the client will use 
-to authenticate itself. Each token may be a string up to 500 
-characters in length. It is mutable, required, case sensitive 
-and returned by default if it exists.  The SCIM server should expect
-that client tokens will be shared by the SCIM client with other
-components within the client's infrastructure.
+This attribute type string contains a token that the client will use
+to authenticate itself. Each token may be a string up to 500
+characters in length. It is not mutable, read-only, generated if
+no certificateInfo object is provisioned, case sensitive and returned
+by default if it exists.  The SCIM server should expect that client
+tokens will be shared by the SCIM client with other components within
+the client's infrastructure.
 
 ## Complex Attributes
 
@@ -366,9 +368,9 @@ will connect for purposes of device control or telemetry.
 
 rootCA
 
-This is the base64 encoding of the public key of a certificate as
-described in {{!rfc4648}} Section 4.  It used as the trust anchor for
-certificates that may used for client application access.  This object
+This is the base64 encoding a trust anchor certificate as
+described in {{!rfc4648}} Section 4.  This trust anchor is applicable
+for certificates used for client application access.  The object
 is not required, singular, case sensitive, and read/write.  If not
 present, a set of trust anchors MUST be configured out of band.
 
@@ -390,14 +392,14 @@ address any authorization conflicts associated with those names.
 |------------------|-------|-----|------|---------|--------|--------|
 | applicationName|   F   |  T  |  F   |   RW    |  Def   |  None  |
 |------------------|-------|-----|------|---------|--------|--------|
-| clientToken    |   F   |  T  |  T   |   R     |  Def   |  None  |
+| clientToken    |   F   |  F  |  T   |   R     |  N   |  None  |
 |------------------|-------|-----|------|---------|--------|--------|
 | certificateInfo|   F   |  F  |  F   |   RW    |  Def   |  None  |
 |------------------|-------|-----|------|---------|--------|--------|
 | rootPublicKey    |   F   |  F  |  T   |   RW    |  Def   |  None  |
 |------------------|-------|-----|------|---------|--------|--------|
 | subjectName    |   F   |  T  |  T   |   RW     |  Def   |  None  |
-{: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required, T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufacturer and Def = Default)"}
+{: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required, T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufacturer, N = No, and Def = Default)"}
 
 Note that either clientToken and certificateInfo are used for the
 authentication of the application.  If certificateInfo is NOT present
@@ -431,7 +433,7 @@ representation, and example object. The core schema is extended with a
 new resource type, as described in {{resource-schema}}.  No
 schemaExtensions list is specified in that definition.  Instead, an
 IANA registry is created, where all values for "required" are set to
-false.  All extensions involving Devices MUST be registered via IANA,
+false.  All extensions to the Device schema MUST be registered via IANA,
 as described in [](#device-schema-extensions).  The schemas below demonstrate how
 this model is to work.
 
@@ -460,10 +462,14 @@ pattern is the following:
 
 isRandom
 
-A boolean flag taken from the BLE core specification, 5.3. If FALSE, the
-device is using a public MAC address. If TRUE, the device uses a
-Random address resolved using IRK. This attribute is not required, it is 
-mutable, and returned by default. Its default value is FALSE.
+A boolean flag taken from the BLE core specification, 5.3. If FALSE,
+the device is using a public MAC address. If TRUE, the device uses a
+random address.  If an Idenifying Resolving Key (IRK) is present, the
+address represents a resolvable private address.  Otherwise, the
+address is assumed to be a random static address.  Non-resolvable
+private addresses are not supported by this specification.  This
+attribute is not required. It is mutable, and is returned by default.
+The default value is FALSE.
 
 separateBroadcastAddress
 
@@ -474,13 +480,14 @@ and returned by default.
 
 irk
 
-A string value, Identity resolving key, which is unique for every 
-device. It is used to resolve the random address. It is required when 
-isRandom is TRUE. It is mutable and never returned.
+A string value that specifies the identity resolving key (IRK), which
+is unique to each device. It is used to resolve private random
+address. It should only be provisioned when isRandom is TRUE. It is
+mutable and never returned.
 
 mobility
 
-A boolean attribute to enable BLE device mobility. If set to True, the
+A boolean attribute to enable BLE device mobility. If set to TRUE, the
 device could be expected to move within a network of APs.  For
 example, BLE device is connected with AP-1 and moves out of range but
 comes in range of AP-2, it will be disconnected with AP-1 and connects
@@ -512,7 +519,7 @@ The details on pairing methods and their associated attributes are in
 section 2.3 of {{BLE53}}. This memo defines extensions for four
 pairing methods that are nested insided the BLE extension schema. Each 
 extension contains the common attributes [](#common-attributes). These 
-extension are are as follows.
+extension are as follows:
 
 (i) pairingNull extension is identified using the following schema URI:
 
@@ -528,7 +535,7 @@ urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device
 
 Just works pairing method does not require a key to pair devices. For
 completeness, the key attribute is included and is set to 'null'. Key 
-attribute is required, immutable, and return by default.
+attribute is required, immutable, and returned by default.
 
 
 (iii) pairingPassKey extension is identified using the following 
@@ -553,17 +560,23 @@ urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device
 The out-of-band pairing method includes three singular attributes,
 i.e., key, randomNumber, and confirmationNumber. 
 
-key  The key is string value, required and received from out-of-bond 
+key
+
+The key is string value, required and received from out-of-bond 
 sources such as NFC. It is case sensitive, mutable, and returned 
 by default.
 
-randomNumber  It represents a nounce added to the key. It is and 
-integer value that is required attribute. It is mutable and 
+randomNumber
+
+This attribute represents a nonce added to the key. It is an
+integer value that is a required attribute. It is mutable and 
 returned by default.
 
-confirmationNumber  An integer which some solutions require in RESTful
-message exchange. It is not required. It is mutable and returned by 
-default if it exists.
+confirmationNumber
+
+An integer which some solutions require in RESTful message
+exchange. It is not required. It is mutable and returned by default if
+it exists.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -595,7 +608,7 @@ An example of a device object with BLE extension is as follows:
 
 In the above example, the pairing method is "pairingPassKey", which implies
 that this BLE device pairs using only a passkey. In another example below,
-the pairing method is "pairingOOB," implying that this BLE device uses the
+the pairing method is "pairingOOB", denoting that this BLE device uses the
 out-of-band pairing method.
 
 ~~~~~~~~
@@ -621,11 +634,12 @@ The schema for the BLE extension is presented in JSON format in Section
 [](#ble-extension-schema-json), while the openAPI representation is provided in 
 Section [](#ble-extension-schema-openapi-representation).
 
-## EasyConnect Extension
+## Wi-Fi Easy Connect Extension
 
 
-A schema that extends the device schema to enable WiFi EasyConnect
-(otherwise known as Device Provisioning Protocol or DPP). The extension
+A schema that extends the device schema to enable Wi-Fi Easy Connect
+(otherwise known as Device Provisioning Protocol or DPP). Throughout this
+specification we use the term DPP.  The extension
 is identified using the following schema URI:
 
 urn:ietf:params:scim:schemas:extension:dpp:2.0:Device
@@ -681,24 +695,20 @@ channel shared as bootstrapping information. It is formatted as
 class/channel. For example, \['81/1','115/36'\]. This attribute 
 is optional, case insensitive, mutable, and returned by default.
 
-~~~
-+====================+=====+===+======+=========+========+========+
-| Attribute          |Multi|Req| Case | Mutable | Return | Unique |
-|                    |Value|   | Exact|         |        |        |
-+====================+=====+===+======+=========+========+========+
+| Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
+|------------------|-------|-----|------|---------|--------|--------|
 | dppVersion         |  F  | T |  F   |   RW    |  Def   | None   |
-+--------------------+-----+---+------+---------+--------+--------+
+|--------------------|-----|---|------|---------|--------|--------|
 | bootstrapKey       |  F  | T |  T   |   WO    |  Nev   | None   |
-+--------------------+-----+---+------+---------+--------+--------+
+|--------------------|-----|---|------|---------|--------|--------|
 | deviceMacAddress   |  F  | F |  F   |   RW    |  Def   | Manuf  |
-+--------------------+-----+---+------+---------+--------+--------+
+|--------------------|-----|---|------|---------|--------|--------|
 | serialNumber       |  F  | F |  F   |   RW    |  Def   | None   |
-+--------------------+-----+---+------+---------+--------+--------+
+|--------------------|-----|---|------|---------|--------|--------|
 | bootstrappingMethod|  T  | F |  F   |   RW    |  Def   | None   |
-+--------------------+-----+---+------+---------+--------+--------+
+|--------------------|-----|---|------|---------|--------|--------|
 | classChannel       |  T  | F |  F   |   RW    |  Def   | None   |
-+--------------------+-----+---+------+---------+--------+--------+
-~~~
+|--------------------|-----|---|------|---------|--------|--------|
 {: #tabDPP title="Characteristics of DPP extension schema attributes. 
 (Req = Required, T = True, F = False, RW = ReadWrite, WO = Write Only,
 Def = Default, Nev = Never, and Manuf = Manufacturer)."}
@@ -766,8 +776,7 @@ This extension has a singular attribute:
 
 fdoVoucher
 
-The voucher is formated as a PEM-encoded object in accordance with the FDO
-specification (citation needed).
+The voucher is formated as a PEM-encoded object in accordance with {{FDO11}}.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -1116,7 +1125,7 @@ The initial table entries shall be as follows:
 | urn:ietf:params:scim:schemas:extension: ble:2.0:Device | BLE Extension | This memo, [](#ble-extension) |
 | urn:ietf:params:scim:schemas:extension: ethernet-mab:2.0:Device| Ethernet MAB | This memo, [](#ethernet-mab-extension) |
 | urn:ietf:params:scim:schemas:extension: fido-device-onboard:2.0:Device | Fido Device Onboard | This memo, [](#fido-device-onboarding-extension)|
-| urn:ietf:params:scim:schemas:extension: dpp:2.0:Device | Wifi EasyConnect | This memo, [](#easyconnect-extension) |
+| urn:ietf:params:scim:schemas:extension: dpp:2.0:Device | Wi-fi Easy Connect | This memo, [](#wi-fi-easy-connect-extension) |
 | urn:ietf:params:scim:schemas:extension: endpointAppsExt:2.0:Device| Application Endpoint Extension | This memo, [](#ble-pairing-method-extensions)|
 | urn:ietf:params:scim:schemas:extension: pairingJustWorks:2.0:Device | Just Works Auth BLE |This memo, [](#ble-pairing-method-extensions)|
 | urn:ietf:params:scim:schemas:extension: pairingOOB:2.0:Device| Out of Band Pairing for BLE |This memo, [](#ble-pairing-method-extensions)|

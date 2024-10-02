@@ -6,7 +6,7 @@
       {
         "name": "fdoVoucher",
         "type": "string",
-        "description": "A Fido Voucher as Defined in the FDO specification"
+        "description": "A voucher as defined in the FDO specification",
         "multivalues": false,
         "required": true,
         "caseExact": false,

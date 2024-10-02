@@ -14,7 +14,7 @@
     "pairingMethods": ["urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device"],
     "urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device": {
       "key": "TheKeyvalueRetrievedFromOOB",
-      "randNumber": 238796813516896
+      "randomNumber": 238796813516896
     }         
   },
   "meta": {
