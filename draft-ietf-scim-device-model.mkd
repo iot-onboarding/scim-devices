@@ -1132,6 +1132,12 @@ The initial table entries shall be as follows:
 | urn:ietf:params:scim:schemas:extension: pairingOOB:2.0:Device| Out of Band Pairing for BLE |This memo, [](#ble-pairing-method-extensions)|
 | urn:ietf:params:scim:schemas:extension: pairingPassKey:2.0:Device | Passkey Pairing for BLE |This memo, [](#ble-pairing-method-extensions)|
 
+# Acknowledgments
+
+The authors would like to thank Bart Brinckman, Rohit Mohan, Lars
+Streubesand, Christian Amsüss, Jason Livingwood, Mike Ounsworth, Monty
+Wiseman, Geoffrey Cooper, and Phil Hunt for their reviews.
+
 --- back
 
 Changes from Earlier Versions
@@ -1139,7 +1145,8 @@ Changes from Earlier Versions
 \[RFC Editor to remove this section.\]
 
 Draft -09:
-  * last call comments, bump BLE version.
+  * last call comments, bump BLE version, add acknowledgments.
+  * Also, recapture Rohit comments and those of Christian.
 
 Drafts 04-08:
   * Lots of cleanup
