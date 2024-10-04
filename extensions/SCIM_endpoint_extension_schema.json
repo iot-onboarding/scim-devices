@@ -21,7 +21,7 @@
           "multiValued" : false,
           "required" : true,
           "caseExact" : false,
-          "mutability" : "readOnly",
+          "mutability" : "readWrite",
           "returned" : "default",
           "uniqueness" : "none"
         },

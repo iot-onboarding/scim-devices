@@ -47,12 +47,12 @@ author:
     email: lear@cisco.com
 
 normative:
-  BLE53:
-    title: Bluetooth Core Specification, Version 5.3
+  BLE54:
+    title: Bluetooth Core Specification, Version 5.4
     author:
       -
         org: Bluetooth SIG
-    date: 2021
+    date: 2023
 
   DPP2:
     title: Wi-Fi Easy Connect Specification, Version 2.0
@@ -396,7 +396,7 @@ address any authorization conflicts associated with those names.
 |------------------|-------|-----|------|---------|--------|--------|
 | certificateInfo|   F   |  F  |  F   |   RW    |  Def   |  None  |
 |------------------|-------|-----|------|---------|--------|--------|
-| rootPublicKey    |   F   |  F  |  T   |   RW    |  Def   |  None  |
+| rootCA    |   F   |  F  |  T   |   RW    |  Def   |  None  |
 |------------------|-------|-----|------|---------|--------|--------|
 | subjectName    |   F   |  T  |  T   |   RW     |  Def   |  None  |
 {: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required, T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufacturer, N = No, and Def = Default)"}
@@ -483,7 +483,8 @@ irk
 A string value that specifies the identity resolving key (IRK), which
 is unique to each device. It is used to resolve private random
 address. It should only be provisioned when isRandom is TRUE. It is
-mutable and never returned.
+mutable and never returned.  For more information about the use of
+the IRK, see Section 5.4.5 of {{BLE54}}.
 
 mobility
 
@@ -516,7 +517,7 @@ returned by default.
 ### BLE Pairing Method Extensions
 
 The details on pairing methods and their associated attributes are in
-section 2.3 of {{BLE53}}. This memo defines extensions for four
+section 2.3 of {{BLE54}}. This memo defines extensions for four
 pairing methods that are nested insided the BLE extension schema. Each 
 extension contains the common attributes [](#common-attributes). These 
 extension are as follows:
@@ -543,7 +544,7 @@ schema URI:
 
 urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device
 
-The pass key pairing method requires a 6-digit key to pair devices.
+The passkey pairing method requires a 6-digit key to pair devices.
 This extension has one singular integer attribute, "key", which is 
 required, mutable and returned by default. The key pattern is
 as follows:
@@ -584,7 +585,7 @@ it exists.
 |------------------|-------|-----|------|---------|--------|--------|
 | isRandom        |   F   |  T  |  F   |   RW    |  Def   | None   |
 |------------------|-------|-----|------|---------|--------|--------|
-| sepBroadcastAdd |   T   |  T  |  F   |   RW    |  Def   | None   |
+| sepBroadcastAdd |   T   |  F  |  F   |   RW    |  Def   | None   |
 |------------------|-------|-----|------|---------|--------|--------|
 | irk             |   F   |  F  |  F   |   WO    |  Nev   | Manuf  |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -901,7 +902,7 @@ value
 
 It is the identifier of the endpoint application formated as UUID. It
 is same as the common attribute "$id" of the resource "endpointApp".
-It is readOnly, required, case insensitive and returned by default.
+It is read/write, required, case insensitive and returned by default.
 
 $ref
 
@@ -917,7 +918,7 @@ and returned by default.
 |------------------|-------|-----|------|---------|--------|--------|
 | applications       |  T  |  T  |  F   |   RW    |  Def   | None   |
 |------------------|-------|-----|------|---------|--------|--------|
-| value              |  F  |  T  |  F   |   R     |  Def   | None   |
+| value              |  F  |  T  |  F   |   RW     |  Def   | None   |
 |------------------|-------|-----|------|---------|--------|--------|
 | $ref               |  F  |  T  |  F   |   R     |  Def   | None   |
 {: #tabEndpointAppsExt title="Characteristics of EndpointAppsExt extension schema 
@@ -1138,7 +1139,7 @@ Changes from Earlier Versions
 \[RFC Editor to remove this section.\]
 
 Draft -09:
-  * last call comments
+  * last call comments, bump BLE version.
 
 Drafts 04-08:
   * Lots of cleanup

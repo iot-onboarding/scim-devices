@@ -38,7 +38,7 @@ components:
           type: string
           description: The identifier of the endpointApp.
           nullable: false
-          readOnly: true
+          readOnly: false
           writeOnly: false
         ref:
           type: string
