@@ -1,7 +1,7 @@
 {  
   "id": "urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Devices",
   "name": "FDOExtension",
-  "description": "Device extension schema for Fido Device Onboard.",
+  "description": "Device extension schema for FIDO Device Onboard (FDO).",
   "attributes" : [
       {
         "name": "fdoVoucher",
