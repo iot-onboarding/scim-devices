@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-ietf-scim-device-model-09
+docname: draft-ietf-scim-device-model-10
 submissionType: IETF
 category: std
 
@@ -383,7 +383,10 @@ This attribute is not required, read write, singular and NOT case
 sensitive.  This name may also appear as an subjectAlternateName (SAN)
 of type dnsName, in which case the subject MUST be ignored.  If
 multiple dnsNames are present, it is left to server implementations to
-address any authorization conflicts associated with those names.
+address any authorization conflicts associated with those names.  Note
+that if a dnsName SAN is used in a client certificate, the server MUST
+validate that name via a reverse DNS lookup.  If this behavior is not
+desired, SANs should not be used.
 
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
@@ -885,10 +888,15 @@ telemetryEnterpriseEndpoint
 Telemetry apps use this URL of the enterprise endpoint to reach
 the enterprise gateway. When the enterprise receives the SCIM object from
 the onboarding app, it adds this attribute to it and sends it back as
-a response to the onboarding app. This attribute is required,
+a response to the onboarding app. This attribute is optional,
 case-sensitive, mutable, and returned by default. The uniqueness is
 enforced by the enterprise.
 
+N.B., if an deployment does not support telemetry, it MUST signal to
+the SCIM client this by not returning the telemetryEnterpriseEndpoint
+object.  This is important because if telemetry is critical to the
+device's function, the application must be in a position to produce
+an error even if the SCIM operation succeeds.
 
 ### Multivalued Attribute
 
@@ -914,7 +922,7 @@ and returned by default.
 |------------------|-------|-----|------|---------|--------|--------|
 | devContEntEndpoint |  F  |  T  |  T   |   R     |  Def   | Ent    |
 |------------------|-------|-----|------|---------|--------|--------|
-| telEntEndpoint     |  F  |  T  |  T   |   R     |  Def   | Ent    |
+| telEntEndpoint     |  F  |  F  |  T   |   R     |  Def   | Ent    |
 |------------------|-------|-----|------|---------|--------|--------|
 | applications       |  T  |  T  |  F   |   RW    |  Def   | None   |
 |------------------|-------|-----|------|---------|--------|--------|

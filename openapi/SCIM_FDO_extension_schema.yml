@@ -9,8 +9,8 @@ components:
           items:
             type: string
             enum:
-              - urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Devices
-        urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Devices:
+              - urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Devices
+        urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Devices:
           $ref: '#/components/schemas/FDODeviceExtension'
           required: true
     FDODeviceExtension:
