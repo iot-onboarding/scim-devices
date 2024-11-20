@@ -29,7 +29,6 @@ components:
       required:
         - applications
         - deviceControlEnterpriseEndpoint
-        - telemetryEnterpriseEndpoint
         
     applications:
       type: array

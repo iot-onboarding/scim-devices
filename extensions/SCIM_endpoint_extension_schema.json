@@ -55,7 +55,7 @@
       "type": "reference",
       "description": "The URL of the enterprise endpoint which telemetry apps use to reach enterprise network gateway.",
       "multivalues": false,
-      "required": true,
+      "required": false,
       "caseExact": true,
       "mutability": "readOnly",
       "returned": "default",
