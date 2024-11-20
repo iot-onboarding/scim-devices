@@ -2,15 +2,15 @@ components:
   schemas:
     FDODevice:
       type: object
-      description: Fido Device Onboarding Voucher Extension
+      description: FIDO Device Onboarding Extension
       properties:
         schemas:
           type: array
           items:
             type: string
             enum:
-              - urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Devices
-        urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Devices:
+              - urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Devices
+        urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Devices:
           $ref: '#/components/schemas/FDODeviceExtension'
           required: true
     FDODeviceExtension:
@@ -18,10 +18,10 @@ components:
       properties:
         fdoVoucher:
           type: string
-          description: A Fido Device Onboarding Voucher
+          description: A FIDO Device Onboard (FDO) Voucher
           nullable: false
           readOnly: false
           writeOnly: false
       required:
         - fdoVoucher
-      description: Device Extension for a Fido Device Onboarding Voucher
+      description: Device Extension for a FIDO Device Onboard (FDO)
