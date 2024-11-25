@@ -376,17 +376,19 @@ present, a set of trust anchors MUST be configured out of band.
 
 subjectName
 
-If present, this field contains a dnsName, as specified in Section
-4.2.1.6 of {{!RFC5280}}.  It is NOT expected that the dnsName will
-necessarily bind to the incoming IP address of the application client.
-This attribute is not required, read write, singular and NOT case
-sensitive.  This name may also appear as an subjectAlternateName (SAN)
-of type dnsName, in which case the subject MUST be ignored and the
-domain name MUST match the name of the peer as resolved by a DNS
-reverse lookup.  If a match isn't desired, CAs will not use a dnsName.
-If multiple dnsNames are present, it is left to server implementations
-to address any authorization conflicts associated with those names.
+If present, this field may contain one of two names:
 
+ * a distinguished name as that will be present in the certificate
+   subject field, as de  scribed in Section 4.1.2.4 of {{!RFC5280}}; or
+ * or a dnsName as part of a subjectAlternateName as  described in
+   Section 4.2.1.6 of {{!RFC5280}}.
+ 
+In the latter case, servers validating such certificates SHALL reject
+connections when name of the peer as resolved by a DNS reverse lookup
+does not match the dnsName in the certificate.  If multiple dnsNames
+are present, it is left to server implementations to address any
+authorization conflicts associated with those names.  This attribute
+is not required, read write, singular and NOT case sensitive.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
