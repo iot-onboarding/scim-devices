@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-ietf-scim-device-model-09
+docname: draft-ietf-scim-device-model-10
 submissionType: IETF
 category: std
 
@@ -376,15 +376,19 @@ present, a set of trust anchors MUST be configured out of band.
 
 subjectName
 
-If present, this field contains a dnsName, as specified in Section
-4.2.1.6 of {{!RFC5280}}.  It is NOT expected that the dnsName will
-necessarily bind to the incoming IP address of the application client.
-This attribute is not required, read write, singular and NOT case
-sensitive.  This name may also appear as an subjectAlternateName (SAN)
-of type dnsName, in which case the subject MUST be ignored.  If
-multiple dnsNames are present, it is left to server implementations to
-address any authorization conflicts associated with those names.
+If present, this field may contain one of two names:
 
+ * a distinguished name as that will be present in the certificate
+   subject field, as de  scribed in Section 4.1.2.4 of {{!RFC5280}}; or
+ * or a dnsName as part of a subjectAlternateName as  described in
+   Section 4.2.1.6 of {{!RFC5280}}.
+ 
+In the latter case, servers validating such certificates SHALL reject
+connections when name of the peer as resolved by a DNS reverse lookup
+does not match the dnsName in the certificate.  If multiple dnsNames
+are present, it is left to server implementations to address any
+authorization conflicts associated with those names.  This attribute
+is not required, read write, singular and NOT case sensitive.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -883,12 +887,14 @@ enforced by the enterprise.
 
 telemetryEnterpriseEndpoint
 
-Telemetry apps use this URL of the enterprise endpoint to reach
-the enterprise gateway. When the enterprise receives the SCIM object from
+Telemetry apps use this URL of the enterprise endpoint to reach the
+enterprise gateway. When the enterprise receives the SCIM object from
 the onboarding app, it adds this attribute to it and sends it back as
-a response to the onboarding app. This attribute is required,
+a response to the onboarding app. This attribute is optional,
 case-sensitive, mutable, and returned by default. The uniqueness is
-enforced by the enterprise.
+enforced by the enterprise.  An implementation MUST generate an
+exception if telemetryEnterpriseEndpoint is not returned and telemetry
+is required for the proper functioning of a device.
 
 
 ### Multivalued Attribute
@@ -915,7 +921,7 @@ and returned by default.
 |------------------|-------|-----|------|---------|--------|--------|
 | devContEntEndpoint |  F  |  T  |  T   |   R     |  Def   | Ent    |
 |------------------|-------|-----|------|---------|--------|--------|
-| telEntEndpoint     |  F  |  T  |  T   |   R     |  Def   | Ent    |
+| telEntEndpoint     |  F  |  F  |  T   |   R     |  Def   | Ent    |
 |------------------|-------|-----|------|---------|--------|--------|
 | applications       |  T  |  T  |  F   |   RW    |  Def   | None   |
 |------------------|-------|-----|------|---------|--------|--------|
