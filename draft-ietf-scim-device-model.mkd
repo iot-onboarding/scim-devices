@@ -770,9 +770,12 @@ representation is provided in Section [](#ethernet-mab-extension-schema-openapi-
 
 ## FIDO Device Onboard Extension
 
-This extension specifies a voucher to be used by the FDO Device Onboard
-(FDO) protocols {{FDO11}} to complete a trusted transfer of ownership and control
-of the device to the environment.
+This extension specifies a voucher to be used by the FDO Device
+Onboard (FDO) protocols {{FDO11}} to complete a trusted transfer of
+ownership and control of the device to the environment.  The SCIM
+server MUST know how to process the voucher, either directly
+or by forwarding it along to an owner process as defined in the FDO
+specification.
 
 urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Device
 
@@ -1119,9 +1122,9 @@ as described in {{extensions}}, with the following columns:
 * Short Description
 * Reference
 
-The policy for entries into this table shall be both "Expert Review"
-and "Specification Required", as specified in {{!RFC8126}}.  Reviewers
-shall check that each schema is produced in the format described in
+The policy for entries into this table shall be and "Specification
+Required", as specified in {{!RFC8126}}.  Designated experts shall
+check that each schema is produced in the format described in
 {{!RFC7643}}, and that the semantics of the schema are clear and
 unambiguous.  It is also RECOMMENDED that schemas be made available in
 OpenAPI.
