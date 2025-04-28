@@ -34,7 +34,7 @@ components:
           writeOnly: false
         bootstrapKey:
           type: string
-          description: This key is Elliptic-Curve Diffie–Hellman 
+          description: An Elliptic-Curve Diffie Hellman
                        (ECDH) public key. The base64 encoded length
                        for P-256, P-384, and P-521 is 80, 96, and 120
                        characters.

@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-ietf-scim-device-model-11
+docname: draft-ietf-scim-device-model-12
 submissionType: IETF
 category: std
 
@@ -68,6 +68,34 @@ normative:
        org: FIDO Alliance
     date: April 19, 2022
 
+  JSONSChema:
+    title: JSON Schema- A Media Type for Describing JSON Documents
+    author:
+     -
+       ins: A. Wright
+       name: Austin Wright
+       email: aaa@bzfx.net
+       role: editor
+     -
+       ins: H. A. Andrews
+       name: Henry Andrews
+       email: andrews_henry@yahoo.com
+       role: editor
+     -
+       ins: B. Hutton
+       name: Ben Hutton
+       org: Postman
+       email: ben@jsonschema.dev
+       uri: https://jsonschema.dev
+       role: editor
+     -
+       ins: G. Dennis
+       name: Greg Dennis
+       uri: https://github.com/gregdennis
+       email: gregdennis@yahoo.com
+    date: December, 2022 
+    target: https://json-schema.org/draft/2020-12/json-schema-core
+
 --- abstract
 
 The initial core schema for SCIM (System for Cross Identity
@@ -106,17 +134,29 @@ within a network.  The SCIM database is therefore essentially
 equivalent to a network's Authentication, Authorization, and
 Accounting (AAA) database, and should be carefully treated as such.
 
-
-
 Why SCIM for devices?
 ---------------------
 Some might ask why SCIM is well suited for this purpose and not, for
 example, NETCONF {{?RFC6241}} or RESTCONF {{?RFC8040}} with YANG
 {{?RFC7950}}. After all, there are all sorts of existing models
-available. The answer is that the only information being passed about
-the device is neither state nor device configuration information, but
-only information necessary to bootstrap trust so that the device may
-establish connectivity.
+available. The answer is four fold:
+- First, NETCONF and RESTCONF focus on **configuration** rather than
+  provisioning.
+- Second, SCIM is designed with inter-domain provisioning in mind.
+  The use of HTTP as a substrate permits both user-based authentication
+  for local provisioning applications, as well as OAUTH or certificate-
+  based authentication.  the inter-domain nature of these operations
+  does not expose local policy, which itself must be (and often is)
+  configured with other APIs, many of which are not standardized.
+- SCIM is also a familiar tool within the enterprise enviroment, used
+  extensively to configure federated user accounts.  (Amusingly, one
+  author noted a billboard in San Francisco highlighting a SCIM as
+  part of a product capability.)
+- Finally, once one chooses a vehicle such as SCIM, one is beholden
+  to its data model.  The SCM data model is articulated in {{!RFC7643}}.
+
+This taken together with the fact that end devices are not intended to
+be **directly** configured leave us with SCIM as the best standard option.
 
 Protocol Participants
 ---------------------
@@ -176,7 +216,7 @@ Schema Description
 ------------------
 
 RFC 7643 does not prescribe a language to describe a schema. We have
-chosen the JSON schema language {{!I-D.bhutton-json-schema}} for this
+chosen the JSON schema language {{JSONSChema}} for this
 purpose. The use of XML for SCIM devices is not supported.
 
 Several additional schemas specify specific onboarding mechanisms,
@@ -663,7 +703,7 @@ returned by default.
 
 bootstrapKey
 
-A string value representing Elliptic-Curve Diffie–Hellman (ECDH) public 
+A string value representing an Elliptic-Curve Diffie-Hellman (ECDH) public
 key. The base64 encoded lengths for P-256, P-384, and P-521 are 
 80, 96, and 120 characters. This attribute is required, case-sensitive,
 mutable, and returned by default.
@@ -1034,9 +1074,8 @@ The following is the JSON representation of the Schema. Implementors MUST NOT va
 Security Considerations
 =======================
 
-Because provisioning operations are sensitive, each client must be
-appropriately authenticated. Certain objects may be read-only or
-not visible based on who is connected.
+Because provisioning operations permit device access to a network,
+each SCIM client MUST be appropriately authenticated.
 
 ## SCIM operations
 
@@ -1044,16 +1083,20 @@ An attacker that has authenticated to a trusted SCIM client could
 manipulate portions of the SCIM database.  To be clear on the risks,
 we discuss each operation below:
 
-### Object Creation
+### Unauthorized Object Creation
 
-Object creation in this framework grants a device access to the
-infrastructure and will to a greater or lesser extent grant the
-infrastructure access to the device.  When IP-layer access is
-provisioned, then the access will be at the IP layer.  For non-IP
-layer access, such as provisioning of BLE devices, the access may
-be to the entire device.  The explicit grant is made when the
-credentials of the device are shared with the SCIM server.
+An attacker that is authenticated could attempt to add
+elements that the enterprise would not normally permit on a network.
+For instance, an enterprise may not wish specific devices that have
+well-known vulnerabilities to be introduced to their environment.
+To mitigate the attack, network administrators should layer additional
+policies regarding what devices are permitted on the network.
 
+An attacker that gains access to SCIM could attempt to add an IP-based
+device that itself attempts unauthorized access, effectively acting as
+a Bot.  Network administrators SHOULD establish appropriate access-control
+policies that follow the principle of least privilege to mitigate this
+attack.
 
 ## Object Deletion
 
@@ -1061,8 +1104,9 @@ Once granted, even if the object is removed, the server may or may not
 act on that removal.  The deletion of the object is a signal of intent
 by the application that it no longer expects the device to be on the
 network.  It is strictly up to the SCIM server and its back end policy
-to decide whether or not to revoke access to the infrastructure.  Any
-access grant by the device must be separately handled.
+to decide whether or not to revoke access to the infrastructure.  It is
+RECOMMENDED that SCIM delete operations trigger a workflow in accordance
+with local network policy.
 
 ## Read operations
 
@@ -1085,7 +1129,11 @@ same access control policy for read operations is RECOMMENDED here.
 Devices provisioned with this model may be completely controlled by
 the administrator of the SCIM server, depending on how those systems
 are defined. For instance, if BLE passkeys are provided, the device
-can be connected to, and perhaps paired with. Any additional security
+can be connected to, and perhaps paired with. If the administrator of
+the SCIM client does not wish the network to have complete access to
+the device, the device itself MUST support finer levels of access
+control and additional authentication mechanisms.
+Any additional security
 must be provided at higher application layers. For example, if client
 applications wish to keep private information to and from the device,
 they should encrypt that information over-the-top.
@@ -1094,7 +1142,7 @@ they should encrypt that information over-the-top.
 
 An attacker could learn what devices are on a network by examining
 SCIM logs.  Due to the sensitive nature of SCIM operations, logs
-SHOILD be encrypted both on the disk and in transit.
+SHOULD be encrypted both on the disk and in transit.
 
 IANA Considerations
 ===================
