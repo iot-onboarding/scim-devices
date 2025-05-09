@@ -479,7 +479,8 @@ schemaExtensions list is specified in that definition.  Instead, an
 IANA registry is created, where all values for "required" are set to
 false.  All extensions to the Device schema MUST be registered via IANA,
 as described in [](#device-schema-extensions).  The schemas below demonstrate how
-this model is to work.
+this model is to work.  All the SCIM Server related Schema URIs are valid only
+with Device resource types.
 
 ## BLE Extension
 
@@ -1179,16 +1180,16 @@ OpenAPI.
 
 The initial table entries shall be as follows:
 
-| URN | Description | Reference |
+| URN | Description | Resource Type | Reference |
 |-----|-------------|-----------|
-| urn:ietf:params:scim:schemas:extension: ble:2.0:Device | BLE Extension | This memo, [](#ble-extension) |
-| urn:ietf:params:scim:schemas:extension: ethernet-mab:2.0:Device| Ethernet MAB | This memo, [](#ethernet-mab-extension) |
-| urn:ietf:params:scim:schemas:extension: fido-device-onboard:2.0:Device | FIDO Device Onboard | This memo, [](#fido-device-onboard-extension)|
-| urn:ietf:params:scim:schemas:extension: dpp:2.0:Device | Wi-fi Easy Connect | This memo, [](#wi-fi-easy-connect-extension) |
-| urn:ietf:params:scim:schemas:extension: endpointAppsExt:2.0:Device| Application Endpoint Extension | This memo, [](#ble-pairing-method-extensions)|
-| urn:ietf:params:scim:schemas:extension: pairingJustWorks:2.0:Device | Just Works Auth BLE |This memo, [](#ble-pairing-method-extensions)|
-| urn:ietf:params:scim:schemas:extension: pairingOOB:2.0:Device| Out of Band Pairing for BLE |This memo, [](#ble-pairing-method-extensions)|
-| urn:ietf:params:scim:schemas:extension: pairingPassKey:2.0:Device | Passkey Pairing for BLE |This memo, [](#ble-pairing-method-extensions)|
+| urn:ietf:params:scim:schemas:extension: ble:2.0:Device | BLE Extension | Device |This memo, [](#ble-extension) |
+| urn:ietf:params:scim:schemas:extension: ethernet-mab:2.0:Device| Ethernet MAB | Device | This memo, [](#ethernet-mab-extension) |
+| urn:ietf:params:scim:schemas:extension: fido-device-onboard:2.0:Device | FIDO Device Onboard | Device | This memo, [](#fido-device-onboard-extension)|
+| urn:ietf:params:scim:schemas:extension: dpp:2.0:Device | Wi-fi Easy Connect | Device | This memo, [](#wi-fi-easy-connect-extension) |
+| urn:ietf:params:scim:schemas:extension: endpointAppsExt:2.0:Device| Application Endpoint Extension | Device | This memo, [](#ble-pairing-method-extensions)|
+| urn:ietf:params:scim:schemas:extension: pairingJustWorks:2.0:Device | Just Works Auth BLE | Device | This memo, [](#ble-pairing-method-extensions)|
+| urn:ietf:params:scim:schemas:extension: pairingOOB:2.0:Device| Out of Band Pairing for BLE | Device | This memo, [](#ble-pairing-method-extensions)|
+| urn:ietf:params:scim:schemas:extension: pairingPassKey:2.0:Device | Passkey Pairing for BLE | Device | This memo, [](#ble-pairing-method-extensions)|
 
 # Acknowledgments
 
