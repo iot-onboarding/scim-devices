@@ -1,0 +1,50 @@
+@startuml
+
+participant owner as "Owner\nService"
+participant aaa as "AAA"
+participant ap as "Access\nPoint"
+participant dev as "Device"
+
+autonumber
+
+note over dev
+Device configured
+with well-known
+RCOI and for trust
+on first use
+end note
+
+note over ap
+WLAN configured
+with well-known
+RCOI
+end note
+
+dev->ap: EAP-TLS/EAPOL
+ap->aaa: EAP-TLS/Radius
+note over dev,ap
+Device skips
+server authentication
+end note
+aaa->ap: Result=Success
+note over aaa,ap
+Limited access
+for now
+end note
+ap->dev: Result=Success
+dev->owner: FDO TO2
+note over owner,dev
+FSIM, Runtime SSID,
+Credentials incl.
+local trust anchor
+end note
+dev->ap: dissasociate
+dev->ap: EAP-TLS w/ LSC
+... etc ...
+
+
+
+
+hide footbox
+
+@enduml

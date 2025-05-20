@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-ietf-scim-device-model-12
+docname: draft-ietf-scim-device-model-13
 submissionType: IETF
 category: std
 
@@ -74,25 +74,19 @@ normative:
      -
        ins: A. Wright
        name: Austin Wright
-       email: aaa@bzfx.net
        role: editor
      -
        ins: H. A. Andrews
        name: Henry Andrews
-       email: andrews_henry@yahoo.com
        role: editor
      -
        ins: B. Hutton
        name: Ben Hutton
        org: Postman
-       email: ben@jsonschema.dev
-       uri: https://jsonschema.dev
        role: editor
      -
        ins: G. Dennis
        name: Greg Dennis
-       uri: https://github.com/gregdennis
-       email: gregdennis@yahoo.com
     date: December, 2022 
     target: https://json-schema.org/draft/2020-12/json-schema-core
 
@@ -1164,32 +1158,20 @@ Note that the line break in URNs should be removed, as should this comment.
 Device Schema Extensions
 ------------------------
 
-IANA is requested to create a separate table for Device Schema Extensions,
-as described in {{extensions}}, with the following columns:
+IANA is requested to create the following extensions:
+as described in {{extensions}}:
 
-* schemaExtensionURI
-* Short Description
-* Reference
-
-The policy for entries into this table shall be and "Specification
-Required", as specified in {{!RFC8126}}.  Designated experts shall
-check that each schema is produced in the format described in
-{{!RFC7643}}, and that the semantics of the schema are clear and
-unambiguous.  It is also RECOMMENDED that schemas be made available in
-OpenAPI.
-
-The initial table entries shall be as follows:
 
 | URN | Description | Resource Type | Reference |
-|-----|-------------|-----------|
-| urn:ietf:params:scim:schemas:extension: ble:2.0:Device | BLE Extension | Device |This memo, [](#ble-extension) |
-| urn:ietf:params:scim:schemas:extension: ethernet-mab:2.0:Device| Ethernet MAB | Device | This memo, [](#ethernet-mab-extension) |
-| urn:ietf:params:scim:schemas:extension: fido-device-onboard:2.0:Device | FIDO Device Onboard | Device | This memo, [](#fido-device-onboard-extension)|
-| urn:ietf:params:scim:schemas:extension: dpp:2.0:Device | Wi-fi Easy Connect | Device | This memo, [](#wi-fi-easy-connect-extension) |
-| urn:ietf:params:scim:schemas:extension: endpointAppsExt:2.0:Device| Application Endpoint Extension | Device | This memo, [](#ble-pairing-method-extensions)|
-| urn:ietf:params:scim:schemas:extension: pairingJustWorks:2.0:Device | Just Works Auth BLE | Device | This memo, [](#ble-pairing-method-extensions)|
-| urn:ietf:params:scim:schemas:extension: pairingOOB:2.0:Device| Out of Band Pairing for BLE | Device | This memo, [](#ble-pairing-method-extensions)|
-| urn:ietf:params:scim:schemas:extension: pairingPassKey:2.0:Device | Passkey Pairing for BLE | Device | This memo, [](#ble-pairing-method-extensions)|
+|-----|-------------|-----------|-----------|
+| urn:ietf:params:scim: schemas:extension: ble:2.0:Device | BLE Extension | Device |This memo, [](#ble-extension) |
+| urn:ietf:params:scim: schemas:extension: ethernet-mab:2.0:Device| Ethernet MAB | Device | This memo, [](#ethernet-mab-extension) |
+| urn:ietf:params:scim: schemas:extension: fido-device-onboard:2.0:Device | FIDO Device Onboard | Device | This memo, [](#fido-device-onboard-extension)|
+| urn:ietf:params:scim: schemas:extension: dpp:2.0:Device | Wi-fi Easy Connect | Device | This memo, [](#wi-fi-easy-connect-extension) |
+| urn:ietf:params:scim: schemas:extension: endpointAppsExt:2.0:Device| Application Endpoint Extension | Device | This memo, [](#ble-pairing-method-extensions)|
+| urn:ietf:params:scim: schemas:extension: pairingJustWorks:2.0:Device | Just Works Auth BLE | Device | This memo, [](#ble-pairing-method-extensions)|
+| urn:ietf:params:scim: schemas:extension: pairingOOB:2.0:Device| Out of Band Pairing for BLE | Device | This memo, [](#ble-pairing-method-extensions)|
+| urn:ietf:params:scim: schemas:extension: pairingPassKey:2.0:Device | Passkey Pairing for BLE | Device | This memo, [](#ble-pairing-method-extensions)|
 
 # Acknowledgments
 
@@ -1309,4 +1291,21 @@ is as follows:
 <CODE BEGINS>
 {::include openapi/SCIM_endpoint_extension_schema.fyml}
 <CODE ENDS>
+~~~~~~~~
+
+# Fido Device Onboarding Example Flow
+
+The following diagrams are included to demonstrate how FDO can be used.  In this first diagram, a device
+is onboarded not only to the device owner process, but also to the AAA server for initial onboarding.
+The voucher contains a device certificate that is used by the AAA system for authentication.
+
+~~~~~~~~
+{::include fdo-example-diagram.atxt}
+~~~~~~~~
+
+After this flow is complete, the device can then first provisionally onboard, and then later receive
+a trust anchor through FDO's TO2 process.  This is shown below.
+
+~~~~~~~~
+{::include fdo-example-two.atxt}
 ~~~~~~~~

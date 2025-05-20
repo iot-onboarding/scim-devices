@@ -28,7 +28,7 @@
       {
         "name": "bootstrapKey",
         "type": "string",
-	"description": "A base64-encoded Elliptic-Curve Diffie-Hellman public key (may be P-256, P-384, or P-521).",
+        "description": "A base64-encoded Elliptic-Curve Diffie-Hellman public key (may be P-256, P-384, or P-521).",
         "multivalues": false,
         "required": true,
         "caseExact": true,

@@ -1,0 +1,23 @@
+@startuml
+participant scimc as "SCIM\nClient"
+participant scims as "SCIM\nServer"
+participant owner as "Owner\nService"
+participant aaa as "AAA"
+
+autonumber
+
+note over scimc,scims
+voucher contains
+an X.509 cert chain
+end note
+scimc->scims: POST [FDO(voucher)]\n/HTTP
+scims->scims: Recover X.509\ncert chain\nfrom voucher
+scims->owner: Add device(voucher)\n/HTTP
+owner->scims: 200 "ok"
+scims->aaa: add identity
+aaa->scims: 200 "ok"
+scims->scimc: 200 "ok"
+
+hide footbox
+
+@enduml
