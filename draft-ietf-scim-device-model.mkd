@@ -1185,6 +1185,12 @@ Changes from Earlier Versions
 =============================
 \[RFC Editor to remove this section.\]
 
+Draft 13:
+  * post IANA and IETF LC
+
+Drafts 10-12:
+  * additional WGLC and shepherd comments
+
 Draft -09:
   * last call comments, bump BLE version, add acknowledgments.
   * Also, recapture Rohit comments and those of Christian.
