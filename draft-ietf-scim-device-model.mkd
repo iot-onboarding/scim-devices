@@ -294,7 +294,7 @@ The "active" attribute is of type "boolean" and is a mutable
 attribute, and is required. If set to TRUE, it means that this device
 is intended to be operational. Attempts to control or access a device
 where this value is set to FALSE may fail. For example, when used in
-conjunction with NIPC {{?I-D.brinckman-nipc}}, commands such as
+conjunction with NIPC {{?I-D.ietf-asdf-nipc}}, commands such as
 connect, disconnect, subscribe that control app sends to the
 controller for the devices any command coming from the control app for
 the device will be rejected by the controller.
