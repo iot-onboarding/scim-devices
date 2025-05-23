@@ -141,7 +141,7 @@ available. The answer is four fold:
 - Second, SCIM is designed with inter-domain provisioning in mind.
   The use of HTTP as a substrate permits both user-based authentication
   for local provisioning applications, as well as OAUTH or certificate-
-  based authentication.  the inter-domain nature of these operations
+  based authentication.  The inter-domain nature of these operations
   does not expose local policy, which itself must be (and often is)
   configured with other APIs, many of which are not standardized.
   
@@ -180,7 +180,7 @@ The client may be one of a number of entities:
    (BRSKI) {{?RFC8995}}.
 
  - A client application that administrators or employees use to add,
-   remove, or get information about devices. An example might be an
+   remove, or get information about devices. An example might be a
    tablet or phone app that scans Wi-fi Easy Connect QR codes.
 
 ~~~~~
