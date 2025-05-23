@@ -134,18 +134,22 @@ Some might ask why SCIM is well suited for this purpose and not, for
 example, NETCONF {{?RFC6241}} or RESTCONF {{?RFC8040}} with YANG
 {{?RFC7950}}. After all, there are all sorts of existing models
 available. The answer is four fold:
+
 - First, NETCONF and RESTCONF focus on **configuration** rather than
   provisioning.
+  
 - Second, SCIM is designed with inter-domain provisioning in mind.
   The use of HTTP as a substrate permits both user-based authentication
   for local provisioning applications, as well as OAUTH or certificate-
   based authentication.  the inter-domain nature of these operations
   does not expose local policy, which itself must be (and often is)
   configured with other APIs, many of which are not standardized.
+  
 - SCIM is also a familiar tool within the enterprise enviroment, used
   extensively to configure federated user accounts.  (Amusingly, one
   author noted a billboard in San Francisco highlighting a SCIM as
   part of a product capability.)
+  
 - Finally, once one chooses a vehicle such as SCIM, one is beholden
   to its data model.  The SCM data model is articulated in {{!RFC7643}}.
 
