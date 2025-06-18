@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-ietf-scim-device-model-14
+docname: draft-ietf-scim-device-model-15
 submissionType: IETF
 category: std
 
@@ -68,6 +68,7 @@ normative:
        org: FIDO Alliance
     date: April 19, 2022
 
+informative:
   JSONSChema:
     title: JSON Schema- A Media Type for Describing JSON Documents
     author:
@@ -87,7 +88,7 @@ normative:
      -
        ins: G. Dennis
        name: Greg Dennis
-    date: December, 2022 
+    date: December, 2022
     target: https://json-schema.org/draft/2020-12/json-schema-core
 
 --- abstract
@@ -162,11 +163,10 @@ federated services such as sales, payment, or conferencing services
 would be the servers.
 
 In the device model, the roles are reversed, and may be somewhat more
-varied. A deployment network management system gateway (NMS gateway)
-plays the role of the server, receiving information about devices that
-are expected to be connected to its network. That server will apply
-appropriate local policies regarding whether/how the device should be
-connected.
+varied. The SCIM server resides within a deployment and is used for
+receiving information about devices that are expected to be connected
+to its network. That server will apply appropriate local policies
+regarding whether/how the device should be connected.
 
 The client may be one of a number of entities:
 
@@ -197,14 +197,42 @@ The client may be one of a number of entities:
                             +-----------------------------------+
 
 ~~~~~
-{: #arch title="Basic Architecture"}
+{: #arch title="Basic Architecture - non-IP example"}
 
 In {{arch}}, the onboarding app provides the device particulars. As
 part of the response, the SCIM server might provide additional
 information, especially in the case of non-IP devices, where an
 application-layer gateway may need to be used to communicate with
 the device. The control endpoint is one among a number of objects
-that may be returned.
+that may be returned.  That control endpoint will then communicate
+with the application layer gateway (ALG) to reach the endpoint.
+
+~~~~~
+
+
+                            +-----------------------------------+
+                            |                                   |
+    +-----------+   Request |  +---------+   +----+   +------+  |
+    | onboarding|------------->|  SCIM   |-->| AAA|<->|switch|  |
+    |    app    |<-------------| Server  |   +----+   +------+  |
+    +-----------+  Ctrl Endpt  +---------+                |     |
+                            |                             |     |
+    +-----------+           |  +------------+         +-------+ |
+    |  Control  |...........|..| router/fw  |.........|device | |
+    |    App    |           |  +------------+         +-------+ |
+    +-----------+           |                                   |
+                            |                                   |
+                            +-----------------------------------+
+
+~~~~~
+{: #arch2 title="Interaction with AAA"}
+
+{{arch2}} shows how IP-based endpoints can be provisioned.  In this
+case, the onboarding app provisions a device via SCIM. The necessary
+information is passed to the AAA subsystem, such that the device is
+permitted to connect.  Once it is online, since the device is based
+on IP, it will not need an ALG, but will use the normal IP
+infrastructure to communicate with its control application.
 
 Schema Description
 ------------------
@@ -247,7 +275,8 @@ resource type is in {{resource-schema}}.
 ## Common Attributes
 
 The Device schema contains three common attributes as defined in the
-{{!RFC7643}}.
+{{!RFC7643}}.  No semantic or syntax changes are made here, but the
+attributes are listed merely for completeness.
 
 id
 
@@ -261,7 +290,6 @@ An externalID is an optional attribute (see section 3.1 of {{!RFC7643}}).
 meta
 
 Meta is a complex attribute and is required (see section 3.1 of {{!RFC7643}}).
-
 
 
 SCIM Core Device Schema
@@ -278,10 +306,10 @@ attributes are defined in the device core schema.
 
 displayName
 
-This attribute is of type "string" and provides a human-readable name 
+This attribute is of type "string" and provides a human-readable name
 for a device. It is intended to be displayed to end-users and should be
-suitable for that purpose. The attribute is not required, and is not 
-case-sensitive. It may be modified and SHOULD be returned 
+suitable for that purpose. The attribute is not required, and is not
+case-sensitive. It may be modified and SHOULD be returned
 by default. No uniqueness constraints are imposed on this attribute.
 
 active
@@ -300,7 +328,7 @@ mudUrl
 The mudUrl attribute represents the URL to the MUD file associated
 with this device. This attribute is optional and mutable. The mudUrl
 value is case sensitive and not unique. When present, this attribute
-may be used as described in {{!RFC8520}}. This attribute is case 
+may be used as described in {{!RFC8520}}. This attribute is case
 sensitive and returned by default.
 
 
@@ -323,7 +351,7 @@ An example of a device SCIM object is as follows:
 ~~~~~~~~~
 
 The schema for the device is presented in JSON format in Section
-{{device-schema-json}}, while the openAPI representation is provided in 
+{{device-schema-json}}, while the openAPI representation is provided in
 Section {{device-schema-openapi-representation}}.
 
 Device Groups
@@ -336,14 +364,14 @@ Device groups are created using the SCIM groups as defined in
 Resource Type EndpointApp
 =========================
 
-This section defines a new resource type, 'EndpointApp'. The 
-"ResourceType" schema specifies the metadata about a resource type 
+This section defines a new resource type, 'EndpointApp'. The
+"ResourceType" schema specifies the metadata about a resource type
 (see section 6 of {{!RFC7643}}). The resource "EndpointApp" represents
 client applications that can control and/or receive data from the
 devices. The JSON schema for EndpointApp resource type is in {{resource-schema}}.
 
 The attributes comprising EndpointsApp are listed in {{endpointapp-schema}}.
-The "EndpointApp" are included in the endpoint applications extension 
+The "EndpointApp" are included in the endpoint applications extension
 ("endpointAppsExt") {{endpointsappext-schema}}.
 
 
@@ -367,19 +395,19 @@ The EndpointApp schema contains three common attributes as defined in the
 
 applicationType
 
-This attribute is of type "string" and represents the type of 
-application. It will only contain two values; 'deviceControl' 
+This attribute is of type "string" and represents the type of
+application. It will only contain two values; 'deviceControl'
 or 'telemetry'. 'deviceControl' is the application that sends commands
 to control the device. 'telemetry' is the application that receives
-data from the device. The attribute is required, and is not 
-case-sensitive. The attribute is readOnly and should be returned 
+data from the device. The attribute is required, and is not
+case-sensitive. The attribute is readOnly and should be returned
 by default. No uniqueness constraints are imposed on this attribute.
 
 applicationName
 
 The "applicationName" attribute is of type "string" and represents a
 human readable name for the application. This attribute is required and
-mutable. The attribute should be returned by default and there is no 
+mutable. The attribute should be returned by default and there is no
 uniqueness contraint on the attribute.
 
 clientToken
@@ -416,7 +444,7 @@ If present, this field may contain one of two names:
    subject field, as de  scribed in Section 4.1.2.4 of {{!RFC5280}}; or
  * or a dnsName as part of a subjectAlternateName as  described in
    Section 4.2.1.6 of {{!RFC5280}}.
- 
+
 In the latter case, servers validating such certificates SHALL reject
 connections when name of the peer as resolved by a DNS reverse lookup
 does not match the dnsName in the certificate.  If multiple dnsNames
@@ -459,7 +487,7 @@ purposes.
 ~~~~~~~~~
 
 The schema for the endpointApp is presented in JSON format in Section
-{{endpointapp-schema-json}}, while the openAPI representation is provided in 
+{{endpointapp-schema-json}}, while the openAPI representation is provided in
 Section {{endpointapp-schema-openapi-representation}}.
 
 
@@ -479,7 +507,7 @@ with Device resource types.
 ## BLE Extension
 
 This schema extends the device schema to represent the devices
-supporting BLE. The extension is identified using the following 
+supporting BLE. The extension is identified using the following
 schema URI:
 
 urn:ietf:params:scim:schemas:extension:ble:2.0:Device
@@ -490,9 +518,9 @@ The attributes are as follows:
 
 deviceMacAddress
 
-A string value that represent a public MAC address assigned by the 
-manufacturer. It is a unique  48-bit value. Ir is required, case 
-insensitive, and it is mutable and return as default. The regex 
+A string value that represent a public MAC address assigned by the
+manufacturer. It is a unique  48-bit value. Ir is required, case
+insensitive, and it is mutable and return as default. The regex
 pattern is the following:
 
 ~~~~~~
@@ -538,8 +566,8 @@ with AP-2. It is returned by default and mutable.
 versionSupport
 
 A multivalued attribute that provides all the BLE versions supported by the
-device in the form of an array. For example, 
-\[4.1, 4.2, 5.0, 5.1, 5.2, 5.3\]. It is required, mutable, and 
+device in the form of an array. For example,
+\[4.1, 4.2, 5.0, 5.1, 5.2, 5.3\]. It is required, mutable, and
 return as default.
 
 pairingMethods
@@ -550,15 +578,15 @@ key/password, for the device pairing process. To enable the
 scalability of pairing methods in the future, they are represented as
 extensions to incorporate various attributes that are part of the
 respective pairing process. Pairing method extensions are nested
-inside the BLE extension. It is required, case sensitive, mutable, and 
+inside the BLE extension. It is required, case sensitive, mutable, and
 returned by default.
 
 ### BLE Pairing Method Extensions
 
 The details on pairing methods and their associated attributes are in
 section 2.3 of {{BLE54}}. This memo defines extensions for four
-pairing methods that are nested insided the BLE extension schema. Each 
-extension contains the common attributes [](#common-attributes). These 
+pairing methods that are nested insided the BLE extension schema. Each
+extension contains the common attributes [](#common-attributes). These
 extension are as follows:
 
 (i) pairingNull extension is identified using the following schema URI:
@@ -568,23 +596,23 @@ urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device
 pairingNull does not have any attribute. It allows pairing for BLE
 devices that do not require a pairing method.
 
-(ii) pairingJustWorks extension is identified using the following 
+(ii) pairingJustWorks extension is identified using the following
 schema URI:
 
 urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device
 
 Just works pairing method does not require a key to pair devices. For
-completeness, the key attribute is included and is set to 'null'. Key 
+completeness, the key attribute is included and is set to 'null'. Key
 attribute is required, immutable, and returned by default.
 
 
-(iii) pairingPassKey extension is identified using the following 
+(iii) pairingPassKey extension is identified using the following
 schema URI:
 
 urn:ietf:params:scim:schemas:extension:pairingPassKey:2.0:Device
 
 The passkey pairing method requires a 6-digit key to pair devices.
-This extension has one singular integer attribute, "key", which is 
+This extension has one singular integer attribute, "key", which is
 required, mutable and returned by default. The key pattern is
 as follows:
 
@@ -592,24 +620,24 @@ as follows:
 ^[0-9]{6}$
 ~~~~~
 
-(iv) pairingOOB extension is identified using the following 
+(iv) pairingOOB extension is identified using the following
 schema URI:
 
 urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device
 
 The out-of-band pairing method includes three singular attributes,
-i.e., key, randomNumber, and confirmationNumber. 
+i.e., key, randomNumber, and confirmationNumber.
 
 key
 
-The key is string value, required and received from out-of-bond 
-sources such as NFC. It is case sensitive, mutable, and returned 
+The key is string value, required and received from out-of-bond
+sources such as NFC. It is case sensitive, mutable, and returned
 by default.
 
 randomNumber
 
 This attribute represents a nonce added to the key. It is an
-integer value that is a required attribute. It is mutable and 
+integer value that is a required attribute. It is mutable and
 returned by default.
 
 confirmationNumber
@@ -633,7 +661,7 @@ it exists.
 | mobility        |   F   |  F  |  F   |   RW    |  Def   | None   |
 |------------------|-------|-----|------|---------|--------|--------|
 | pairingMethods  |   T   |  T  |  T   |   RW    |  Def   | None   |
-{: #tabBLE title="Characteristics of BLE extension schema attributes. 
+{: #tabBLE title="Characteristics of BLE extension schema attributes.
 sepBroadcastAdd is short for separateBroadcastAddress. (Req = Required,
 T = True, F = False, RW = ReadWrite, WO=Write Only, Def = Default,
 Nev = Never, and Manuf = Manufacturer)."}
@@ -670,8 +698,8 @@ methods.
 
 
 
-The schema for the BLE extension is presented in JSON format in Section 
-[](#ble-extension-schema-json), while the openAPI representation is provided in 
+The schema for the BLE extension is presented in JSON format in Section
+[](#ble-extension-schema-json), while the openAPI representation is provided in
 Section [](#ble-extension-schema-openapi-representation).
 
 ## Wi-Fi Easy Connect Extension
@@ -684,7 +712,7 @@ is identified using the following schema URI:
 
 urn:ietf:params:scim:schemas:extension:dpp:2.0:Device
 
-The attributes in this extension are adopted from {{DPP2}}. The 
+The attributes in this extension are adopted from {{DPP2}}. The
 attributes are as follows:
 
 
@@ -692,21 +720,21 @@ attributes are as follows:
 
 dppVersion
 
-An integer that represents the version of DPP the device supports. 
-This attribute is required, case insensitive, mutable, and 
+An integer that represents the version of DPP the device supports.
+This attribute is required, case insensitive, mutable, and
 returned by default.
 
 bootstrapKey
 
 A string value representing an Elliptic-Curve Diffie-Hellman (ECDH) public
-key. The base64 encoded lengths for P-256, P-384, and P-521 are 
+key. The base64 encoded lengths for P-256, P-384, and P-521 are
 80, 96, and 120 characters. This attribute is required, case-sensitive,
 mutable, and returned by default.
 
 deviceMacAddress
 
-The manufacturer assigns the MAC address stored as string. It is a 
-unique 48-bit value. This attribute is optional, case insensitive, 
+The manufacturer assigns the MAC address stored as string. It is a
+unique 48-bit value. This attribute is optional, case insensitive,
 mutable, and returned by default. The regex pattern is as follows:
 
 ~~~~~
@@ -715,8 +743,8 @@ mutable, and returned by default. The regex pattern is as follows:
 
 serialNumber
 
-An alphanumeric serial number, stored as string, may also be passed 
-as bootstrapping information. This attribute is optional, case 
+An alphanumeric serial number, stored as string, may also be passed
+as bootstrapping information. This attribute is optional, case
 insensitive, mutable, and returned by default.
 
 
@@ -724,15 +752,15 @@ insensitive, mutable, and returned by default.
 
 bootstrappingMethod
 
-It is the array of strings of all the bootstrapping methods available 
-on the enrollee device. For example, \[QR, NFC\]. This attribute is 
+It is the array of strings of all the bootstrapping methods available
+on the enrollee device. For example, \[QR, NFC\]. This attribute is
 optional, case insensitive, mutable, and returned by default.
 
 classChannel
 
-This attribute is an array of strings of global operating class and 
-channel shared as bootstrapping information. It is formatted as 
-class/channel. For example, \['81/1','115/36'\]. This attribute 
+This attribute is an array of strings of global operating class and
+channel shared as bootstrapping information. It is formatted as
+class/channel. For example, \['81/1','115/36'\]. This attribute
 is optional, case insensitive, mutable, and returned by default.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
@@ -749,7 +777,7 @@ is optional, case insensitive, mutable, and returned by default.
 |--------------------|-----|---|------|---------|--------|--------|
 | classChannel       |  T  | F |  F   |   RW    |  Def   | None   |
 |--------------------|-----|---|------|---------|--------|--------|
-{: #tabDPP title="Characteristics of DPP extension schema attributes. 
+{: #tabDPP title="Characteristics of DPP extension schema attributes.
 (Req = Required, T = True, F = False, RW = ReadWrite, WO = Write Only,
 Def = Default, Nev = Never, and Manuf = Manufacturer)."}
 
@@ -761,8 +789,8 @@ An example of a device object with DPP extension is below:
 <CODE ENDS>
 ~~~~~~~~
 
-The schema for the DPP extension is presented in JSON format in Section 
-[](#dpp-extension-schema-json), while the openAPI representation is provided 
+The schema for the DPP extension is presented in JSON format in Section
+[](#dpp-extension-schema-json), while the openAPI representation is provided
 in Section [](#dpp-extension-schema-openapi-representation).
 
 ## Ethernet MAB Extension
@@ -788,7 +816,7 @@ takes the identical form as found in both the BLE and DPP extensions.
 |------------------|-------|-----|------|---------|--------|--------|
 | deviceMacAddress|   F   |  T  |  F   |   RW    |  Def   | None   |
 {: #tabMAB title="Characteristics of MAB extension schema attributes
-(Req = Required, T = True, F = False, RW = ReadWrite, and 
+(Req = Required, T = True, F = False, RW = ReadWrite, and
 Def = Default)"}
 
 An example of a device object with EthernetMAB extension is shown below:
@@ -826,7 +854,7 @@ The voucher is formated as a PEM-encoded object in accordance with {{FDO11}}.
 |------------------|-------|-----|------|---------|--------|--------|
 | fdoVoucher      |   F   |  T  |  F   |   WO    |  Nev   | None   |
 {: #tabFDO title="Characteristics of FDO extension schema attributes
-(Req = Required, T = True, F = False, WO = WriteOnly, and 
+(Req = Required, T = True, F = False, WO = WriteOnly, and
 Nev = Never)"}
 
 An example of a device object with FDO extension is shown below:
@@ -844,14 +872,14 @@ representation is provided in Section [](#fdo-extension-schema-openapi-represent
 
 ## Zigbee Extension
 
-A schema that extends the device schema to enable the provisioning of 
-Zigbee devices. The extension is identified using the following 
+A schema that extends the device schema to enable the provisioning of
+Zigbee devices. The extension is identified using the following
 schema URI:
 
 
 urn:ietf:params:scim:schemas:extension:zigbee:2.0:Device
 
-It has one singular attribute and one multivalued 
+It has one singular attribute and one multivalued
 attribute. The attributes are as follows:
 
 
@@ -872,7 +900,7 @@ default. The regex pattern is as follows:
 versionSupport
 
 An array of strings of all the Zigbee versions supported
-by the device. For example, \[3.0\]. This attribute is required, case 
+by the device. For example, \[3.0\]. This attribute is required, case
 insensitive, mutable, and returned by default.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
@@ -881,7 +909,7 @@ insensitive, mutable, and returned by default.
 |------------------|-------|-----|------|---------|--------|--------|
 | versionSupport    |  T  |  T  |  F   |   RW    |  Def   | None   |
 {: #tabZigbee title="Characteristics of Zigbee extension schema attributes.
-(Req = Required, T = True, F = False, RW = ReadWrite, and 
+(Req = Required, T = True, F = False, RW = ReadWrite, and
 Def = Default)"}
 
 An example of a device object with Zigbee extension is shown below:
@@ -892,8 +920,8 @@ An example of a device object with Zigbee extension is shown below:
 <CODE ENDS>
 ~~~~~~~~
 
-The schema for the Zigbee extension is presented in JSON format in 
-Section [](#zigbee-extension-schema-json), while the openAPI 
+The schema for the Zigbee extension is presented in JSON format in
+Section [](#zigbee-extension-schema-json), while the openAPI
 representation is provided in Section [](#zigbee-extension-schema-openapi-representation).
 
 
@@ -904,8 +932,8 @@ Sometimes non-IP devices such as those using BLE or Zigbee require an
 application gateway interface to manage them. SCIM clients MUST NOT
 specify this to describe native IP-based devices.
 
-endpointAppsExt provides the list application that connect to 
-enterprise gateway. The endpointAppsExt has one multivalued attribute 
+endpointAppsExt provides the list application that connect to
+enterprise gateway. The endpointAppsExt has one multivalued attribute
 and two singular attributes. The extension is identified using the
 following schema URI:
 
@@ -939,9 +967,9 @@ is required for the proper functioning of a device.
 
 applications
 
-This is a complex multivalued attribute. It represents a list of 
+This is a complex multivalued attribute. It represents a list of
 endpoint applications i.e., deviceControl and telemetry. Each entry in
-the list comprises two attributes including "value" and "$ref". 
+the list comprises two attributes including "value" and "$ref".
 
 value
 
@@ -951,7 +979,7 @@ It is read/write, required, case insensitive and returned by default.
 
 $ref
 
-It is the reference to the respective endpointApp resource object 
+It is the reference to the respective endpointApp resource object
 stored in the SCIM server. It is readOnly, required, case sensitive
 and returned by default.
 
@@ -966,10 +994,10 @@ and returned by default.
 | value              |  F  |  T  |  F   |   RW     |  Def   | None   |
 |------------------|-------|-----|------|---------|--------|--------|
 | $ref               |  F  |  T  |  F   |   R     |  Def   | None   |
-{: #tabEndpointAppsExt title="Characteristics of EndpointAppsExt extension schema 
-attributes. DevContEntEndpoint represents attribute 
-deviceControlEnterpriseEndpoint and telEntEndpoint represents 
-telemetryEnterpriseEndpoint. (Req = Required, T = True, F = False, 
+{: #tabEndpointAppsExt title="Characteristics of EndpointAppsExt extension schema
+attributes. DevContEntEndpoint represents attribute
+deviceControlEnterpriseEndpoint and telEntEndpoint represents
+telemetryEnterpriseEndpoint. (Req = Required, T = True, F = False,
 R = ReadOnly, RW = ReadWrite, Ent = Enterprise, and Def = Default)."}
 
 An example of a device object with endpointAppsExt extension is below:
@@ -980,8 +1008,8 @@ An example of a device object with endpointAppsExt extension is below:
 <CODE ENDS>
 ~~~~~~~~
 
-The schema for the endpointAppsExt extension along with BLE extension is 
-presented in JSON format in Section {{endpointappsext-extension-schema-json}}, while 
+The schema for the endpointAppsExt extension along with BLE extension is
+presented in JSON format in Section {{endpointappsext-extension-schema-json}}, while
 the openAPI representation is provided in Section {{endpointappsext-extension-schema-openapi-representation}}.
 
 
@@ -1158,8 +1186,8 @@ Note that the line break in URNs should be removed, as should this comment.
 Device Schema Extensions
 ------------------------
 
-IANA is requested to create the following extensions:
-as described in {{extensions}}:
+IANA is requested to create the following extensions in the SCIM
+Server-Related Schema URIs registry as described in {{extensions}}:
 
 
 | URN | Description | Resource Type | Reference |
@@ -1291,7 +1319,7 @@ OpenAPI representation of zigbee extension schema is as follows:
 ~~~~~~~~
 
 ## EndpointAppsExt Extension Schema OpenAPI Representation {#endpointappsext-extension-schema-openapi-representation}
-OpenAPI representation of endpoint Apps extension schema 
+OpenAPI representation of endpoint Apps extension schema
 is as follows:
 
 ~~~~~~~~
