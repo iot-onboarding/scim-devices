@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-ietf-scim-device-model-15
+docname: draft-ietf-scim-device-model-16
 submissionType: IETF
 category: std
 
@@ -69,7 +69,7 @@ normative:
     date: April 19, 2022
 
 informative:
-  JSONSChema:
+  JSONSchema:
     title: JSON Schema- A Media Type for Describing JSON Documents
     author:
      -
@@ -90,6 +90,13 @@ informative:
        name: Greg Dennis
     date: December, 2022
     target: https://json-schema.org/draft/2020-12/json-schema-core
+  OpenAPI:
+    title: OpenAPI Specification, Version 3.1.1
+    author:
+     -
+      org: swagger.io
+    date: October, 2024
+    target: https://swagger.io/specification/
 
 --- abstract
 
@@ -237,9 +244,12 @@ infrastructure to communicate with its control application.
 Schema Description
 ------------------
 
-RFC 7643 does not prescribe a language to describe a schema. We have
-chosen the JSON schema language {{JSONSChema}} for this
-purpose. The use of XML for SCIM devices is not supported.
+RFC 7643 does not prescribe a language to describe a schema, but instead
+uses narrative description of JSON elements with examples.  We have provided
+that same narrative description as normative, along with non-normative JSON Schema 
+{{JSONSchema}} and OpenAPI {{OpenAPI}} versions in the appendices for 
+ease of implementation. References to
+these schema in the document are for informational purposes only.
 
 Several additional schemas specify specific onboarding mechanisms,
 such as BLE and Wi-fi Easy Connect.
@@ -430,8 +440,9 @@ will connect for purposes of device control or telemetry.
 
 rootCA
 
-This is the base64 encoding a trust anchor certificate as
-described in {{!rfc4648}} Section 4.  This trust anchor is applicable
+This is the base64 encoding  as
+described in {{!rfc4648}} Section 4 a trust anchor certificate.  
+This trust anchor is applicable
 for certificates used for client application access.  The object
 is not required, singular, case sensitive, and read/write.  If not
 present, a set of trust anchors MUST be configured out of band.
@@ -467,7 +478,7 @@ is not required, read write, singular and NOT case sensitive.
 | subjectName    |   F   |  T  |  T   |   RW     |  Def   |  None  |
 {: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required, T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufacturer, N = No, and Def = Default)"}
 
-Note that either clientToken and certificateInfo are used for the
+Note that either clientToken or certificateInfo are used for the
 authentication of the application.  If certificateInfo is NOT present
 when an endpointApp is object created, then the server SHOULD return
 a clientToken.  Otherwise, if the server accepts the certificateInfo
@@ -529,7 +540,7 @@ pattern is the following:
 
 isRandom
 
-A boolean flag taken from the BLE core specification, 5.3. If FALSE,
+A boolean flag taken from the BLE core specification, version 5.3. If FALSE,
 the device is using a public MAC address. If TRUE, the device uses a
 random address.  If an Idenifying Resolving Key (IRK) is present, the
 address represents a resolvable private address.  Otherwise, the
@@ -1012,88 +1023,6 @@ The schema for the endpointAppsExt extension along with BLE extension is
 presented in JSON format in Section {{endpointappsext-extension-schema-json}}, while
 the openAPI representation is provided in Section {{endpointappsext-extension-schema-openapi-representation}}.
 
-
-Schema JSON Representation
-=============================
-
-## Resource Schema {#resource-schema}
-
-~~~~~~~~~
-<CODE BEGINS>
-{::include SCIM_resource_type.ftxt}
-<CODE ENDS>
-~~~~~~~~~
-
-## Device Core Schema JSON {#device-schema-json}
-
-
-~~~~~~~~~
-<CODE BEGINS>
-{::include SCIM_device_core_schema_representation.ftxt}
-<CODE ENDS>
-~~~~~~~~~
-
-## EndpointApp Schema JSON {#endpointapp-schema-json}
-
-~~~~~~~~~
-<CODE BEGINS>
-{::include SCIM_endpointApp_schema_representation.ftxt}
-<CODE ENDS>
-~~~~~~~~~
-
-
-## BLE Extension Schema JSON
-~~~~~~~~~
-<CODE BEGINS>
-{::include extensions/SCIM_BLE_extension_schema.ftxt}
-<CODE ENDS>
-~~~~~~~~~
-
-## DPP Extension Schema JSON
-~~~~~~~~~
-<CODE BEGINS>
-{::include extensions/SCIM_DPP_extension_schema.ftxt}
-<CODE ENDS>
-~~~~~~~~~
-
-## Ethernet MAB Extension Schema JSON
-~~~~~
-<CODE BEGINS>
-{::include extensions/SCIM_mab_extension_schema.ftxt}
-<CODE ENDS>
-~~~~~
-
-## FDO Extension Schema JSON
-~~~~~
-<CODE BEGINS>
-{::include extensions/SCIM_fdo_extension_schema.ftxt}
-<CODE ENDS>
-~~~~~
-
-## Zigbee Extension Schema JSON
-~~~~~~~~~
-<CODE BEGINS>
-{::include extensions/SCIM_zigbee_extension_schema.ftxt}
-<CODE ENDS>
-~~~~~~~~~
-
-## EndpointAppsExt JSON Extension Schema {#endpointappsext-extension-schema-json}
-~~~~~~~~~
-<CODE BEGINS>
-{::include extensions/SCIM_endpoint_extension_schema.ftxt}
-<CODE ENDS>
-~~~~~~~~~
-
-## Representation of Schema  {#representation-of-schema}
-
-The following is the JSON representation of the Schema. Implementors MUST NOT vary from the schema definitions in their implementations.  They may choose not to implement a particular extension, but if they do, they MUST implement all mandatory elements, and they must implement optional elements as specified.
-
-~~~~~~~~~
-<CODE BEGINS>
-{::include SCIM_schema.ftxt}
-<CODE ENDS>
-~~~~~~~~~
-
 Security Considerations
 =======================
 
@@ -1214,6 +1143,9 @@ Changes from Earlier Versions
 =============================
 \[RFC Editor to remove this section.\]
 
+Drafts 14 and 15:
+  * Resolve DISCUSSes
+
 Draft 13:
   * post IANA and IETF LC
 
@@ -1246,6 +1178,78 @@ Draft -01:
 Draft -00:
 
   * Initial revision
+
+
+JSON Schema Representation
+=============================
+
+## Resource Schema {#resource-schema}
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include SCIM_resource_type.ftxt}
+<CODE ENDS>
+~~~~~~~~~
+
+## Device Core Schema {#device-schema-json}
+
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include SCIM_device_core_schema_representation.ftxt}
+<CODE ENDS>
+~~~~~~~~~
+
+## EndpointApp Schema {#endpointapp-schema-json}
+
+~~~~~~~~~
+<CODE BEGINS>
+{::include SCIM_endpointApp_schema_representation.ftxt}
+<CODE ENDS>
+~~~~~~~~~
+
+
+## BLE Extension Schema {#ble-extension-schema-json}
+~~~~~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_BLE_extension_schema.ftxt}
+<CODE ENDS>
+~~~~~~~~~
+
+## DPP Extension Schema  {#dpp-extension-schema-json}
+~~~~~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_DPP_extension_schema.ftxt}
+<CODE ENDS>
+~~~~~~~~~
+
+## Ethernet MAB Extension Schema  {#ethernet-mab-extension-schema-json}
+~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_mab_extension_schema.ftxt}
+<CODE ENDS>
+~~~~~
+
+## FDO Extension Schema  {#fdo-extension-schema-json}
+~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_fdo_extension_schema.ftxt}
+<CODE ENDS>
+~~~~~
+
+## Zigbee Extension Schema  {#zigbee-extension-schema-json}
+~~~~~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_zigbee_extension_schema.ftxt}
+<CODE ENDS>
+~~~~~~~~~
+
+## EndpointAppsExt Extension Schema {#endpointappsext-extension-schema-json}
+~~~~~~~~~
+<CODE BEGINS>
+{::include extensions/SCIM_endpoint_extension_schema.ftxt}
+<CODE ENDS>
+~~~~~~~~~
 
 
 # OpenAPI representation
