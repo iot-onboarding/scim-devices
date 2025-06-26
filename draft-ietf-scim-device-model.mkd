@@ -67,6 +67,13 @@ normative:
      -
        org: FIDO Alliance
     date: April 19, 2022
+  Zigbee:
+    title: Zigbee Specification
+    author:
+     -
+       org: Zigbee Alliance
+    date: August, 2015
+    target: https://zigbeealliance.org/wp-content/uploads/2019/11/docs-05-3474-21-0csg-zigbee-specification.pdf
 
 informative:
   JSONSchema:
@@ -142,6 +149,7 @@ Some might ask why SCIM is well suited for this purpose and not, for
 example, NETCONF {{?RFC6241}} or RESTCONF {{?RFC8040}} with YANG
 {{?RFC7950}}. After all, there are all sorts of existing models
 available. The answer is four fold:
+
 - First, NETCONF and RESTCONF focus on **configuration** rather than
   provisioning.
 - Second, SCIM is designed with inter-domain provisioning in mind.
@@ -186,7 +194,7 @@ The client may be one of a number of entities:
    remove, or get information about devices. An example might be an
    tablet or phone app that scans Wi-fi Easy Connect QR codes.
 
-~~~~~
+~~~ aasvg
 
 
                             +-----------------------------------+
@@ -203,7 +211,7 @@ The client may be one of a number of entities:
                             |                                   |
                             +-----------------------------------+
 
-~~~~~
+~~~
 {: #arch title="Basic Architecture - non-IP example"}
 
 In {{arch}}, the onboarding app provides the device particulars. As
@@ -214,7 +222,7 @@ the device. The control endpoint is one among a number of objects
 that may be returned.  That control endpoint will then communicate
 with the application layer gateway (ALG) to reach the endpoint.
 
-~~~~~
+~~~ aasvg
 
 
                             +-----------------------------------+
@@ -231,7 +239,7 @@ with the application layer gateway (ALG) to reach the endpoint.
                             |                                   |
                             +-----------------------------------+
 
-~~~~~
+~~~
 {: #arch2 title="Interaction with AAA"}
 
 {{arch2}} shows how IP-based endpoints can be provisioned.  In this
@@ -252,7 +260,8 @@ ease of implementation. References to
 these schema in the document are for informational purposes only.
 
 Several additional schemas specify specific onboarding mechanisms,
-such as BLE and Wi-fi Easy Connect.
+such as Bluetooth Low energy (BLE) {{BLE54}}, Wi-fi Easy Connect {{DPP2}},
+and FIDO Device Onboard {{FDO11}}.
 
 ## Schema Representation
 
@@ -335,9 +344,10 @@ the device will be rejected by the controller.
 
 mudUrl
 
-The mudUrl attribute represents the URL to the MUD file associated
-with this device. This attribute is optional and mutable. The mudUrl
-value is case sensitive and not unique. When present, this attribute
+The mudUrl attribute represents the URL to the Manufacturer Usage Description
+(MUD) file associated
+with this device. This attribute is optional and mutable.
+The mudUrl value is case sensitive and not unique. When present, this attribute
 may be used as described in {{!RFC8520}}. This attribute is case
 sensitive and returned by default.
 
@@ -540,7 +550,7 @@ pattern is the following:
 
 isRandom
 
-A boolean flag taken from the BLE core specification, version 5.3. If FALSE,
+A boolean flag taken from the BLE core specification, version 5.4. If FALSE,
 the device is using a public MAC address. If TRUE, the device uses a
 random address.  If an Idenifying Resolving Key (IRK) is present, the
 address represents a resolvable private address.  Otherwise, the
@@ -814,6 +824,10 @@ by the following URI:
 
 urn:ietf:params:scim:schemas:extension:ethernet-mab:2.0:Device
 
+Note that this method is not likely to work properly with
+MAC address randomization.
+
+
 ### Single Attribute
 
 This extension has a singular attribute:
@@ -884,7 +898,7 @@ representation is provided in Section [](#fdo-extension-schema-openapi-represent
 ## Zigbee Extension
 
 A schema that extends the device schema to enable the provisioning of
-Zigbee devices. The extension is identified using the following
+Zigbee devices {{Zigbee}}. The extension is identified using the following
 schema URI:
 
 

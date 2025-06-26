@@ -1,0 +1,939 @@
+[I"§
+
+                            +-----------------------------------+
+                            |                                   |
+    +-----------+   Request |  +---------+   +----+   +------+  |
+    | onboarding|------------->|  SCIM   |-->| AAA|<->|switch|  |
+    |    app    |<-------------| Server  |   +----+   +------+  |
+    +-----------+  Ctrl Endpt  +---------+                |     |
+                            |                             |     |
+    +-----------+           |  +------------+         +-------+ |
+    |  Control  |...........|..| router/fw  |.........|device | |
+    |    App    |           |  +------------+         +-------+ |
+    +-----------+           |                                   |
+                            |                                   |
+                            +-----------------------------------+
+
+~~~~ aasvg
+{: #arch2 title="Interaction with AAA"}
+
+{{arch2}} shows how IP-based endpoints can be provisioned.  In this
+case, the onboarding app provisions a device via SCIM. The necessary
+information is passed to the AAA subsystem, such that the device is
+permitted to connect.  Once it is online, since the device is based
+on IP, it will not need an ALG, but will use the normal IP
+infrastructure to communicate with its control application.
+
+Schema Description
+------------------
+
+RFC 7643 does not prescribe a language to describe a schema, but instead
+uses narrative description of JSON elements with examples.  We have provided
+that same narrative description as normative, along with non-normative JSON Schema 
+{{JSONSchema}} and OpenAPI {{OpenAPI}} versions in the appendices for 
+ease of implementation. References to
+these schema in the document are for informational purposes only.
+
+Several additional schemas specify specific onboarding mechanisms,
+such as Bluetooth Low energy (BLE) {{BLE54}}, Wi-fi Easy Connect {{DPP2}},
+and FIDO Device Onboard {{FDO11}}.
+
+## Schema Representation
+
+Attributes defined in the device core schema and extensions comprise
+characteristics and SCIM datatypes defined in Sections 2.2 and 2.3 of
+the {{RFC7643}}. This specifciation does not define new
+characteristics and datatypes for the SCIM attributes.
+
+Terminology
+-----------
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they
+appear in all capitals, as shown here.
+
+
+ResourceType Device
+====================
+
+A new resource type 'Device' is specified. The "ResourceType" schema
+specifies the metadata about a resource type (see section 6 of
+{{RFC7643}}).  It comprises a core device schema and several
+extension schemas. The core schema provides a minimal resource
+representation, whereas extension schemas extend the core schema
+depending on the device's capability. The JSON schema for Device
+resource type is in {{resource-schema}}.
+
+
+## Common Attributes
+
+The Device schema contains three common attributes as defined in the
+{{RFC7643}}.  No semantic or syntax changes are made here, but the
+attributes are listed merely for completeness.
+
+id
+
+An id is a required and unique attribute of the device core schema
+(see section 3.1 of {{RFC7643}}).
+
+externalID
+
+An externalID is an optional attribute (see section 3.1 of {{RFC7643}}).
+
+meta
+
+Meta is a complex attribute and is required (see section 3.1 of {{RFC7643}}).
+
+
+SCIM Core Device Schema
+=======================
+
+The core device schema provides the minimal representation of a
+resource "Device". It contains only those attributes that any device
+may need, and only one attribute is required. The core schema for
+"Device" is identified using the schema URI:
+"urn:ietf:params:scim:schemas:core:2.0:Device". The following
+attributes are defined in the device core schema.
+
+## Singular Attributes
+
+displayName
+
+This attribute is of type "string" and provides a human-readable name
+for a device. It is intended to be displayed to end-users and should be
+suitable for that purpose. The attribute is not required, and is not
+case-sensitive. It may be modified and SHOULD be returned
+by default. No uniqueness constraints are imposed on this attribute.
+
+active
+
+The "active" attribute is of type "boolean" and is a mutable
+attribute, and is required. If set to TRUE, it means that this device
+is intended to be operational. Attempts to control or access a device
+where this value is set to FALSE may fail. For example, when used in
+conjunction with NIPC {{I-D.brinckman-nipc}}, commands such as
+connect, disconnect, subscribe that control app sends to the
+controller for the devices any command coming from the control app for
+the device will be rejected by the controller.
+
+mudUrl
+
+The mudUrl attribute represents the URL to the Manufacturer Usage Description
+(MUD) file associated
+with this device. This attribute is optional and mutable.
+The mudUrl value is case sensitive and not unique. When present, this attribute
+may be used as described in {{RFC8520}}. This attribute is case
+sensitive and returned by default.
+
+
+| Attribute   | Multi Value | Req | Case Exact| Mutable | Return | Unique |
+|-------------|-------|-----|------|---------|--------|--------|
+| displayName |   F   |  F  |  F   |   RW    |  Def   |  None  |
+|-------------|-------|-----|------|---------|--------|--------|
+| active      |   F   |  T  |  F   |   RW    |  Def   |  None  |
+|-------------|-------|-----|------|---------|--------|--------|
+| mudUrl      |   F   |  F  |  T   |   RW    |  Def   |  None  |
+{: #tabDevice title="Characteristics of device schema attributes. (Req = Required,
+T = True, F = False, RW = ReadWrite, and Def = Default)"}
+
+An example of a device SCIM object is as follows:
+
+:ETI"Âx<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="2272" width="672" viewBox="0 0 672 2272" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+<path d="M 8,2080 L 8,2176" fill="none" stroke="black"/>
+<path d="M 40,80 L 40,128" fill="none" stroke="black"/>
+<path d="M 40,160 L 40,208" fill="none" stroke="black"/>
+<path d="M 120,2080 L 120,2176" fill="none" stroke="black"/>
+<path d="M 136,80 L 136,128" fill="none" stroke="black"/>
+<path d="M 136,160 L 136,208" fill="none" stroke="black"/>
+<path d="M 184,2096 L 184,2176" fill="none" stroke="black"/>
+<path d="M 232,48 L 232,88" fill="none" stroke="black"/>
+<path d="M 232,144 L 232,240" fill="none" stroke="black"/>
+<path d="M 232,2080 L 232,2176" fill="none" stroke="black"/>
+<path d="M 256,80 L 256,128" fill="none" stroke="black"/>
+<path d="M 256,160 L 256,192" fill="none" stroke="black"/>
+<path d="M 288,2096 L 288,2176" fill="none" stroke="black"/>
+<path d="M 336,80 L 336,128" fill="none" stroke="black"/>
+<path d="M 360,160 L 360,192" fill="none" stroke="black"/>
+<path d="M 368,80 L 368,112" fill="none" stroke="black"/>
+<path d="M 368,2096 L 368,2176" fill="none" stroke="black"/>
+<path d="M 408,80 L 408,112" fill="none" stroke="black"/>
+<path d="M 440,80 L 440,112" fill="none" stroke="black"/>
+<path d="M 440,160 L 440,192" fill="none" stroke="black"/>
+<path d="M 440,2096 L 440,2176" fill="none" stroke="black"/>
+<path d="M 472,120 L 472,152" fill="none" stroke="black"/>
+<path d="M 496,80 L 496,112" fill="none" stroke="black"/>
+<path d="M 504,160 L 504,192" fill="none" stroke="black"/>
+<path d="M 512,2096 L 512,2176" fill="none" stroke="black"/>
+<path d="M 520,48 L 520,240" fill="none" stroke="black"/>
+<path d="M 232,48 L 520,48" fill="none" stroke="black"/>
+<path d="M 40,80 L 136,80" fill="none" stroke="black"/>
+<path d="M 256,80 L 336,80" fill="none" stroke="black"/>
+<path d="M 368,80 L 408,80" fill="none" stroke="black"/>
+<path d="M 440,80 L 496,80" fill="none" stroke="black"/>
+<path d="M 144,96 L 248,96" fill="none" stroke="black"/>
+<path d="M 344,96 L 360,96" fill="none" stroke="black"/>
+<path d="M 144,112 L 248,112" fill="none" stroke="black"/>
+<path d="M 368,112 L 408,112" fill="none" stroke="black"/>
+<path d="M 440,112 L 496,112" fill="none" stroke="black"/>
+<path d="M 40,128 L 136,128" fill="none" stroke="black"/>
+<path d="M 256,128 L 336,128" fill="none" stroke="black"/>
+<path d="M 40,160 L 136,160" fill="none" stroke="black"/>
+<path d="M 256,160 L 360,160" fill="none" stroke="black"/>
+<path d="M 440,160 L 504,160" fill="none" stroke="black"/>
+<path d="M 256,192 L 360,192" fill="none" stroke="black"/>
+<path d="M 440,192 L 504,192" fill="none" stroke="black"/>
+<path d="M 40,208 L 136,208" fill="none" stroke="black"/>
+<path d="M 232,240 L 520,240" fill="none" stroke="black"/>
+<path d="M 8,272 Q 10,268.8 12,272 Q 14,275.2 16,272 Q 18,268.8 20,272 Q 22,275.2 24,272 Q 26,268.8 28,272 Q 30,275.2 32,272 " fill="none" stroke="black"/>
+<path d="M 8,448 L 144,448" fill="none" stroke="black"/>
+<path d="M 8,784 L 88,784" fill="none" stroke="black"/>
+<path d="M 8,926 L 160,926" fill="none" stroke="black"/><path d="M 8,930 L 160,930" fill="none" stroke="black"/>
+<path d="M 8,1438 L 184,1438" fill="none" stroke="black"/><path d="M 8,1442 L 184,1442" fill="none" stroke="black"/>
+<path d="M 16,2096 L 112,2096" fill="none" stroke="black"/>
+<path d="M 128,2096 L 176,2096" fill="none" stroke="black"/>
+<path d="M 192,2096 L 224,2096" fill="none" stroke="black"/>
+<path d="M 240,2096 L 280,2096" fill="none" stroke="black"/>
+<path d="M 296,2096 L 360,2096" fill="none" stroke="black"/>
+<path d="M 376,2096 L 432,2096" fill="none" stroke="black"/>
+<path d="M 448,2096 L 504,2096" fill="none" stroke="black"/>
+<path d="M 16,2128 L 112,2128" fill="none" stroke="black"/>
+<path d="M 128,2128 L 176,2128" fill="none" stroke="black"/>
+<path d="M 192,2128 L 224,2128" fill="none" stroke="black"/>
+<path d="M 240,2128 L 280,2128" fill="none" stroke="black"/>
+<path d="M 296,2128 L 360,2128" fill="none" stroke="black"/>
+<path d="M 376,2128 L 432,2128" fill="none" stroke="black"/>
+<path d="M 448,2128 L 504,2128" fill="none" stroke="black"/>
+<path d="M 16,2160 L 112,2160" fill="none" stroke="black"/>
+<path d="M 128,2160 L 176,2160" fill="none" stroke="black"/>
+<path d="M 192,2160 L 224,2160" fill="none" stroke="black"/>
+<path d="M 240,2160 L 280,2160" fill="none" stroke="black"/>
+<path d="M 296,2160 L 360,2160" fill="none" stroke="black"/>
+<path d="M 376,2160 L 432,2160" fill="none" stroke="black"/>
+<path d="M 448,2160 L 504,2160" fill="none" stroke="black"/>
+<polygon class="arrowhead" points="368,96 356,90.4 356,101.6" fill="black" transform="rotate(0,360,96)"/>
+<polygon class="arrowhead" points="256,96 244,90.4 244,101.6" fill="black" transform="rotate(0,248,96)"/>
+<polygon class="arrowhead" points="152,112 140,106.4 140,117.6" fill="black" transform="rotate(180,144,112)"/>
+<g class="text">
+<text x="192" y="84">Request</text>
+<text x="92" y="100">onboarding</text>
+<text x="292" y="100">SCIM</text>
+<text x="392" y="100">AAA</text>
+<text x="424" y="100">&lt;-&gt;</text>
+<text x="468" y="100">switch</text>
+<text x="88" y="116">app</text>
+<text x="292" y="116">Server</text>
+<text x="172" y="132">Ctrl</text>
+<text x="216" y="132">Endpt</text>
+<text x="88" y="180">Control</text>
+<text x="184" y="180">...........</text>
+<text x="244" y="180">..</text>
+<text x="304" y="180">router/fw</text>
+<text x="400" y="180">.........</text>
+<text x="468" y="180">device</text>
+<text x="88" y="196">App</text>
+<text x="64" y="276">aasvg</text>
+<text x="12" y="292">{:</text>
+<text x="52" y="292">#arch2</text>
+<text x="156" y="292">title=&quot;Interaction</text>
+<text x="252" y="292">with</text>
+<text x="296" y="292">AAA&quot;}</text>
+<text x="40" y="324">{{arch2}}</text>
+<text x="104" y="324">shows</text>
+<text x="144" y="324">how</text>
+<text x="196" y="324">IP-based</text>
+<text x="272" y="324">endpoints</text>
+<text x="328" y="324">can</text>
+<text x="356" y="324">be</text>
+<text x="420" y="324">provisioned.</text>
+<text x="492" y="324">In</text>
+<text x="524" y="324">this</text>
+<text x="24" y="340">case,</text>
+<text x="64" y="340">the</text>
+<text x="124" y="340">onboarding</text>
+<text x="184" y="340">app</text>
+<text x="244" y="340">provisions</text>
+<text x="296" y="340">a</text>
+<text x="332" y="340">device</text>
+<text x="376" y="340">via</text>
+<text x="416" y="340">SCIM.</text>
+<text x="456" y="340">The</text>
+<text x="512" y="340">necessary</text>
+<text x="48" y="356">information</text>
+<text x="108" y="356">is</text>
+<text x="148" y="356">passed</text>
+<text x="188" y="356">to</text>
+<text x="216" y="356">the</text>
+<text x="248" y="356">AAA</text>
+<text x="308" y="356">subsystem,</text>
+<text x="372" y="356">such</text>
+<text x="412" y="356">that</text>
+<text x="448" y="356">the</text>
+<text x="492" y="356">device</text>
+<text x="532" y="356">is</text>
+<text x="40" y="372">permitted</text>
+<text x="92" y="372">to</text>
+<text x="140" y="372">connect.</text>
+<text x="204" y="372">Once</text>
+<text x="236" y="372">it</text>
+<text x="260" y="372">is</text>
+<text x="304" y="372">online,</text>
+<text x="360" y="372">since</text>
+<text x="400" y="372">the</text>
+<text x="444" y="372">device</text>
+<text x="484" y="372">is</text>
+<text x="520" y="372">based</text>
+<text x="12" y="388">on</text>
+<text x="40" y="388">IP,</text>
+<text x="68" y="388">it</text>
+<text x="100" y="388">will</text>
+<text x="136" y="388">not</text>
+<text x="172" y="388">need</text>
+<text x="204" y="388">an</text>
+<text x="236" y="388">ALG,</text>
+<text x="272" y="388">but</text>
+<text x="308" y="388">will</text>
+<text x="344" y="388">use</text>
+<text x="376" y="388">the</text>
+<text x="420" y="388">normal</text>
+<text x="460" y="388">IP</text>
+<text x="60" y="404">infrastructure</text>
+<text x="132" y="404">to</text>
+<text x="192" y="404">communicate</text>
+<text x="260" y="404">with</text>
+<text x="296" y="404">its</text>
+<text x="344" y="404">control</text>
+<text x="428" y="404">application.</text>
+<text x="28" y="436">Schema</text>
+<text x="104" y="436">Description</text>
+<text x="16" y="484">RFC</text>
+<text x="52" y="484">7643</text>
+<text x="92" y="484">does</text>
+<text x="128" y="484">not</text>
+<text x="184" y="484">prescribe</text>
+<text x="232" y="484">a</text>
+<text x="276" y="484">language</text>
+<text x="324" y="484">to</text>
+<text x="372" y="484">describe</text>
+<text x="416" y="484">a</text>
+<text x="456" y="484">schema,</text>
+<text x="504" y="484">but</text>
+<text x="552" y="484">instead</text>
+<text x="20" y="500">uses</text>
+<text x="80" y="500">narrative</text>
+<text x="168" y="500">description</text>
+<text x="228" y="500">of</text>
+<text x="260" y="500">JSON</text>
+<text x="316" y="500">elements</text>
+<text x="372" y="500">with</text>
+<text x="432" y="500">examples.</text>
+<text x="492" y="500">We</text>
+<text x="524" y="500">have</text>
+<text x="580" y="500">provided</text>
+<text x="20" y="516">that</text>
+<text x="60" y="516">same</text>
+<text x="120" y="516">narrative</text>
+<text x="208" y="516">description</text>
+<text x="268" y="516">as</text>
+<text x="324" y="516">normative,</text>
+<text x="392" y="516">along</text>
+<text x="436" y="516">with</text>
+<text x="512" y="516">non-normative</text>
+<text x="588" y="516">JSON</text>
+<text x="636" y="516">Schema</text>
+<text x="60" y="532">{{JSONSchema}}</text>
+<text x="136" y="532">and</text>
+<text x="184" y="532">OpenAPI</text>
+<text x="264" y="532">{{OpenAPI}}</text>
+<text x="348" y="532">versions</text>
+<text x="396" y="532">in</text>
+<text x="424" y="532">the</text>
+<text x="484" y="532">appendices</text>
+<text x="544" y="532">for</text>
+<text x="20" y="548">ease</text>
+<text x="52" y="548">of</text>
+<text x="128" y="548">implementation.</text>
+<text x="236" y="548">References</text>
+<text x="292" y="548">to</text>
+<text x="24" y="564">these</text>
+<text x="76" y="564">schema</text>
+<text x="116" y="564">in</text>
+<text x="144" y="564">the</text>
+<text x="196" y="564">document</text>
+<text x="248" y="564">are</text>
+<text x="280" y="564">for</text>
+<text x="352" y="564">informational</text>
+<text x="444" y="564">purposes</text>
+<text x="504" y="564">only.</text>
+<text x="32" y="596">Several</text>
+<text x="108" y="596">additional</text>
+<text x="184" y="596">schemas</text>
+<text x="248" y="596">specify</text>
+<text x="316" y="596">specific</text>
+<text x="396" y="596">onboarding</text>
+<text x="488" y="596">mechanisms,</text>
+<text x="20" y="612">such</text>
+<text x="52" y="612">as</text>
+<text x="104" y="612">Bluetooth</text>
+<text x="160" y="612">Low</text>
+<text x="204" y="612">energy</text>
+<text x="256" y="612">(BLE)</text>
+<text x="324" y="612">{{BLE54}},</text>
+<text x="392" y="612">Wi-fi</text>
+<text x="436" y="612">Easy</text>
+<text x="488" y="612">Connect</text>
+<text x="560" y="612">{{DPP2}},</text>
+<text x="16" y="628">and</text>
+<text x="52" y="628">FIDO</text>
+<text x="100" y="628">Device</text>
+<text x="160" y="628">Onboard</text>
+<text x="236" y="628">{{FDO11}}.</text>
+<text x="12" y="660">##</text>
+<text x="52" y="660">Schema</text>
+<text x="140" y="660">Representation</text>
+<text x="44" y="692">Attributes</text>
+<text x="120" y="692">defined</text>
+<text x="164" y="692">in</text>
+<text x="192" y="692">the</text>
+<text x="236" y="692">device</text>
+<text x="284" y="692">core</text>
+<text x="332" y="692">schema</text>
+<text x="376" y="692">and</text>
+<text x="436" y="692">extensions</text>
+<text x="516" y="692">comprise</text>
+<text x="64" y="708">characteristics</text>
+<text x="144" y="708">and</text>
+<text x="180" y="708">SCIM</text>
+<text x="240" y="708">datatypes</text>
+<text x="312" y="708">defined</text>
+<text x="356" y="708">in</text>
+<text x="404" y="708">Sections</text>
+<text x="456" y="708">2.2</text>
+<text x="488" y="708">and</text>
+<text x="520" y="708">2.3</text>
+<text x="548" y="708">of</text>
+<text x="16" y="724">the</text>
+<text x="84" y="724">{{RFC7643}}.</text>
+<text x="156" y="724">This</text>
+<text x="232" y="724">specifciation</text>
+<text x="308" y="724">does</text>
+<text x="344" y="724">not</text>
+<text x="388" y="724">define</text>
+<text x="432" y="724">new</text>
+<text x="64" y="740">characteristics</text>
+<text x="144" y="740">and</text>
+<text x="200" y="740">datatypes</text>
+<text x="256" y="740">for</text>
+<text x="288" y="740">the</text>
+<text x="324" y="740">SCIM</text>
+<text x="392" y="740">attributes.</text>
+<text x="48" y="772">Terminology</text>
+<text x="16" y="804">The</text>
+<text x="48" y="804">key</text>
+<text x="88" y="804">words</text>
+<text x="144" y="804">&quot;MUST&quot;,</text>
+<text x="200" y="804">&quot;MUST</text>
+<text x="248" y="804">NOT&quot;,</text>
+<text x="320" y="804">&quot;REQUIRED&quot;,</text>
+<text x="404" y="804">&quot;SHALL&quot;,</text>
+<text x="468" y="804">&quot;SHALL</text>
+<text x="24" y="820">NOT&quot;,</text>
+<text x="88" y="820">&quot;SHOULD&quot;,</text>
+<text x="160" y="820">&quot;SHOULD</text>
+<text x="216" y="820">NOT&quot;,</text>
+<text x="300" y="820">&quot;RECOMMENDED&quot;,</text>
+<text x="380" y="820">&quot;NOT</text>
+<text x="456" y="820">RECOMMENDED&quot;,</text>
+<text x="28" y="836">&quot;MAY&quot;,</text>
+<text x="72" y="836">and</text>
+<text x="132" y="836">&quot;OPTIONAL&quot;</text>
+<text x="188" y="836">in</text>
+<text x="220" y="836">this</text>
+<text x="276" y="836">document</text>
+<text x="328" y="836">are</text>
+<text x="356" y="836">to</text>
+<text x="380" y="836">be</text>
+<text x="440" y="836">interpreted</text>
+<text x="500" y="836">as</text>
+<text x="40" y="852">described</text>
+<text x="92" y="852">in</text>
+<text x="120" y="852">BCP</text>
+<text x="148" y="852">14</text>
+<text x="208" y="852">{{RFC2119}}</text>
+<text x="304" y="852">{{RFC8174}}</text>
+<text x="376" y="852">when,</text>
+<text x="416" y="852">and</text>
+<text x="452" y="852">only</text>
+<text x="496" y="852">when,</text>
+<text x="540" y="852">they</text>
+<text x="28" y="868">appear</text>
+<text x="68" y="868">in</text>
+<text x="96" y="868">all</text>
+<text x="152" y="868">capitals,</text>
+<text x="204" y="868">as</text>
+<text x="240" y="868">shown</text>
+<text x="288" y="868">here.</text>
+<text x="52" y="916">ResourceType</text>
+<text x="132" y="916">Device</text>
+<text x="8" y="964">A</text>
+<text x="32" y="964">new</text>
+<text x="84" y="964">resource</text>
+<text x="140" y="964">type</text>
+<text x="196" y="964">'Device'</text>
+<text x="244" y="964">is</text>
+<text x="300" y="964">specified.</text>
+<text x="360" y="964">The</text>
+<text x="436" y="964">&quot;ResourceType&quot;</text>
+<text x="524" y="964">schema</text>
+<text x="40" y="980">specifies</text>
+<text x="96" y="980">the</text>
+<text x="148" y="980">metadata</text>
+<text x="208" y="980">about</text>
+<text x="240" y="980">a</text>
+<text x="284" y="980">resource</text>
+<text x="340" y="980">type</text>
+<text x="380" y="980">(see</text>
+<text x="432" y="980">section</text>
+<text x="472" y="980">6</text>
+<text x="492" y="980">of</text>
+<text x="56" y="996">{{RFC7643}}).</text>
+<text x="132" y="996">It</text>
+<text x="184" y="996">comprises</text>
+<text x="232" y="996">a</text>
+<text x="260" y="996">core</text>
+<text x="308" y="996">device</text>
+<text x="364" y="996">schema</text>
+<text x="408" y="996">and</text>
+<text x="456" y="996">several</text>
+<text x="40" y="1012">extension</text>
+<text x="116" y="1012">schemas.</text>
+<text x="168" y="1012">The</text>
+<text x="204" y="1012">core</text>
+<text x="252" y="1012">schema</text>
+<text x="316" y="1012">provides</text>
+<text x="360" y="1012">a</text>
+<text x="400" y="1012">minimal</text>
+<text x="468" y="1012">resource</text>
+<text x="64" y="1028">representation,</text>
+<text x="160" y="1028">whereas</text>
+<text x="232" y="1028">extension</text>
+<text x="304" y="1028">schemas</text>
+<text x="364" y="1028">extend</text>
+<text x="408" y="1028">the</text>
+<text x="444" y="1028">core</text>
+<text x="492" y="1028">schema</text>
+<text x="40" y="1044">depending</text>
+<text x="92" y="1044">on</text>
+<text x="120" y="1044">the</text>
+<text x="172" y="1044">device's</text>
+<text x="256" y="1044">capability.</text>
+<text x="320" y="1044">The</text>
+<text x="356" y="1044">JSON</text>
+<text x="404" y="1044">schema</text>
+<text x="448" y="1044">for</text>
+<text x="492" y="1044">Device</text>
+<text x="36" y="1060">resource</text>
+<text x="92" y="1060">type</text>
+<text x="124" y="1060">is</text>
+<text x="148" y="1060">in</text>
+<text x="244" y="1060">{{resource-schema}}.</text>
+<text x="12" y="1108">##</text>
+<text x="52" y="1108">Common</text>
+<text x="124" y="1108">Attributes</text>
+<text x="16" y="1140">The</text>
+<text x="60" y="1140">Device</text>
+<text x="116" y="1140">schema</text>
+<text x="180" y="1140">contains</text>
+<text x="240" y="1140">three</text>
+<text x="292" y="1140">common</text>
+<text x="364" y="1140">attributes</text>
+<text x="420" y="1140">as</text>
+<text x="464" y="1140">defined</text>
+<text x="508" y="1140">in</text>
+<text x="536" y="1140">the</text>
+<text x="52" y="1156">{{RFC7643}}.</text>
+<text x="124" y="1156">No</text>
+<text x="172" y="1156">semantic</text>
+<text x="220" y="1156">or</text>
+<text x="260" y="1156">syntax</text>
+<text x="320" y="1156">changes</text>
+<text x="368" y="1156">are</text>
+<text x="404" y="1156">made</text>
+<text x="448" y="1156">here,</text>
+<text x="488" y="1156">but</text>
+<text x="520" y="1156">the</text>
+<text x="44" y="1172">attributes</text>
+<text x="104" y="1172">are</text>
+<text x="148" y="1172">listed</text>
+<text x="204" y="1172">merely</text>
+<text x="248" y="1172">for</text>
+<text x="320" y="1172">completeness.</text>
+<text x="12" y="1204">id</text>
+<text x="12" y="1236">An</text>
+<text x="36" y="1236">id</text>
+<text x="60" y="1236">is</text>
+<text x="80" y="1236">a</text>
+<text x="124" y="1236">required</text>
+<text x="176" y="1236">and</text>
+<text x="220" y="1236">unique</text>
+<text x="288" y="1236">attribute</text>
+<text x="340" y="1236">of</text>
+<text x="368" y="1236">the</text>
+<text x="412" y="1236">device</text>
+<text x="460" y="1236">core</text>
+<text x="508" y="1236">schema</text>
+<text x="20" y="1252">(see</text>
+<text x="72" y="1252">section</text>
+<text x="120" y="1252">3.1</text>
+<text x="148" y="1252">of</text>
+<text x="216" y="1252">{{RFC7643}}).</text>
+<text x="44" y="1284">externalID</text>
+<text x="12" y="1316">An</text>
+<text x="68" y="1316">externalID</text>
+<text x="124" y="1316">is</text>
+<text x="148" y="1316">an</text>
+<text x="196" y="1316">optional</text>
+<text x="272" y="1316">attribute</text>
+<text x="332" y="1316">(see</text>
+<text x="384" y="1316">section</text>
+<text x="432" y="1316">3.1</text>
+<text x="460" y="1316">of</text>
+<text x="528" y="1316">{{RFC7643}}).</text>
+<text x="20" y="1348">meta</text>
+<text x="20" y="1380">Meta</text>
+<text x="52" y="1380">is</text>
+<text x="72" y="1380">a</text>
+<text x="112" y="1380">complex</text>
+<text x="184" y="1380">attribute</text>
+<text x="240" y="1380">and</text>
+<text x="268" y="1380">is</text>
+<text x="316" y="1380">required</text>
+<text x="372" y="1380">(see</text>
+<text x="424" y="1380">section</text>
+<text x="472" y="1380">3.1</text>
+<text x="500" y="1380">of</text>
+<text x="568" y="1380">{{RFC7643}}).</text>
+<text x="20" y="1428">SCIM</text>
+<text x="60" y="1428">Core</text>
+<text x="108" y="1428">Device</text>
+<text x="164" y="1428">Schema</text>
+<text x="16" y="1476">The</text>
+<text x="52" y="1476">core</text>
+<text x="100" y="1476">device</text>
+<text x="156" y="1476">schema</text>
+<text x="220" y="1476">provides</text>
+<text x="272" y="1476">the</text>
+<text x="320" y="1476">minimal</text>
+<text x="412" y="1476">representation</text>
+<text x="484" y="1476">of</text>
+<text x="504" y="1476">a</text>
+<text x="36" y="1492">resource</text>
+<text x="112" y="1492">&quot;Device&quot;.</text>
+<text x="164" y="1492">It</text>
+<text x="212" y="1492">contains</text>
+<text x="268" y="1492">only</text>
+<text x="312" y="1492">those</text>
+<text x="380" y="1492">attributes</text>
+<text x="444" y="1492">that</text>
+<text x="480" y="1492">any</text>
+<text x="524" y="1492">device</text>
+<text x="16" y="1508">may</text>
+<text x="56" y="1508">need,</text>
+<text x="96" y="1508">and</text>
+<text x="132" y="1508">only</text>
+<text x="168" y="1508">one</text>
+<text x="224" y="1508">attribute</text>
+<text x="276" y="1508">is</text>
+<text x="328" y="1508">required.</text>
+<text x="384" y="1508">The</text>
+<text x="420" y="1508">core</text>
+<text x="468" y="1508">schema</text>
+<text x="512" y="1508">for</text>
+<text x="36" y="1524">&quot;Device&quot;</text>
+<text x="84" y="1524">is</text>
+<text x="140" y="1524">identified</text>
+<text x="208" y="1524">using</text>
+<text x="248" y="1524">the</text>
+<text x="292" y="1524">schema</text>
+<text x="340" y="1524">URI:</text>
+<text x="192" y="1540">&quot;urn:ietf:params:scim:schemas:core:2.0:Device&quot;.</text>
+<text x="400" y="1540">The</text>
+<text x="456" y="1540">following</text>
+<text x="44" y="1556">attributes</text>
+<text x="104" y="1556">are</text>
+<text x="152" y="1556">defined</text>
+<text x="196" y="1556">in</text>
+<text x="224" y="1556">the</text>
+<text x="268" y="1556">device</text>
+<text x="316" y="1556">core</text>
+<text x="368" y="1556">schema.</text>
+<text x="12" y="1588">##</text>
+<text x="60" y="1588">Singular</text>
+<text x="140" y="1588">Attributes</text>
+<text x="48" y="1620">displayName</text>
+<text x="20" y="1652">This</text>
+<text x="80" y="1652">attribute</text>
+<text x="132" y="1652">is</text>
+<text x="156" y="1652">of</text>
+<text x="188" y="1652">type</text>
+<text x="244" y="1652">&quot;string&quot;</text>
+<text x="296" y="1652">and</text>
+<text x="348" y="1652">provides</text>
+<text x="392" y="1652">a</text>
+<text x="460" y="1652">human-readable</text>
+<text x="540" y="1652">name</text>
+<text x="16" y="1668">for</text>
+<text x="40" y="1668">a</text>
+<text x="80" y="1668">device.</text>
+<text x="124" y="1668">It</text>
+<text x="148" y="1668">is</text>
+<text x="196" y="1668">intended</text>
+<text x="244" y="1668">to</text>
+<text x="268" y="1668">be</text>
+<text x="320" y="1668">displayed</text>
+<text x="372" y="1668">to</text>
+<text x="424" y="1668">end-users</text>
+<text x="480" y="1668">and</text>
+<text x="524" y="1668">should</text>
+<text x="564" y="1668">be</text>
+<text x="36" y="1684">suitable</text>
+<text x="88" y="1684">for</text>
+<text x="124" y="1684">that</text>
+<text x="180" y="1684">purpose.</text>
+<text x="232" y="1684">The</text>
+<text x="288" y="1684">attribute</text>
+<text x="340" y="1684">is</text>
+<text x="368" y="1684">not</text>
+<text x="424" y="1684">required,</text>
+<text x="480" y="1684">and</text>
+<text x="508" y="1684">is</text>
+<text x="536" y="1684">not</text>
+<text x="64" y="1700">case-sensitive.</text>
+<text x="140" y="1700">It</text>
+<text x="168" y="1700">may</text>
+<text x="196" y="1700">be</text>
+<text x="244" y="1700">modified</text>
+<text x="296" y="1700">and</text>
+<text x="340" y="1700">SHOULD</text>
+<text x="380" y="1700">be</text>
+<text x="428" y="1700">returned</text>
+<text x="12" y="1716">by</text>
+<text x="60" y="1716">default.</text>
+<text x="108" y="1716">No</text>
+<text x="164" y="1716">uniqueness</text>
+<text x="256" y="1716">constraints</text>
+<text x="320" y="1716">are</text>
+<text x="368" y="1716">imposed</text>
+<text x="412" y="1716">on</text>
+<text x="444" y="1716">this</text>
+<text x="508" y="1716">attribute.</text>
+<text x="28" y="1748">active</text>
+<text x="16" y="1780">The</text>
+<text x="68" y="1780">&quot;active&quot;</text>
+<text x="144" y="1780">attribute</text>
+<text x="196" y="1780">is</text>
+<text x="220" y="1780">of</text>
+<text x="252" y="1780">type</text>
+<text x="312" y="1780">&quot;boolean&quot;</text>
+<text x="368" y="1780">and</text>
+<text x="396" y="1780">is</text>
+<text x="416" y="1780">a</text>
+<text x="456" y="1780">mutable</text>
+<text x="44" y="1796">attribute,</text>
+<text x="104" y="1796">and</text>
+<text x="132" y="1796">is</text>
+<text x="184" y="1796">required.</text>
+<text x="236" y="1796">If</text>
+<text x="264" y="1796">set</text>
+<text x="292" y="1796">to</text>
+<text x="328" y="1796">TRUE,</text>
+<text x="364" y="1796">it</text>
+<text x="400" y="1796">means</text>
+<text x="444" y="1796">that</text>
+<text x="484" y="1796">this</text>
+<text x="532" y="1796">device</text>
+<text x="12" y="1812">is</text>
+<text x="60" y="1812">intended</text>
+<text x="108" y="1812">to</text>
+<text x="132" y="1812">be</text>
+<text x="196" y="1812">operational.</text>
+<text x="284" y="1812">Attempts</text>
+<text x="332" y="1812">to</text>
+<text x="376" y="1812">control</text>
+<text x="420" y="1812">or</text>
+<text x="460" y="1812">access</text>
+<text x="496" y="1812">a</text>
+<text x="532" y="1812">device</text>
+<text x="24" y="1828">where</text>
+<text x="68" y="1828">this</text>
+<text x="112" y="1828">value</text>
+<text x="148" y="1828">is</text>
+<text x="176" y="1828">set</text>
+<text x="204" y="1828">to</text>
+<text x="240" y="1828">FALSE</text>
+<text x="280" y="1828">may</text>
+<text x="320" y="1828">fail.</text>
+<text x="360" y="1828">For</text>
+<text x="412" y="1828">example,</text>
+<text x="468" y="1828">when</text>
+<text x="508" y="1828">used</text>
+<text x="540" y="1828">in</text>
+<text x="48" y="1844">conjunction</text>
+<text x="116" y="1844">with</text>
+<text x="156" y="1844">NIPC</text>
+<text x="272" y="1844">{{I-D.brinckman-nipc}},</text>
+<text x="404" y="1844">commands</text>
+<text x="460" y="1844">such</text>
+<text x="492" y="1844">as</text>
+<text x="36" y="1860">connect,</text>
+<text x="120" y="1860">disconnect,</text>
+<text x="208" y="1860">subscribe</text>
+<text x="268" y="1860">that</text>
+<text x="320" y="1860">control</text>
+<text x="368" y="1860">app</text>
+<text x="408" y="1860">sends</text>
+<text x="444" y="1860">to</text>
+<text x="472" y="1860">the</text>
+<text x="44" y="1876">controller</text>
+<text x="104" y="1876">for</text>
+<text x="136" y="1876">the</text>
+<text x="184" y="1876">devices</text>
+<text x="232" y="1876">any</text>
+<text x="280" y="1876">command</text>
+<text x="340" y="1876">coming</text>
+<text x="388" y="1876">from</text>
+<text x="424" y="1876">the</text>
+<text x="472" y="1876">control</text>
+<text x="520" y="1876">app</text>
+<text x="552" y="1876">for</text>
+<text x="16" y="1892">the</text>
+<text x="60" y="1892">device</text>
+<text x="108" y="1892">will</text>
+<text x="140" y="1892">be</text>
+<text x="188" y="1892">rejected</text>
+<text x="236" y="1892">by</text>
+<text x="264" y="1892">the</text>
+<text x="328" y="1892">controller.</text>
+<text x="28" y="1924">mudUrl</text>
+<text x="16" y="1956">The</text>
+<text x="60" y="1956">mudUrl</text>
+<text x="128" y="1956">attribute</text>
+<text x="212" y="1956">represents</text>
+<text x="272" y="1956">the</text>
+<text x="304" y="1956">URL</text>
+<text x="332" y="1956">to</text>
+<text x="360" y="1956">the</text>
+<text x="428" y="1956">Manufacturer</text>
+<text x="504" y="1956">Usage</text>
+<text x="576" y="1956">Description</text>
+<text x="24" y="1972">(MUD)</text>
+<text x="68" y="1972">file</text>
+<text x="132" y="1972">associated</text>
+<text x="20" y="1988">with</text>
+<text x="60" y="1988">this</text>
+<text x="112" y="1988">device.</text>
+<text x="164" y="1988">This</text>
+<text x="224" y="1988">attribute</text>
+<text x="276" y="1988">is</text>
+<text x="324" y="1988">optional</text>
+<text x="376" y="1988">and</text>
+<text x="428" y="1988">mutable.</text>
+<text x="16" y="2004">The</text>
+<text x="60" y="2004">mudUrl</text>
+<text x="112" y="2004">value</text>
+<text x="148" y="2004">is</text>
+<text x="180" y="2004">case</text>
+<text x="240" y="2004">sensitive</text>
+<text x="296" y="2004">and</text>
+<text x="328" y="2004">not</text>
+<text x="376" y="2004">unique.</text>
+<text x="428" y="2004">When</text>
+<text x="484" y="2004">present,</text>
+<text x="540" y="2004">this</text>
+<text x="600" y="2004">attribute</text>
+<text x="16" y="2020">may</text>
+<text x="44" y="2020">be</text>
+<text x="76" y="2020">used</text>
+<text x="108" y="2020">as</text>
+<text x="160" y="2020">described</text>
+<text x="212" y="2020">in</text>
+<text x="276" y="2020">{{RFC8520}}.</text>
+<text x="348" y="2020">This</text>
+<text x="408" y="2020">attribute</text>
+<text x="460" y="2020">is</text>
+<text x="492" y="2020">case</text>
+<text x="40" y="2036">sensitive</text>
+<text x="96" y="2036">and</text>
+<text x="148" y="2036">returned</text>
+<text x="196" y="2036">by</text>
+<text x="244" y="2036">default.</text>
+<text x="56" y="2084">Attribute</text>
+<text x="152" y="2084">Multi</text>
+<text x="200" y="2084">Value</text>
+<text x="256" y="2084">Req</text>
+<text x="280" y="2084">|</text>
+<text x="308" y="2084">Case</text>
+<text x="356" y="2084">Exact|</text>
+<text x="416" y="2084">Mutable</text>
+<text x="456" y="2084">|</text>
+<text x="492" y="2084">Return</text>
+<text x="528" y="2084">|</text>
+<text x="564" y="2084">Unique</text>
+<text x="600" y="2084">|</text>
+<text x="64" y="2116">displayName</text>
+<text x="152" y="2116">F</text>
+<text x="208" y="2116">F</text>
+<text x="256" y="2116">F</text>
+<text x="324" y="2116">RW</text>
+<text x="400" y="2116">Def</text>
+<text x="476" y="2116">None</text>
+<text x="44" y="2148">active</text>
+<text x="152" y="2148">F</text>
+<text x="208" y="2148">T</text>
+<text x="256" y="2148">F</text>
+<text x="324" y="2148">RW</text>
+<text x="400" y="2148">Def</text>
+<text x="476" y="2148">None</text>
+<text x="44" y="2180">mudUrl</text>
+<text x="152" y="2180">F</text>
+<text x="208" y="2180">F</text>
+<text x="256" y="2180">T</text>
+<text x="324" y="2180">RW</text>
+<text x="400" y="2180">Def</text>
+<text x="476" y="2180">None</text>
+<text x="12" y="2196">{:</text>
+<text x="68" y="2196">#tabDevice</text>
+<text x="204" y="2196">title=&quot;Characteristics</text>
+<text x="308" y="2196">of</text>
+<text x="348" y="2196">device</text>
+<text x="404" y="2196">schema</text>
+<text x="480" y="2196">attributes.</text>
+<text x="548" y="2196">(Req</text>
+<text x="576" y="2196">=</text>
+<text x="624" y="2196">Required,</text>
+<text x="8" y="2212">T</text>
+<text x="24" y="2212">=</text>
+<text x="56" y="2212">True,</text>
+<text x="88" y="2212">F</text>
+<text x="104" y="2212">=</text>
+<text x="140" y="2212">False,</text>
+<text x="180" y="2212">RW</text>
+<text x="200" y="2212">=</text>
+<text x="252" y="2212">ReadWrite,</text>
+<text x="312" y="2212">and</text>
+<text x="344" y="2212">Def</text>
+<text x="368" y="2212">=</text>
+<text x="420" y="2212">Default)&quot;}</text>
+<text x="12" y="2244">An</text>
+<text x="56" y="2244">example</text>
+<text x="100" y="2244">of</text>
+<text x="120" y="2244">a</text>
+<text x="156" y="2244">device</text>
+<text x="204" y="2244">SCIM</text>
+<text x="252" y="2244">object</text>
+<text x="292" y="2244">is</text>
+<text x="316" y="2244">as</text>
+<text x="364" y="2244">follows:</text>
+</g>
+</svg>
+; T
