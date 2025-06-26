@@ -107,7 +107,7 @@ informative:
 
 --- abstract
 
-The initial core schema for SCIM (System for Cross Identity
+The initial core schema for SCIM (System for Cross-domain Identity
 Management) was designed for provisioning users. This memo specifies
 schema extensions that enables provisioning of devices, using various
 underlying bootstrapping systems, such as Wi-fi Easy Connect, FIDO
@@ -1352,13 +1352,13 @@ The following diagrams are included to demonstrate how FDO can be used.  In this
 is onboarded not only to the device owner process, but also to the AAA server for initial onboarding.
 The voucher contains a device certificate that is used by the AAA system for authentication.
 
-~~~~~~~~
+~~~ aasvg
 {::include fdo-example-diagram.atxt}
-~~~~~~~~
+~~~
 
 After this flow is complete, the device can then first provisionally onboard, and then later receive
 a trust anchor through FDO's TO2 process.  This is shown below.
 
-~~~~~~~~
+~~~ aasvg
 {::include fdo-example-two.atxt}
-~~~~~~~~
+~~~
