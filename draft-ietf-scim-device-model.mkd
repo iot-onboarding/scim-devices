@@ -53,6 +53,7 @@ normative:
       -
         org: Bluetooth SIG
     date: 2023
+    target: https://www.bluetooth.org/DocMan/handlers/DownloadDoc.ashx?doc_id=587177
 
   DPP2:
     title: Wi-Fi Easy Connect Specification, Version 2.0
@@ -124,7 +125,7 @@ number of devices. There are many models for bootstrapping trust
 between devices and network deployments. Indeed it is expected that
 different manufacturers will make use of different methods.
 
-SCIM (System for Cross Identity Management) {{!RFC7643}} {{!RFC7644}}
+SCIM (System for Cross-domain Identity Management) {{!RFC7643}} {{!RFC7644}}
 defines a protocol and a schema for provisioning of users. However, it
 can easily be extended to provision device credentials and other
 attributes into a network. The protocol and core schema were designed
@@ -134,36 +135,37 @@ good because often devices are procured in bulk.
 A primary purpose of this specification is to provision the network
 for onboarding and communications access to and from devices within a
 local deployment based on the underlying capabilities of those
-devices. The underlying security mechanisms of some devices range from
+devices.
+
+The underlying security mechanisms of some devices range from
 non-existent such as the Bluetooth Low Energy (BLE) "Just Works"
 pairing method to a robust FIDO Device Onboard (FDO) mechanism.
 Information from the SCIM server is dispatched to control functions
 based on selected schema extensions to enable these communications
 within a network.  The SCIM database is therefore essentially
 equivalent to a network's Authentication, Authorization, and
-Accounting (AAA) database, and should be carefully treated as such.
+Accounting (AAA) database, and should be carefully managed as such.
 
 Why SCIM for devices?
 ---------------------
-Some might ask why SCIM is well suited for this purpose and not, for
-example, NETCONF {{?RFC6241}} or RESTCONF {{?RFC8040}} with YANG
-{{?RFC7950}}. After all, there are all sorts of existing models
-available. The answer is four fold:
+There are a number of existing models that might provide the basis for
+a scheme for provisioning devices onto a network, including two
+standardised by the IETF:  NETCONF {{?RFC6241}} or RESTCONF {{?RFC8040}}
+with YANG {{?RFC7950}}. SCIM was chosen for the following reasons:
 
-- First, NETCONF and RESTCONF focus on **configuration** rather than
+- NETCONF and RESTCONF focus on **configuration** rather than
   provisioning.
-- Second, SCIM is designed with inter-domain provisioning in mind.
+- SCIM is designed with inter-domain provisioning in mind.
   The use of HTTP as a substrate permits both user-based authentication
   for local provisioning applications, as well as OAUTH or certificate-
   based authentication.  the inter-domain nature of these operations
   does not expose local policy, which itself must be (and often is)
   configured with other APIs, many of which are not standardized.
 - SCIM is also a familiar tool within the enterprise enviroment, used
-  extensively to configure federated user accounts.  (Amusingly, one
-  author noted a billboard in San Francisco highlighting a SCIM as
-  part of a product capability.)
+  extensively to configure federated user accounts.
 - Finally, once one chooses a vehicle such as SCIM, one is beholden
-  to its data model.  The SCM data model is articulated in {{!RFC7643}}.
+  to its data model.  The SCIM data model is more targeted to provisioning
+  as articulated in {{!RFC7643}}.
 
 This taken together with the fact that end devices are not intended to
 be **directly** configured leave us with SCIM as the best standard option.
@@ -196,34 +198,37 @@ The client may be one of a number of entities:
 
 ~~~ aasvg
 
-
                             +-----------------------------------+
                             |                                   |
     +-----------+   Request |  +---------+                      |
     | onboarding|------------->|  SCIM   |                      |
     |    app    |<-------------| Server  |                      |
     +-----------+  Ctrl Endpt  +---------+                      |
-                            |                                   |
+                            |       |                           |
+                            |       |(device info)              |
+                            |       v                           |
     +-----------+           |  +------------+         +-------+ |
     |  Control  |...........|..|    ALG     |.........|device | |
     |    App    |           |  +------------+         +-------+ |
     +-----------+           |                                   |
-                            |                                   |
+                            |         Local network             |
                             +-----------------------------------+
 
 ~~~
 {: #arch title="Basic Architecture - non-IP example"}
 
-In {{arch}}, the onboarding app provides the device particulars. As
+In {{arch}}, the onboarding application (app) provides the device particulars,
+which will vary based on the type of device, as indicated by the
+selection of schema extensions. As
 part of the response, the SCIM server might provide additional
 information, especially in the case of non-IP devices, where an
 application-layer gateway may need to be used to communicate with
-the device. The control endpoint is one among a number of objects
+the device (c.f., {{?I-D.ietf-asdf-nipc}}). The control endpoint
+is one among a number of objects
 that may be returned.  That control endpoint will then communicate
-with the application layer gateway (ALG) to reach the endpoint.
+with the application layer gateway (ALG) to reach the device.
 
 ~~~ aasvg
-
 
                             +-----------------------------------+
                             |                                   |
@@ -236,15 +241,16 @@ with the application layer gateway (ALG) to reach the endpoint.
     |  Control  |...........|..| router/fw  |.........|device | |
     |    App    |           |  +------------+         +-------+ |
     +-----------+           |                                   |
-                            |                                   |
+                            |          Local network            |
                             +-----------------------------------+
 
 ~~~
 {: #arch2 title="Interaction with AAA"}
 
 {{arch2}} shows how IP-based endpoints can be provisioned.  In this
-case, the onboarding app provisions a device via SCIM. The necessary
-information is passed to the AAA subsystem, such that the device is
+case, the onboarding application provisions a device via SCIM. The necessary
+information is passed to the Authentication, Authorization, and Accounting
+(AAA) subsystem, such that the device is
 permitted to connect.  Once it is online, since the device is based
 on IP, it will not need an ALG, but will use the normal IP
 infrastructure to communicate with its control application.
@@ -256,8 +262,8 @@ RFC 7643 does not prescribe a language to describe a schema, but instead
 uses narrative description of JSON elements with examples.  We have provided
 that same narrative description as normative, along with non-normative JSON Schema 
 {{JSONSchema}} and OpenAPI {{OpenAPI}} versions in the appendices for 
-ease of implementation. References to
-these schema in the document are for informational purposes only.
+ease of implementation. References to these schema in the document are for
+informational purposes only.
 
 Several additional schemas specify specific onboarding mechanisms,
 such as Bluetooth Low energy (BLE) {{BLE54}}, Wi-fi Easy Connect {{DPP2}},
@@ -267,7 +273,7 @@ and FIDO Device Onboard {{FDO11}}.
 
 Attributes defined in the device core schema and extensions comprise
 characteristics and SCIM datatypes defined in Sections 2.2 and 2.3 of
-the {{!RFC7643}}. This specifciation does not define new
+{{!RFC7643}}. This specifciation does not define new
 characteristics and datatypes for the SCIM attributes.
 
 Terminology
@@ -278,28 +284,30 @@ NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
 described in BCP 14 {{!RFC2119}} {{!RFC8174}} when, and only when, they
 appear in all capitals, as shown here.
 
+The reader is also expected to be familiar with the narrative schema
+language used in {{!RFC7643}}.
 
 ResourceType Device
 ====================
 
 A new resource type 'Device' is specified. The "ResourceType" schema
-specifies the metadata about a resource type (see section 6 of
+specifies the metadata about a resource type (see Section 6 of
 {{!RFC7643}}).  It comprises a core device schema and several
-extension schemas. The core schema provides a minimal resource
-representation, whereas extension schemas extend the core schema
+extension schemas. This schema provides a minimal resource
+representation, whereas extension schemas extend it
 depending on the device's capability. The JSON schema for Device
 resource type is in {{resource-schema}}.
 
 
-## Common Attributes
+## Common Attributes {#commonatts}
 
-The Device schema contains three common attributes as defined in the
-{{!RFC7643}}.  No semantic or syntax changes are made here, but the
+The Device schema contains three common attributes as defined in Section
+3.1 of {{!RFC7643}}.  No semantic or syntax changes are made here, but the
 attributes are listed merely for completeness.
 
 id
 
-An id is a required and unique attribute of the device core schema
+An id is a required and unique attribute of the core device schema
 (see section 3.1 of {{!RFC7643}}).
 
 externalID
@@ -316,10 +324,12 @@ SCIM Core Device Schema
 
 The core device schema provides the minimal representation of a
 resource "Device". It contains only those attributes that any device
-may need, and only one attribute is required. The core schema for
-"Device" is identified using the schema URI:
-"urn:ietf:params:scim:schemas:core:2.0:Device". The following
-attributes are defined in the device core schema.
+may need, and only one attribute is required.It is identified using the
+schema URI:
+
+"urn:ietf:params:scim:schemas:core:2.0:Device". 
+
+The following attributes are defined in the core device schema.
 
 ## Singular Attributes
 
@@ -338,9 +348,9 @@ attribute, and is required. If set to TRUE, it means that this device
 is intended to be operational. Attempts to control or access a device
 where this value is set to FALSE may fail. For example, when used in
 conjunction with NIPC {{?I-D.brinckman-nipc}}, commands such as
-connect, disconnect, subscribe that control app sends to the
-controller for the devices any command coming from the control app for
-the device will be rejected by the controller.
+connect, disconnect, subscribe that control applicatioin sends to the
+controller for the devices any command coming from the control application
+for the device will be rejected by the controller.
 
 mudUrl
 
@@ -370,9 +380,9 @@ An example of a device SCIM object is as follows:
 <CODE ENDS>
 ~~~~~~~~~
 
-The schema for the device is presented in JSON format in Section
+The schema for the device is presented in JSON format in
 {{device-schema-json}}, while the openAPI representation is provided in
-Section {{device-schema-openapi-representation}}.
+{{device-schema-openapi-representation}}.
 
 Device Groups
 =============
@@ -386,7 +396,7 @@ Resource Type EndpointApp
 
 This section defines a new resource type, 'EndpointApp'. The
 "ResourceType" schema specifies the metadata about a resource type
-(see section 6 of {{!RFC7643}}). The resource "EndpointApp" represents
+(see Section 6 of {{!RFC7643}}). The resource "EndpointApp" represents
 client applications that can control and/or receive data from the
 devices. The JSON schema for EndpointApp resource type is in {{resource-schema}}.
 
@@ -398,7 +408,7 @@ The "EndpointApp" are included in the endpoint applications extension
 SCIM EndpointApp Schema {#endpointapp-schema}
 =======================
 
-The EndpointApp schema is used to authorize clients control
+The EndpointApp schema is used to authorize control
 or telemetry services for clients.  The schema identifies the application
 and how clients are to authenticate to the various services.
 
@@ -408,8 +418,8 @@ attributes are defined in this schema.
 
 ## Common Attributes
 
-The EndpointApp schema contains three common attributes as defined in the
-{{!RFC7643}}.
+Like {{commonatts}} The EndpointApp schema contains the three common 
+attributes specified in Section 3.1 {{!RFC7643}}.
 
 ## Singular Attributes
 
@@ -507,9 +517,9 @@ purposes.
 <CODE ENDS>
 ~~~~~~~~~
 
-The schema for the endpointApp is presented in JSON format in Section
+The schema for the endpointApp is presented in JSON format in
 {{endpointapp-schema-json}}, while the openAPI representation is provided in
-Section {{endpointapp-schema-openapi-representation}}.
+{{endpointapp-schema-openapi-representation}}.
 
 
 SCIM Device Extensions {#extensions}
@@ -525,7 +535,7 @@ as described in [](#device-schema-extensions).  The schemas below demonstrate ho
 this model is to work.  All the SCIM Server related Schema URIs are valid only
 with Device resource types.
 
-## BLE Extension
+## Bluetooth Low Energy (BLE) Extension {#ble-extension}
 
 This schema extends the device schema to represent the devices
 supporting BLE. The extension is identified using the following
@@ -550,7 +560,7 @@ pattern is the following:
 
 isRandom
 
-A boolean flag taken from the BLE core specification, version 5.4. If FALSE,
+A boolean flag taken from {{BLE54}}. If FALSE,
 the device is using a public MAC address. If TRUE, the device uses a
 random address.  If an Idenifying Resolving Key (IRK) is present, the
 address represents a resolvable private address.  Otherwise, the
@@ -588,7 +598,7 @@ versionSupport
 
 A multivalued attribute that provides all the BLE versions supported by the
 device in the form of an array. For example,
-\[4.1, 4.2, 5.0, 5.1, 5.2, 5.3\]. It is required, mutable, and
+\[4.1, 4.2, 5.0, 5.1, 5.2, 5.3, 5.4\]. It is required, mutable, and
 return as default.
 
 pairingMethods
@@ -605,7 +615,7 @@ returned by default.
 ### BLE Pairing Method Extensions
 
 The details on pairing methods and their associated attributes are in
-section 2.3 of {{BLE54}}. This memo defines extensions for four
+section 5.2.4 of {{BLE54}}. This memo defines extensions for four
 pairing methods that are nested insided the BLE extension schema. Each
 extension contains the common attributes [](#common-attributes). These
 extension are as follows:
@@ -622,7 +632,7 @@ schema URI:
 
 urn:ietf:params:scim:schemas:extension:pairingJustWorks:2.0:Device
 
-Just works pairing method does not require a key to pair devices. For
+Just Works pairing method does not require a key to pair devices. For
 completeness, the key attribute is included and is set to 'null'. Key
 attribute is required, immutable, and returned by default.
 
@@ -719,9 +729,9 @@ methods.
 
 
 
-The schema for the BLE extension is presented in JSON format in Section
+The schema for the BLE extension is presented in JSON format in
 [](#ble-extension-schema-json), while the openAPI representation is provided in
-Section [](#ble-extension-schema-openapi-representation).
+[](#ble-extension-schema-openapi-representation).
 
 ## Wi-Fi Easy Connect Extension
 
@@ -810,9 +820,9 @@ An example of a device object with DPP extension is below:
 <CODE ENDS>
 ~~~~~~~~
 
-The schema for the DPP extension is presented in JSON format in Section
+The schema for the DPP extension is presented in JSON format in
 [](#dpp-extension-schema-json), while the openAPI representation is provided
-in Section [](#dpp-extension-schema-openapi-representation).
+in [](#dpp-extension-schema-openapi-representation).
 
 ## Ethernet MAB Extension
 
@@ -853,8 +863,8 @@ An example of a device object with EthernetMAB extension is shown below:
 ~~~~~~~~
 
 The schema for the EthernetMAB extension is presented in JSON format in
-Section [](#ethernet-mab-extension-schema-json), while the openAPI
-representation is provided in Section [](#ethernet-mab-extension-schema-openapi-representation).
+[](#ethernet-mab-extension-schema-json), while the openAPI
+representation is provided in [](#ethernet-mab-extension-schema-openapi-representation).
 
 ## FIDO Device Onboard Extension
 
@@ -891,8 +901,8 @@ An example of a device object with FDO extension is shown below:
 ~~~~~~~~
 
 The schema for the FDO extension is presented in JSON format in
-Section [](#fdo-extension-schema-json), while the openAPI
-representation is provided in Section [](#fdo-extension-schema-openapi-representation).
+[](#fdo-extension-schema-json), while the openAPI
+representation is provided in [](#fdo-extension-schema-openapi-representation).
 
 
 ## Zigbee Extension
@@ -946,8 +956,8 @@ An example of a device object with Zigbee extension is shown below:
 ~~~~~~~~
 
 The schema for the Zigbee extension is presented in JSON format in
-Section [](#zigbee-extension-schema-json), while the openAPI
-representation is provided in Section [](#zigbee-extension-schema-openapi-representation).
+[](#zigbee-extension-schema-json), while the openAPI
+representation is provided in [](#zigbee-extension-schema-openapi-representation).
 
 
 
@@ -971,8 +981,8 @@ deviceControlEnterpriseEndpoint
 
 Device control apps use this URL of the enterprise endpoint to reach
 the enterprise gateway. When the enterprise receives the SCIM object from
-the onboarding app, it adds this attribute to it and sends it back as
-a response to the onboarding app. This attribute is required,
+the onboarding application, it adds this attribute to it and sends it back as
+a response to the onboarding application. This attribute is required,
 case-sensitive, mutable, and returned by default. The uniqueness is
 enforced by the enterprise.
 
@@ -980,8 +990,8 @@ telemetryEnterpriseEndpoint
 
 Telemetry apps use this URL of the enterprise endpoint to reach the
 enterprise gateway. When the enterprise receives the SCIM object from
-the onboarding app, it adds this attribute to it and sends it back as
-a response to the onboarding app. This attribute is optional,
+the onboarding application, it adds this attribute to it and sends it back as
+a response to the onboarding application. This attribute is optional,
 case-sensitive, mutable, and returned by default. The uniqueness is
 enforced by the enterprise.  An implementation MUST generate an
 exception if telemetryEnterpriseEndpoint is not returned and telemetry
@@ -1034,8 +1044,8 @@ An example of a device object with endpointAppsExt extension is below:
 ~~~~~~~~
 
 The schema for the endpointAppsExt extension along with BLE extension is
-presented in JSON format in Section {{endpointappsext-extension-schema-json}}, while
-the openAPI representation is provided in Section {{endpointappsext-extension-schema-openapi-representation}}.
+presented in JSON format in {{endpointappsext-extension-schema-json}}, while
+the openAPI representation is provided in {{endpointappsext-extension-schema-openapi-representation}}.
 
 Security Considerations
 =======================
@@ -1047,7 +1057,7 @@ each SCIM client MUST be appropriately authenticated.
 
 An attacker that has authenticated to a trusted SCIM client could
 manipulate portions of the SCIM database.  To be clear on the risks,
-we discuss each operation below:
+we specify each operation below:
 
 ### Unauthorized Object Creation
 
@@ -1148,8 +1158,8 @@ Server-Related Schema URIs registry as described in {{extensions}}:
 
 The authors would like to thank Bart Brinckman, Rohit Mohan, Lars
 Streubesand, Christian Amsüss, Jason Livingwood, Mike Ounsworth, Monty
-Wiseman, Geoffrey Cooper, Paulo Jorge N. Correia, and Phil Hunt for
-their reviews, and Nick Ross for his contribution to the Appendix.
+Wiseman, Geoffrey Cooper, Paulo Jorge N. Correia, Phil Hunt, and Elwyn
+Davies for their reviews, and Nick Ross for his contribution to the Appendix.
 
 --- back
 
@@ -1205,7 +1215,7 @@ JSON Schema Representation
 <CODE ENDS>
 ~~~~~~~~~
 
-## Device Core Schema {#device-schema-json}
+## Core Device Schema {#device-schema-json}
 
 
 ~~~~~~~~~
@@ -1270,9 +1280,9 @@ JSON Schema Representation
 
 The following sections are provided for informational purposes.
 
-## Device Core Schema OpenAPI Representation {#device-schema-openapi-representation}
+## Core Device Schema OpenAPI Representation {#device-schema-openapi-representation}
 
-OpenAPI representation of device core schema is as follows:
+OpenAPI representation of core device schema is as follows:
 
 ~~~~~~~~~
 <CODE BEGINS>
