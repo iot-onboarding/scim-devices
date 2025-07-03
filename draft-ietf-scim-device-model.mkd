@@ -62,6 +62,14 @@ normative:
         org: Wi-Fi Alliance
     date: 2020
 
+  ECMA:
+    title: ECMA-262, 16th Edition
+    author:
+     -
+       org: ECMA International
+    date: June, 2025
+    target: https://ecma-international.org/publications-and-standards/standards/ecma-262/
+
   FDO11:
     title: FIDO Device Onboard Specification 1.1
     author:
@@ -230,19 +238,19 @@ with the application layer gateway (ALG) to reach the device.
 
 ~~~ aasvg
 
-                            +-----------------------------------+
-                            |                                   |
-    +-----------+   Request |  +---------+   +----+   +------+  |
-    | onboarding|------------->|  SCIM   |-->| AAA|<->|switch|  |
-    |    app    |<-------------| Server  |   +----+   +------+  |
-    +-----------+  Ctrl Endpt  +---------+                |     |
-                            |                             |     |
-    +-----------+           |  +------------+         +-------+ |
-    |  Control  |...........|..| router/fw  |.........|device | |
-    |    App    |           |  +------------+         +-------+ |
-    +-----------+           |                                   |
-                            |          Local network            |
-                            +-----------------------------------+
+                            +------------------------------------+
+                            |                                    |
+    +-----------+   Request |  +---------+   +----+    +------+  |
+    | onboarding|------------->|  SCIM   |-->| AAA|<-->|switch|  |
+    |    app    |<-------------| Server  |   +----+    +------+  |
+    +-----------+  Ctrl Endpt  +---------+                |      |
+                            |                             |      |
+    +-----------+           |  +------------+         +-------+  |
+    |  Control  |...........|..| router/fw  |.........|device |  |
+    |    App    |           |  +------------+         +-------+  |
+    +-----------+           |                                    |
+                            |          Local network             |
+                            +------------------------------------+
 
 ~~~
 {: #arch2 title="Interaction with AAA"}
@@ -263,7 +271,10 @@ uses narrative description of JSON elements with examples.  We have provided
 that same narrative description as normative, along with non-normative JSON Schema 
 {{JSONSchema}} and OpenAPI {{OpenAPI}} versions in the appendices for 
 ease of implementation. References to these schema in the document are for
-informational purposes only.
+informational purposes only.  The only difference the authors note
+between schema representations is that JSON Schema and OpenAPI do not have a 
+means to express case sensitivity, and thus attributes that are not case
+sensitive must be manually validated.
 
 Several additional schemas specify specific onboarding mechanisms,
 such as Bluetooth Low energy (BLE) {{BLE54}}, Wi-fi Easy Connect {{DPP2}},
@@ -305,18 +316,15 @@ The Device schema contains three common attributes as defined in Section
 3.1 of {{!RFC7643}}.  No semantic or syntax changes are made here, but the
 attributes are listed merely for completeness.
 
-id
+id: 
+: A required and unique attribute of the core device schema
+   (see section 3.1 of {{!RFC7643}}).
 
-An id is a required and unique attribute of the core device schema
-(see section 3.1 of {{!RFC7643}}).
+externalID:
+: An optional attribute (see section 3.1 of {{!RFC7643}}).
 
-externalID
-
-An externalID is an optional attribute (see section 3.1 of {{!RFC7643}}).
-
-meta
-
-Meta is a complex attribute and is required (see section 3.1 of {{!RFC7643}}).
+meta:
+: A complex attribute and is required (see section 3.1 of {{!RFC7643}}).
 
 
 SCIM Core Device Schema
@@ -333,33 +341,28 @@ The following attributes are defined in the core device schema.
 
 ## Singular Attributes
 
-displayName
+displayName:
+: A string that provides a human-readable name
+    for a device. It is intended to be displayed to end-users and should be
+    suitable for that purpose. The attribute is not required, and is not
+    case-sensitive. It may be modified and SHOULD be returned
+    by default. No uniqueness constraints are imposed on this attribute.
 
-This attribute is of type "string" and provides a human-readable name
-for a device. It is intended to be displayed to end-users and should be
-suitable for that purpose. The attribute is not required, and is not
-case-sensitive. It may be modified and SHOULD be returned
-by default. No uniqueness constraints are imposed on this attribute.
+active:
+: A mutable boolean that is required. If set to TRUE, it means that this device
+   is intended to be operational. Attempts to control or access a device
+   where this value is set to FALSE may fail. For example, when used in
+   conjunction with NIPC {{?I-D.brinckman-nipc}}, commands such as
+   connect, disconnect, subscribe that control applicatioin sends to the
+   controller for the devices any command coming from the control application
+   for the device will be rejected by the controller.
 
-active
-
-The "active" attribute is of type "boolean" and is a mutable
-attribute, and is required. If set to TRUE, it means that this device
-is intended to be operational. Attempts to control or access a device
-where this value is set to FALSE may fail. For example, when used in
-conjunction with NIPC {{?I-D.brinckman-nipc}}, commands such as
-connect, disconnect, subscribe that control applicatioin sends to the
-controller for the devices any command coming from the control application
-for the device will be rejected by the controller.
-
-mudUrl
-
-The mudUrl attribute represents the URL to the Manufacturer Usage Description
-(MUD) file associated
-with this device. This attribute is optional and mutable.
-The mudUrl value is case sensitive and not unique. When present, this attribute
-may be used as described in {{!RFC8520}}. This attribute is case
-sensitive and returned by default.
+mudUrl:
+: A string that represents the URL to the Manufacturer Usage Description
+   (MUD) file associated with this device. This attribute is optional and mutable.
+   The mudUrl value is case sensitive and not unique. When present, this attribute
+   may be used as described in {{!RFC8520}}. This attribute is case
+   sensitive and returned by default.
 
 
 | Attribute   | Multi Value | Req | Case Exact| Mutable | Return | Unique |
@@ -423,65 +426,60 @@ attributes specified in Section 3.1 {{!RFC7643}}.
 
 ## Singular Attributes
 
-applicationType
+applicationType:
+: A string that represents the type of
+   application. It will only contain two values; 'deviceControl'
+   or 'telemetry'. 'deviceControl' is the application that sends commands
+   to control the device. 'telemetry' is the application that receives
+   data from the device. The attribute is required, and is not
+   case-sensitive. The attribute is readOnly and should be returned
+   by default. No uniqueness constraints are imposed on this attribute.
 
-This attribute is of type "string" and represents the type of
-application. It will only contain two values; 'deviceControl'
-or 'telemetry'. 'deviceControl' is the application that sends commands
-to control the device. 'telemetry' is the application that receives
-data from the device. The attribute is required, and is not
-case-sensitive. The attribute is readOnly and should be returned
-by default. No uniqueness constraints are imposed on this attribute.
+applicationName:
+: a string that represents a
+   human readable name for the application. This attribute is required and
+   mutable. The attribute should be returned by default and there is no
+   uniqueness contraint on the attribute.
 
-applicationName
-
-The "applicationName" attribute is of type "string" and represents a
-human readable name for the application. This attribute is required and
-mutable. The attribute should be returned by default and there is no
-uniqueness contraint on the attribute.
-
-clientToken
-
-This attribute type string contains a token that the client will use
-to authenticate itself. Each token may be a string up to 500
-characters in length. It is not mutable, read-only, generated if
-no certificateInfo object is provisioned, case sensitive and returned
-by default if it exists.  The SCIM server should expect that client
-tokens will be shared by the SCIM client with other components within
-the client's infrastructure.
+clientToken:
+: A string contains a token that the client will use
+   to authenticate itself. Each token may be a string up to 500
+   characters in length. It is not mutable, read-only, generated if
+   no certificateInfo object is provisioned, case sensitive and returned
+   by default if it exists.  The SCIM server should expect that client
+   tokens will be shared by the SCIM client with other components within
+   the client's infrastructure.
 
 ## Complex Attributes
 
 ### certificateInfo
 
-It is the complex attribute that contains x509 certificate's subject
+certificateInfo is a complex attribute that contains x509 certificate's subject
 name and root CA information associated with application clients that
 will connect for purposes of device control or telemetry.
 
-rootCA
+rootCA:
+: A base64-encoded string as
+   described in {{!RFC4648}} Section 4 a trust anchor certificate.
+   This trust anchor is applicable
+   for certificates used for client application access.  The object
+   is not required, singular, case sensitive, and read/write.  If not
+   present, a set of trust anchors MUST be configured out of band.
 
-This is the base64 encoding  as
-described in {{!rfc4648}} Section 4 a trust anchor certificate.  
-This trust anchor is applicable
-for certificates used for client application access.  The object
-is not required, singular, case sensitive, and read/write.  If not
-present, a set of trust anchors MUST be configured out of band.
+subjectName: 
+: when present, a string taht contains one of two one of two names:
 
-subjectName
+   * a distinguished name as that will be present in the certificate
+     subject field, as de  scribed in Section 4.1.2.4 of {{!RFC5280}}; or
+   * or a dnsName as part of a subjectAlternateName as  described in
+     Section 4.2.1.6 of {{!RFC5280}}.
 
-If present, this field may contain one of two names:
-
- * a distinguished name as that will be present in the certificate
-   subject field, as de  scribed in Section 4.1.2.4 of {{!RFC5280}}; or
- * or a dnsName as part of a subjectAlternateName as  described in
-   Section 4.2.1.6 of {{!RFC5280}}.
-
-In the latter case, servers validating such certificates SHALL reject
-connections when name of the peer as resolved by a DNS reverse lookup
-does not match the dnsName in the certificate.  If multiple dnsNames
-are present, it is left to server implementations to address any
-authorization conflicts associated with those names.  This attribute
-is not required, read write, singular and NOT case sensitive.
+   In the latter case, servers validating such certificates SHALL reject
+   connections when name of the peer as resolved by a DNS reverse lookup
+   does not match the dnsName in the certificate.  If multiple dnsNames
+   are present, it is left to server implementations to address any
+   authorization conflicts associated with those names.  This attribute
+   is not required, read write, singular and NOT case sensitive.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -527,9 +525,9 @@ SCIM Device Extensions {#extensions}
 
 SCIM provides various extension schemas, their attributes, JSON
 representation, and example object. The core schema is extended with a
-new resource type, as described in {{resource-schema}}.  No
-schemaExtensions list is specified in that definition.  Instead, an
-IANA registry is created, where all values for "required" are set to
+new resource type, Device.  No
+schemaExtensions list is specified in that definition.  Instead,
+IANA registry entries are created, where all values for "required" are set to
 false.  All extensions to the Device schema MUST be registered via IANA,
 as described in [](#device-schema-extensions).  The schemas below demonstrate how
 this model is to work.  All the SCIM Server related Schema URIs are valid only
@@ -547,70 +545,63 @@ The attributes are as follows:
 
 ### Singular Attributes
 
-deviceMacAddress
-
-A string value that represent a public MAC address assigned by the
-manufacturer. It is a unique  48-bit value. Ir is required, case
-insensitive, and it is mutable and return as default. The regex
-pattern is the following:
+deviceMacAddress:
+: A string value that represent a public MAC address assigned by the
+   manufacturer. It is a unique  48-bit value. Ir is required, case
+   insensitive, and it is mutable and return as default. The ECMA
+   regular expression pattern {{ECMA}} is the following:
 
 ~~~~~~
 ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}$
 ~~~~~~
 
-isRandom
+isRandom:
+: A boolean flag taken from {{BLE54}}. If FALSE,
+   the device is using a public MAC address. If TRUE, the device uses a
+   random address.  If an Idenifying Resolving Key (IRK) is present, the
+   address represents a resolvable private address.  Otherwise, the
+   address is assumed to be a random static address.  Non-resolvable
+   private addresses are not supported by this specification.  This
+   attribute is not required. It is mutable, and is returned by default.
+   The default value is FALSE.
 
-A boolean flag taken from {{BLE54}}. If FALSE,
-the device is using a public MAC address. If TRUE, the device uses a
-random address.  If an Idenifying Resolving Key (IRK) is present, the
-address represents a resolvable private address.  Otherwise, the
-address is assumed to be a random static address.  Non-resolvable
-private addresses are not supported by this specification.  This
-attribute is not required. It is mutable, and is returned by default.
-The default value is FALSE.
+separateBroadcastAddress:
+: When present, this string represents an address used for broadcasts/advertisements.
+   This value MUST NOT be set when an IRK is provided. Its form is the
+   same as deviceMacAddress. It is not required, multivalued, mutable,
+   and returned by default.
 
-separateBroadcastAddress
+irk: 
+: A string value that specifies the identity resolving key (IRK), which
+   is unique to each device. It is used to resolve private random
+   address. It should only be provisioned when isRandom is TRUE. It is
+   mutable and never returned.  For more information about the use of
+   the IRK, see Section 5.4.5 of {{BLE54}}.
 
-When present, this address is used for broadcasts/advertisements.
-This value MUST NOT be set when an IRK is provided. Its form is the
-same as deviceMacAddress. It is not required, multivalued, mutable,
-and returned by default.
-
-irk
-
-A string value that specifies the identity resolving key (IRK), which
-is unique to each device. It is used to resolve private random
-address. It should only be provisioned when isRandom is TRUE. It is
-mutable and never returned.  For more information about the use of
-the IRK, see Section 5.4.5 of {{BLE54}}.
-
-mobility
-
-A boolean attribute to enable BLE device mobility. If set to TRUE, the
-device could be expected to move within a network of APs.  For
-example, BLE device is connected with AP-1 and moves out of range but
-comes in range of AP-2, it will be disconnected with AP-1 and connects
-with AP-2. It is returned by default and mutable.
+mobility: 
+: A boolean attribute to enable BLE device mobility. If set to TRUE, the
+   device could be expected to move within a network of APs.  For
+   example, BLE device is connected with AP-1 and moves out of range but
+   comes in range of AP-2, it will be disconnected with AP-1 and connects
+   with AP-2. It is returned by default and mutable.
 
 ### Multivalued Attributes
 
-versionSupport
+versionSupport:
+: A multivalued set of strings that specifies the BLE versions supported by the
+   device in the form of an array. For example,
+   \["4.1", "4.2", "5.0", "5.1", "5.2", "5.3", "5.4"\]. It is required, mutable, and
+   return as default.
 
-A multivalued attribute that provides all the BLE versions supported by the
-device in the form of an array. For example,
-\[4.1, 4.2, 5.0, 5.1, 5.2, 5.3, 5.4\]. It is required, mutable, and
-return as default.
-
-pairingMethods
-
-An array of pairing methods associated with the BLE
-device. The pairing methods may require sub-attributes, such as
-key/password, for the device pairing process. To enable the
-scalability of pairing methods in the future, they are represented as
-extensions to incorporate various attributes that are part of the
-respective pairing process. Pairing method extensions are nested
-inside the BLE extension. It is required, case sensitive, mutable, and
-returned by default.
+pairingMethods:
+: An multivalued set of strings that specifies pairing methods associated with the BLE
+   device. The pairing methods may require sub-attributes, such as
+   key/password, for the device pairing process. To enable the
+   scalability of pairing methods in the future, they are represented as
+   extensions to incorporate various attributes that are part of the
+   respective pairing process. Pairing method extensions are nested
+   inside the BLE extension. It is required, case sensitive, mutable, and
+   returned by default.
 
 ### BLE Pairing Method Extensions
 
@@ -659,23 +650,19 @@ urn:ietf:params:scim:schemas:extension:pairingOOB:2.0:Device
 The out-of-band pairing method includes three singular attributes,
 i.e., key, randomNumber, and confirmationNumber.
 
-key
+key:
+: A string value, required and received from out-of-bond
+   sources such as NFC. It is case sensitive, mutable, and returned
+   by default.
 
-The key is string value, required and received from out-of-bond
-sources such as NFC. It is case sensitive, mutable, and returned
-by default.
+randomNumber:
+: An integer that represents a nonce added to the key. It is 
+   a required attribute. It is mutable and returned by default.
 
-randomNumber
-
-This attribute represents a nonce added to the key. It is an
-integer value that is a required attribute. It is mutable and
-returned by default.
-
-confirmationNumber
-
-An integer which some solutions require in RESTful message
-exchange. It is not required. It is mutable and returned by default if
-it exists.
+confirmationNumber:
+: An integer which some solutions require in RESTful message
+   exchange. It is not required. It is mutable and returned by default if
+   it exists.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -749,50 +736,40 @@ attributes are as follows:
 
 ### Singular Attributes
 
-dppVersion
+dppVersion:
+: An integer that represents the version of DPP the device supports.
+   This attribute is required, case insensitive, mutable, and
+   returned by default.
 
-An integer that represents the version of DPP the device supports.
-This attribute is required, case insensitive, mutable, and
-returned by default.
+bootstrapKey:
+: A string value representing an Elliptic-Curve Diffie-Hellman (ECDH) public
+   key. The base64 encoded lengths for P-256, P-384, and P-521 are
+   80, 96, and 120 characters. This attribute is required, case-sensitive,
+   mutable, and returned by default.
 
-bootstrapKey
+deviceMacAddress:
+: A MAC address stored as string. It is a unique 48-bit value. This attribut
+   is optional, case insensitive, mutable, and returned by default.  Its form
+   is identical to that of the deviceMacAddress for BLE devices.
 
-A string value representing an Elliptic-Curve Diffie-Hellman (ECDH) public
-key. The base64 encoded lengths for P-256, P-384, and P-521 are
-80, 96, and 120 characters. This attribute is required, case-sensitive,
-mutable, and returned by default.
-
-deviceMacAddress
-
-The manufacturer assigns the MAC address stored as string. It is a
-unique 48-bit value. This attribute is optional, case insensitive,
-mutable, and returned by default. The regex pattern is as follows:
-
-~~~~~
-^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}$
-~~~~~
-
-serialNumber
-
-An alphanumeric serial number, stored as string, may also be passed
-as bootstrapping information. This attribute is optional, case
-insensitive, mutable, and returned by default.
+serialNumber:
+: An alphanumeric serial number, stored as string, may also be passed
+   as bootstrapping information. This attribute is optional, case
+   insensitive, mutable, and returned by default.
 
 
 ### Multivalued Attributes
 
-bootstrappingMethod
+bootstrappingMethod:
+:  One or more strings of all the bootstrapping methods available
+   on the enrollee device. For example, \[QR, NFC\]. This attribute is
+   optional, case insensitive, mutable, and returned by default.
 
-It is the array of strings of all the bootstrapping methods available
-on the enrollee device. For example, \[QR, NFC\]. This attribute is
-optional, case insensitive, mutable, and returned by default.
-
-classChannel
-
-This attribute is an array of strings of global operating class and
-channel shared as bootstrapping information. It is formatted as
-class/channel. For example, \['81/1','115/36'\]. This attribute
-is optional, case insensitive, mutable, and returned by default.
+classChannel:
+: One or more strings representing the global operating class and
+   channel shared as bootstrapping information. It is formatted as
+   class/channel. For example, \['81/1','115/36'\]. This attribute
+   is optional, case insensitive, mutable, and returned by default.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -842,10 +819,9 @@ MAC address randomization.
 
 This extension has a singular attribute:
 
-deviceMacAddress
-
-This is the Ethernet address to be provisioned onto the network. It
-takes the identical form as found in both the BLE and DPP extensions.
+deviceMacAddress:
+: This is the Ethernet address to be provisioned onto the network. It
+   takes the identical form as found in the BLE extension.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -881,9 +857,8 @@ urn:ietf:params:scim:schemas:extension:fido-device-onboard:2.0:Device
 
 This extension has a singular attribute:
 
-fdoVoucher
-
-The voucher is formated as a PEM-encoded object in accordance with {{FDO11}}.
+fdoVoucher:
+: The voucher is formated as a PEM-encoded object in accordance with {{FDO11}}.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -920,23 +895,18 @@ attribute. The attributes are as follows:
 
 ### Singular Attribute
 
-deviceEui64Address
-
-An EUI-64 (Extended Unique Identifier) device address stored as string.
-This attribute is required, case insensitive, mutable, and returned by
-default. The regex pattern is as follows:
-
-~~~~~
-^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){7}$
-~~~~~
+deviceEui64Address:
+: An EUI-64 (Extended Unique Identifier) device address stored as string.
+   This attribute is required, case insensitive, mutable, and returned by
+   default. It takes the same form as the deviceMACaddress in the BLE
+   extension.
 
 ### Multivalued Attribute
 
-versionSupport
-
-An array of strings of all the Zigbee versions supported
-by the device. For example, \[3.0\]. This attribute is required, case
-insensitive, mutable, and returned by default.
+versionSupport:
+: One or more strings of all the Zigbee versions supported
+   by the device. For example, \[3.0\]. This attribute is required, case
+   insensitive, mutable, and returned by default.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -976,47 +946,42 @@ urn:ietf:params:scim:schemas:extension:endpointAppsExt:2.0:Device
 
 ### Singular Attributes
 
+deviceControlEnterpriseEndpoint: 
+: A string representing the URL of the
+   enterprise endpoint to reach the enterprise gateway. When the enterprise
+   receives the SCIM object from
+   the onboarding application, it adds this attribute to it and sends it back as
+   a response to the onboarding application. This attribute is required,
+   case-sensitive, mutable, and returned by default. The uniqueness is
+   enforced by the enterprise.
 
-deviceControlEnterpriseEndpoint
-
-Device control apps use this URL of the enterprise endpoint to reach
-the enterprise gateway. When the enterprise receives the SCIM object from
-the onboarding application, it adds this attribute to it and sends it back as
-a response to the onboarding application. This attribute is required,
-case-sensitive, mutable, and returned by default. The uniqueness is
-enforced by the enterprise.
-
-telemetryEnterpriseEndpoint
-
-Telemetry apps use this URL of the enterprise endpoint to reach the
-enterprise gateway. When the enterprise receives the SCIM object from
-the onboarding application, it adds this attribute to it and sends it back as
-a response to the onboarding application. This attribute is optional,
-case-sensitive, mutable, and returned by default. The uniqueness is
-enforced by the enterprise.  An implementation MUST generate an
-exception if telemetryEnterpriseEndpoint is not returned and telemetry
-is required for the proper functioning of a device.
+telemetryEnterpriseEndpoint:
+: A string representing a URL of the enterprise endpoint to reach the
+   an enterprise gateway for telemetry. When the enterprise receives the SCIM object from
+   the onboarding application, it adds this attribute to it and sends it back as
+   a response to the onboarding application. This attribute is optional,
+   case-sensitive, mutable, and returned by default. The uniqueness is
+   enforced by the enterprise.  An implementation MUST generate an
+   exception if telemetryEnterpriseEndpoint is not returned and telemetry
+   is required for the proper functioning of a device.
 
 
 ### Multivalued Attribute
 
-applications
+applications:
+: A  multivalued attribute of one or more complex attributes that represent
+   a list of endpoint applications i.e., deviceControl and telemetry. Each
+  entry in the list comprises two attributes including "value" and "$ref".
 
-This is a complex multivalued attribute. It represents a list of
-endpoint applications i.e., deviceControl and telemetry. Each entry in
-the list comprises two attributes including "value" and "$ref".
+value:
+: A string containingthe identifier of the endpoint application formated as UUID. It
+  is same as the common attribute "$id" of the resource "endpointApp".
+  It is read/write, required, case insensitive and returned by default.
 
-value
-
-It is the identifier of the endpoint application formated as UUID. It
-is same as the common attribute "$id" of the resource "endpointApp".
-It is read/write, required, case insensitive and returned by default.
-
-$ref
-
-It is the reference to the respective endpointApp resource object
-stored in the SCIM server. It is readOnly, required, case sensitive
-and returned by default.
+$ref:
+: A reference  to the respective endpointApp resource object
+   stored in the SCIM server. It is readOnly, required, case sensitive
+   and returned by default.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|

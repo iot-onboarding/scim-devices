@@ -2,5 +2,6 @@
 *.html
 *.xml
 .DS_Store
+.refcache/
 *.ftxt
 *~

@@ -69,7 +69,7 @@ all: $(DOCS)
 
 %.xml:	%.mkd extensions/README.md $(FTXT) $(FYAML) \
 	draft-ietf-scim-device-model.mkd
-	kramdown-rfc2629 -3 $< > $@
+	kdrfc -3 $< > $@
 %.html %.txt:	%.xml
 	xml2rfc --html $<
 	xml2rfc --text $<
