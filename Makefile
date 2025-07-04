@@ -67,12 +67,9 @@ FYAML=	openapi/SCIM_BLE_extension_schema.fyml \
 
 all: $(DOCS)
 
-%.xml:	%.mkd extensions/README.md $(FTXT) $(FYAML) \
+%.html %.txt %.xml:	%.mkd extensions/README.md $(FTXT) $(FYAML) \
 	draft-ietf-scim-device-model.mkd
-	kdrfc -3 $< > $@
-%.html %.txt:	%.xml
-	xml2rfc --html $<
-	xml2rfc --text $<
+	kdrfc -3 -h $<
 
 %.ftxt: %.json $(JSON)
 	@python3 fold.py < $< > $@

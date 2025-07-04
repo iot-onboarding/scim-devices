@@ -8,7 +8,7 @@ category: std
 ipr: trust200902
 keyword: Internet-Draft
 
-stand_alone: yes
+stand_alone: no
 pi: [toc, sortrefs, symrefs]
 
 author:
@@ -166,7 +166,7 @@ with YANG {{?RFC7950}}. SCIM was chosen for the following reasons:
 - SCIM is designed with inter-domain provisioning in mind.
   The use of HTTP as a substrate permits both user-based authentication
   for local provisioning applications, as well as OAUTH or certificate-
-  based authentication.  the inter-domain nature of these operations
+  based authentication.  The inter-domain nature of these operations
   does not expose local policy, which itself must be (and often is)
   configured with other APIs, many of which are not standardized.
 - SCIM is also a familiar tool within the enterprise enviroment, used
@@ -267,14 +267,14 @@ Schema Description
 ------------------
 
 RFC 7643 does not prescribe a language to describe a schema, but instead
-uses narrative description of JSON elements with examples.  We have provided
-that same narrative description as normative, along with non-normative JSON Schema 
+uses narrative description with examples.  We follow that approach.
+In addition, we provide non-normative JSON Schema 
 {{JSONSchema}} and OpenAPI {{OpenAPI}} versions in the appendices for 
-ease of implementation. References to these schema in the document are for
-informational purposes only.  The only difference the authors note
-between schema representations is that JSON Schema and OpenAPI do not have a 
-means to express case sensitivity, and thus attributes that are not case
-sensitive must be manually validated.
+ease of implementation, neither of which existed when SCIM was originally
+developed.  The only difference the authors note
+between the normative schema representations is that JSON Schema and OpenAPI
+do not have a means to express case sensitivity, and thus attributes that
+are not case sensitive must be manually validated.
 
 Several additional schemas specify specific onboarding mechanisms,
 such as Bluetooth Low energy (BLE) {{BLE54}}, Wi-fi Easy Connect {{DPP2}},
@@ -284,7 +284,7 @@ and FIDO Device Onboard {{FDO11}}.
 
 Attributes defined in the device core schema and extensions comprise
 characteristics and SCIM datatypes defined in Sections 2.2 and 2.3 of
-{{!RFC7643}}. This specifciation does not define new
+{{!RFC7643}}. This specification does not define new
 characteristics and datatypes for the SCIM attributes.
 
 Terminology
@@ -306,9 +306,7 @@ specifies the metadata about a resource type (see Section 6 of
 {{!RFC7643}}).  It comprises a core device schema and several
 extension schemas. This schema provides a minimal resource
 representation, whereas extension schemas extend it
-depending on the device's capability. The JSON schema for Device
-resource type is in {{resource-schema}}.
-
+depending on the device's capability.
 
 ## Common Attributes {#commonatts}
 
@@ -332,7 +330,7 @@ SCIM Core Device Schema
 
 The core device schema provides the minimal representation of a
 resource "Device". It contains only those attributes that any device
-may need, and only one attribute is required.It is identified using the
+may need, and only one attribute is required.  It is identified using the
 schema URI:
 
 "urn:ietf:params:scim:schemas:core:2.0:Device". 
@@ -353,9 +351,8 @@ active:
    is intended to be operational. Attempts to control or access a device
    where this value is set to FALSE may fail. For example, when used in
    conjunction with NIPC {{?I-D.brinckman-nipc}}, commands such as
-   connect, disconnect, subscribe that control applicatioin sends to the
-   controller for the devices any command coming from the control application
-   for the device will be rejected by the controller.
+   connect, disconnect, subscribe that control application sends to the
+   controller for the devices any command will be rejected by the controller.
 
 mudUrl:
 : A string that represents the URL to the Manufacturer Usage Description
@@ -375,17 +372,13 @@ mudUrl:
 {: #tabDevice title="Characteristics of device schema attributes. (Req = Required,
 T = True, F = False, RW = ReadWrite, and Def = Default)"}
 
-An example of a device SCIM object is as follows:
 
 ~~~~~~~~~
 <CODE BEGINS>
 {::include examples/SCIM_device_core_schema_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~~
-
-The schema for the device is presented in JSON format in
-{{device-schema-json}}, while the openAPI representation is provided in
-{{device-schema-openapi-representation}}.
+{: #coreExample title="Core Device Example Entries"}
 
 Device Groups
 =============
@@ -397,15 +390,11 @@ Device groups are created using the SCIM groups as defined in
 Resource Type EndpointApp
 =========================
 
-This section defines a new resource type, 'EndpointApp'. The
+This section defines the 'EndpointApp' resource type. The
 "ResourceType" schema specifies the metadata about a resource type
 (see Section 6 of {{!RFC7643}}). The resource "EndpointApp" represents
 client applications that can control and/or receive data from the
-devices. The JSON schema for EndpointApp resource type is in {{resource-schema}}.
-
-The attributes comprising EndpointsApp are listed in {{endpointapp-schema}}.
-The "EndpointApp" are included in the endpoint applications extension
-("endpointAppsExt") {{endpointsappext-schema}}.
+devices. 
 
 
 SCIM EndpointApp Schema {#endpointapp-schema}
@@ -470,8 +459,8 @@ subjectName:
 : when present, a string taht contains one of two one of two names:
 
    * a distinguished name as that will be present in the certificate
-     subject field, as de  scribed in Section 4.1.2.4 of {{!RFC5280}}; or
-   * or a dnsName as part of a subjectAlternateName as  described in
+     subject field, as described in Section 4.1.2.4 of {{!RFC5280}}; or
+   * or a dnsName as part of a subjectAlternateName as described in
      Section 4.2.1.6 of {{!RFC5280}}.
 
    In the latter case, servers validating such certificates SHALL reject
@@ -479,7 +468,7 @@ subjectName:
    does not match the dnsName in the certificate.  If multiple dnsNames
    are present, it is left to server implementations to address any
    authorization conflicts associated with those names.  This attribute
-   is not required, read write, singular and NOT case sensitive.
+   is not required, mutable, singular and NOT case sensitive.
 
 | Attribute| Multi Value | Req | Case Exact| Mutable | Return| Unique |
 |------------------|-------|-----|------|---------|--------|--------|
@@ -494,7 +483,9 @@ subjectName:
 | rootCA    |   F   |  F  |  T   |   RW    |  Def   |  None  |
 |------------------|-------|-----|------|---------|--------|--------|
 | subjectName    |   F   |  T  |  T   |   RW     |  Def   |  None  |
-{: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. (Req = Required, T = True, F = False, R = ReadOnly, RW = ReadWrite, Manuf = Manufacturer, N = No, and Def = Default)"}
+{: #tabEndpointApp title="Characteristics of EndpointApp schema attributes. 
+(Req = Required, T = True, F = False, R = ReadOnly, RW = ReadWrite,
+ Manuf = Manufacturer, N = No, and Def = Default)"}
 
 Note that either clientToken or certificateInfo are used for the
 authentication of the application.  If certificateInfo is NOT present
@@ -514,11 +505,7 @@ purposes.
 {::include examples/SCIM_endpointapp_schema_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~~
-
-The schema for the endpointApp is presented in JSON format in
-{{endpointapp-schema-json}}, while the openAPI representation is provided in
-{{endpointapp-schema-openapi-representation}}.
-
+{: #eaExample title="Endpoint App Example"}
 
 SCIM Device Extensions {#extensions}
 ======================
@@ -547,8 +534,8 @@ The attributes are as follows:
 
 deviceMacAddress:
 : A string value that represent a public MAC address assigned by the
-   manufacturer. It is a unique  48-bit value. Ir is required, case
-   insensitive, and it is mutable and return as default. The ECMA
+   manufacturer. It is a unique 48-bit value. It is required, case
+   insensitive, is mutable, and is returned by default. The ECMA
    regular expression pattern {{ECMA}} is the following:
 
 ~~~~~~
@@ -651,7 +638,7 @@ The out-of-band pairing method includes three singular attributes,
 i.e., key, randomNumber, and confirmationNumber.
 
 key:
-: A string value, required and received from out-of-bond
+: A string value, required and received from out-of-band
    sources such as NFC. It is case sensitive, mutable, and returned
    by default.
 
@@ -684,13 +671,12 @@ sepBroadcastAdd is short for separateBroadcastAddress. (Req = Required,
 T = True, F = False, RW = ReadWrite, WO=Write Only, Def = Default,
 Nev = Never, and Manuf = Manufacturer)."}
 
-An example of a device object with BLE extension is as follows:
-
 ~~~~~~~~
 <CODE BEGINS>
 {::include examples/SCIM_device_ble_object_v1.ftxt}
 <CODE ENDS>
 ~~~~~~~~
+{: #btExample title="BLE Example"}
 
 In the above example, the pairing method is "pairingPassKey", which implies
 that this BLE device pairs using only a passkey. In another example below,
@@ -702,6 +688,7 @@ out-of-band pairing method.
 {::include examples/SCIM_device_ble_object_v2.ftxt}
 <CODE ENDS>
 ~~~~~~~~
+{: #btExample2 title="BLE with pairingOOB"}
 
 However, a device can have more than one pairing method. Support for multiple
 pairing methods is also provided by the multi-valued attribute pairingMethods.
@@ -713,12 +700,7 @@ methods.
 {::include examples/SCIM_device_ble_object_v3.ftxt}
 <CODE ENDS>
 ~~~~~~~~
-
-
-
-The schema for the BLE extension is presented in JSON format in
-[](#ble-extension-schema-json), while the openAPI representation is provided in
-[](#ble-extension-schema-openapi-representation).
+{: #btExample3 title="BLE Pairing with both passkey and OOB"}
 
 ## Wi-Fi Easy Connect Extension
 
@@ -789,17 +771,12 @@ classChannel:
 (Req = Required, T = True, F = False, RW = ReadWrite, WO = Write Only,
 Def = Default, Nev = Never, and Manuf = Manufacturer)."}
 
-An example of a device object with DPP extension is below:
-
 ~~~~~~~~
 <CODE BEGINS>
 {::include examples/SCIM_device_dpp_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~
-
-The schema for the DPP extension is presented in JSON format in
-[](#dpp-extension-schema-json), while the openAPI representation is provided
-in [](#dpp-extension-schema-openapi-representation).
+{: #dPPExample title="DPP Example"}
 
 ## Ethernet MAB Extension
 
@@ -830,17 +807,12 @@ deviceMacAddress:
 (Req = Required, T = True, F = False, RW = ReadWrite, and
 Def = Default)"}
 
-An example of a device object with EthernetMAB extension is shown below:
-
 ~~~~~~~~
 <CODE BEGINS>
 {::include examples/SCIM_device_mab_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~
-
-The schema for the EthernetMAB extension is presented in JSON format in
-[](#ethernet-mab-extension-schema-json), while the openAPI
-representation is provided in [](#ethernet-mab-extension-schema-openapi-representation).
+{: #MABExample title="MAB Example"}
 
 ## FIDO Device Onboard Extension
 
@@ -867,17 +839,13 @@ fdoVoucher:
 (Req = Required, T = True, F = False, WO = WriteOnly, and
 Nev = Never)"}
 
-An example of a device object with FDO extension is shown below:
-
 ~~~~~~~~
 <CODE BEGINS>
 {::include examples/SCIM_device_fdo_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~
+{: #fdoExample title="FDO Example"}
 
-The schema for the FDO extension is presented in JSON format in
-[](#fdo-extension-schema-json), while the openAPI
-representation is provided in [](#fdo-extension-schema-openapi-representation).
 
 
 ## Zigbee Extension
@@ -917,18 +885,12 @@ versionSupport:
 (Req = Required, T = True, F = False, RW = ReadWrite, and
 Def = Default)"}
 
-An example of a device object with Zigbee extension is shown below:
-
 ~~~~~~~~
 <CODE BEGINS>
 {::include examples/SCIM_device_zigbee_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~
-
-The schema for the Zigbee extension is presented in JSON format in
-[](#zigbee-extension-schema-json), while the openAPI
-representation is provided in [](#zigbee-extension-schema-openapi-representation).
-
+{: #zigBeeExample title="Zigbee Example"}
 
 
 ## The Endpoint Applications Extension Schema {#endpointsappext-schema}
@@ -937,7 +899,7 @@ Sometimes non-IP devices such as those using BLE or Zigbee require an
 application gateway interface to manage them. SCIM clients MUST NOT
 specify this to describe native IP-based devices.
 
-endpointAppsExt provides the list application that connect to
+endpointAppsExt provides the list of applications that connect to
 enterprise gateway. The endpointAppsExt has one multivalued attribute
 and two singular attributes. The extension is identified using the
 following schema URI:
@@ -1000,13 +962,12 @@ deviceControlEnterpriseEndpoint and telEntEndpoint represents
 telemetryEnterpriseEndpoint. (Req = Required, T = True, F = False,
 R = ReadOnly, RW = ReadWrite, Ent = Enterprise, and Def = Default)."}
 
-An example of a device object with endpointAppsExt extension is below:
-
 ~~~~~~~~
 <CODE BEGINS>
 {::include examples/SCIM_device_endpoints_with_ble_object.ftxt}
 <CODE ENDS>
 ~~~~~~~~
+{: #eaExtension title="Endpoint Applications Extension Example"}
 
 The schema for the endpointAppsExt extension along with BLE extension is
 presented in JSON format in {{endpointappsext-extension-schema-json}}, while
@@ -1131,6 +1092,18 @@ Davies for their reviews, and Nick Ross for his contribution to the Appendix.
 Changes from Earlier Versions
 =============================
 \[RFC Editor to remove this section.\]
+
+Draft 16:
+
+  * More DISCUSS resolution: make clear that JSON Schema is not normative
+  * Add reference for ECMA for regex
+  * lots of typo/spelling error cleanup
+  * Add figure labels for examples
+  * fix an aasvg rendering problem
+  * add some reference targets.
+
+  * Elwyn Davies review suggestions.
+
 
 Drafts 14 and 15:
   * Resolve DISCUSSes
