@@ -318,7 +318,7 @@ id:
 : A required and unique attribute of the core device schema
    (see section 3.1 of {{!RFC7643}}).
 
-externalID:
+externalId:
 : An optional attribute (see section 3.1 of {{!RFC7643}}).
 
 meta:
@@ -389,7 +389,9 @@ Device Groups
 =============
 
 Device groups are created using the SCIM groups as defined in
-{{!RFC7643}} Section 4.2.
+{{Section 4.2 of RFC7643}}.  The "referenceTypes" and "canonicalValues"
+attributes defined in {{Section 7 of RFC7643}} MUST include "Device" for 
+devices.
 
 
 Resource Type EndpointApp

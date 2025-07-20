@@ -8,7 +8,7 @@
         "type": "string",
         "pattern": "^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}$",
         "description": "A MAC address assigned by the manufacturer",
-        "multivalues": false,
+        "multiValued": false,
         "required": true,
         "caseExact": false,
         "mutability": "readWrite",
