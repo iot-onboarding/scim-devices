@@ -1,7 +1,31 @@
+openapi: 3.1.0
+info:
+  title: SCIM Device Schema
+  version: 1.0.0
+
 components:
   schemas:
+    Group:
+      type: object
+      description: Group entries for Devices
+      properties:
+        value:
+          type: string
+          description: the unique identifier of a group,
+                       typically a UUID.
+          readOnly: false
+          writeOnly: false
+        display:
+          type: string
+          description: a display string for the group.
+          readOnly: false
+          writeOnly: false
+        $ref:
+          type: string
+          format: uri
+          description: reference to the group object
+
     Device:
-      title: Device
       description: Device account
       type: object
       properties:
@@ -35,6 +59,12 @@ components:
           nullable: true
           readOnly: false
           writeOnly: false
+        groups:
+          type: array
+          description: list of groups device belongs to
+          items:
+            $ref: '#/components/schemas/Group'
+
       required:
         - active
       additionalProperties: false
