@@ -1,3 +1,9 @@
+openapi: 3.1.0
+info:
+  title: SCIM Endpoint extension schema
+  version: 1.0.0
+
+
 components:
   schemas:
     EndpointAppsExt:

@@ -1,3 +1,8 @@
+openapi: 3.1.0
+info:
+  title: SCIM Zigbee Extension Schema
+  version: 1.0.0
+
 components:
   schemas:
     ZigbeeDevice:
