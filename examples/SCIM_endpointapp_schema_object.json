@@ -5,7 +5,7 @@
   "applicationName": "Device Control App 1",
   "certificateInfo": {
       "rootCA" : "MIIBIjAN...",
-      "subjectName": "wwww.example.com"
+      "subjectName": "www.example.com"
   },
   "meta": {
     "resourceType": "EndpointApp",
