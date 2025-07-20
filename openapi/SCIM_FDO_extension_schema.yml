@@ -24,7 +24,6 @@ components:
         fdoVoucher:
           type: string
           description: A FIDO Device Onboard (FDO) Voucher
-          nullable: false
           readOnly: false
           writeOnly: false
       required:

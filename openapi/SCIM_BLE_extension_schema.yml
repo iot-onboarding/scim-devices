@@ -28,7 +28,6 @@ components:
           description: Provides a list of all the BLE versions 
                        supported by the device. For example, 
                        [4.1, 4.2, 5.0, 5.1, 5.2, 5.3].
-          nullable: false
           readOnly: false
           writeOnly: false
 
@@ -38,7 +37,6 @@ components:
                        manufacturer. It is unique 48 bit value. The
                        regex pattern is 
                        ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.
-          nullable: false
           readOnly: false
           writeOnly: false
 
@@ -48,7 +46,6 @@ components:
                        specifications 5.3. If FALSE, the device is 
                        using public MAC address. If TRUE, device is 
                        using a random address.
-          nullable: false
           readOnly: false
           writeOnly: false
         
@@ -58,7 +55,6 @@ components:
                         broadcasts/advertisements.  This value MUST NOT
                         be set when an IRK is provided.  Its form is 
                         the same as deviceMa`cAddress."
-          nullable: false
           readOnly: false
           writeOnly: false
 
@@ -67,7 +63,6 @@ components:
           description: Identity resolving key, which is unique for 
                        every device. It is used to resolve random 
                        address.
-          nullable: true
           readOnly: false
           writeOnly: true
         mobility:
@@ -78,7 +73,6 @@ components:
                        moves out of range but comes in range of AP-2, 
                        it will be disconnected with AP-1 and connects 
                        with AP-2.
-          nullable: false
           readOnly: false
           writeOnly: false
         pairingMethods:
@@ -87,7 +81,6 @@ components:
             type: string
           description: List of pairing methods associated with the 
                        ble device, stored as schema URI.
-          nullable: true
           readOnly: false
           writeOnly: false
         urn:ietf:params:scim:schemas:extension:pairingNull:2.0:Device:
@@ -121,7 +114,6 @@ components:
           description: Just works does not have any key value. For 
                        completeness, it is added with a key value
                        'null'.
-          nullable: false
           readOnly: false
           writeOnly: false
       required:
@@ -135,7 +127,6 @@ components:
           type: integer
           description: A six digit passkey for ble device.
                        The pattern of key is ^[0-9]{6}$.
-          nullable: false
           readOnly: false
           writeOnly: true
       required:
@@ -148,20 +139,17 @@ components:
         key:
           type: string
           description: The OOB key value for ble device.
-          nullable: false
           readOnly: false
           writeOnly: false
         randomNumber:
           type: integer
           description: Nonce added to the key
-          nullable: false
           readOnly: false
           writeOnly: true
         confirmationNumber:
           type: integer
           description: Some solutions require a confirmation number 
                        in the RESTful message exchange.
-          nullable: true
           readOnly: false
           writeOnly: true
       required:

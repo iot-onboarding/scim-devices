@@ -34,7 +34,6 @@ components:
           description: "Human readable name of the device, suitable
                         for displaying to end-users. For example,
                        'BLE Heart Monitor' etc."
-          nullable: true
           readOnly: false
           writeOnly: false
         active:
@@ -47,7 +46,6 @@ components:
                        by the controller.  If set FALSE, any command
                        comming from the control app for the device
                        will be rejected by the controller.
-          nullable: false
           readOnly: false
           writeOnly: false
         mudUrl:
@@ -56,7 +54,6 @@ components:
           description: A URL to MUD file of the device (RFC 8520). It
                        is added for future use. Current usage is not 
                        defined yet.
-          nullable: true
           readOnly: false
           writeOnly: false
         groups:
@@ -80,19 +77,16 @@ components:
             enum:
               - urn:ietf:params:scim:schemas:core:2.0:Device
           description: The list of schemas that define the resource.
-          nullable: false
         id:
           type: string
           format: uri
           description: The unique identifier for a resource.
-          nullable: false
           readOnly: true
           writeOnly: false
         externalId:
           type: string
           description: An identifier for the resource that is defined
                        by the provisioning client.
-          nullable: true
           readOnly: false
           writeOnly: false
         meta:
@@ -103,14 +97,12 @@ components:
               type: string
               description: The name of the resource type of the 
                            resource.
-              nullable: false
               readOnly: true
               writeOnly: false
             location:
               type: string
               format: uri
               description: The URI of the resource being returned.
-              nullable: false
               readOnly: true
               writeOnly: false
             created:
@@ -118,7 +110,6 @@ components:
               format: date-time
               description: The date and time the resource was added
                            to the service provider.
-              nullable: false
               readOnly: true
               writeOnly: false
             lastModified:
@@ -127,13 +118,11 @@ components:
               description: The most recent date and time that the 
                            details of this resource were updated at
                            the service provider.
-              nullable: false
               readOnly: true
               writeOnly: false
             version:
               type: string
               description: The version of the resource. 
-              nullable: true
               readOnly: true
               writeOnly: false
           additionalProperties: false

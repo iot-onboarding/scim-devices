@@ -18,7 +18,6 @@ components:
           description: The URL of the enterprise endpoint which device
                        control apps use to reach enterprise network 
                        gateway.
-          nullable: false
           readOnly: true
           writeOnly: false
         
@@ -28,7 +27,6 @@ components:
           description: The URL of the enterprise endpoint which 
                        telemetry apps use to reach enterprise network 
                        gateway.
-          nullable: false
           readOnly: true
           writeOnly: false
 
@@ -42,7 +40,6 @@ components:
         value:
           type: string
           description: The identifier of the endpointApp.
-          nullable: false
           readOnly: false
           writeOnly: false
         ref:
@@ -51,7 +48,6 @@ components:
           description: The URI of the corresponding 'EndpointApp' 
                       resource which will control or obtain data from 
                       the device.
-          nullable: false
           readOnly: true
           writeOnly: false
       required:
