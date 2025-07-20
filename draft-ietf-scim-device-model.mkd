@@ -361,6 +361,9 @@ mudUrl:
    may be used as described in {{!RFC8520}}. This attribute is case
    sensitive and returned by default.
 
+groups:
+: An optional read-only complex object that indicates group membership.  Its
+  form is precisely the same of that defined in {{Section 4.1.2 of RFC7643}}.
 
 | Attribute   | Multi Value | Req | Case Exact| Mutable | Return | Unique |
 |-------------|-------|-----|------|---------|--------|--------|
@@ -369,8 +372,10 @@ mudUrl:
 | active      |   F   |  T  |  F   |   RW    |  Def   |  None  |
 |-------------|-------|-----|------|---------|--------|--------|
 | mudUrl      |   F   |  F  |  T   |   RW    |  Def   |  None  |
+|-------------|-------|-----|------|---------|--------|--------|
+| groups      |   T   |  F  |  T   |   RO    |  Def   |   n/a  |
 {: #tabDevice title="Characteristics of device schema attributes. (Req = Required,
-T = True, F = False, RW = ReadWrite, and Def = Default)"}
+T = True, F = False, RO = ReadOnly, RW = ReadWrite, and Def = Default)"}
 
 
 ~~~~~~~~~
