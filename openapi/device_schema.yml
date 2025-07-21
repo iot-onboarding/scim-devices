@@ -7,7 +7,9 @@ components:
   schemas:
     Group:
       type: object
-      description: Group entries for Devices
+      description: A list of groups to which the device belongs,
+                   either through direct membership, through nested
+                   groups, or dynamically calculated.
       properties:
         value:
           type: string
