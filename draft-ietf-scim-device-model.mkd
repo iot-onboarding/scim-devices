@@ -363,7 +363,7 @@ mudUrl:
 
 groups:
 : An optional read-only complex object that indicates group membership.  Its
-  form is precisely the same of that defined in {{Section 4.1.2 of RFC7643}}.
+  form is precisely the same as that defined in {{Section 4.1.2 of RFC7643}}.
 
 | Attribute   | Multi Value | Req | Case Exact| Mutable | Return | Unique |
 |-------------|-------|-----|------|---------|--------|--------|
