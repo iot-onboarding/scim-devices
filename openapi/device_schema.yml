@@ -13,20 +13,22 @@ components:
           type: string
           description: the unique identifier of a group,
                        typically a UUID.
-          readOnly: false
+          readOnly: true
           writeOnly: false
         display:
           type: string
           description: a display string for the group.
-          readOnly: false
+          readOnly: true
           writeOnly: false
         $ref:
           type: string
           format: uri
           description: reference to the group object
+          readOnly: true
+          writeOnly: true
 
     Device:
-      description: Device account
+      description: Entry containing attributes about a device
       type: object
       properties:
         displayName:
