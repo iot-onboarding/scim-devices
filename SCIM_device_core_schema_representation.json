@@ -1,7 +1,7 @@
 {  
   "id": "urn:ietf:params:scim:schemas:core:2.0:Device",
   "name": "Device",
-  "description": " Entry containing attributes about a device",
+  "description": "Entry containing attributes about a device",
   "attributes" : [
     {
       "name": "displayName",
