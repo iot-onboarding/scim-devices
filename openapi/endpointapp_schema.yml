@@ -5,6 +5,30 @@ info:
 
 components:
   schemas:
+    Group:
+      type: object
+      description: A list of groups to which the endpoint
+                   application belongs, either through
+                   direct membership, through nested
+                   groups, or dynamically calculated.
+      properties:
+        value:
+          type: string
+          description: the unique identifier of a group,
+                       typically a UUID.
+          readOnly: true
+          writeOnly: false
+        display:
+          type: string
+          description: a display string for the group.
+          readOnly: true
+          writeOnly: false
+        $ref:
+          type: string
+          format: uri
+          description: reference to the group object
+          readOnly: true
+          writeOnly: true
     EndpointApp:
       title: EndpointApp
       description: Endpoint application resource
@@ -12,8 +36,8 @@ components:
       properties:
         applicationType:
           type: string
-          description: "This attribute will only contain two values;
-                       'deviceControl' or 'telemetry'."
+          description: This attribute will only contain two values;
+                       'deviceControl' or 'telemetry'.
           readOnly: false
           writeOnly: false
 
@@ -22,6 +46,12 @@ components:
           description: Human readable name of the application.
           readOnly: false
           writeOnly: false
+        groups:
+          type: array
+          description: list of groups to which the endpointApp
+                       belongs.
+          items:
+            $ref: '#/components/schemas/Group'
         
       required:
         - applicationType

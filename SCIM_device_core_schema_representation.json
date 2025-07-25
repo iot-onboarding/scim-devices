@@ -58,12 +58,10 @@
           "name": "$ref",
           "type": "reference",
           "referenceTypes": [
-            "User",
-            "Group",
             "Device"
           ],
           "multiValued": false,
-          "description": "The URI of the corresponding 'Group' resource to which the user belongs.",
+          "description": "The URI of the corresponding 'Group' resource to which the device belongs.",
           "required": false,
           "caseExact": false,
           "mutability": "readOnly",

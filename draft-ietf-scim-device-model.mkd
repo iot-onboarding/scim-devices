@@ -385,13 +385,18 @@ T = True, F = False, RO = ReadOnly, RW = ReadWrite, and Def = Default)"}
 ~~~~~~~~~
 {: #coreExample title="Core Device Example Entries"}
 
-Device Groups
+Groups
 =============
 
-Device groups are created using the SCIM groups as defined in
-{{Section 4.2 of RFC7643}}.  The "referenceTypes" and "canonicalValues"
+Device and EndpointApp groups are created using the SCIM groups as defined
+in {{Section 4.2 of RFC7643}}.  The "referenceTypes" and "canonicalValues"
 attributes defined in {{Section 7 of RFC7643}} MUST include "Device" for 
-devices.
+devices and "EndpointApp" for endpoint applications.  The "type" subattribute
+of the "members" attribute MUST be set to "Device" for devices and
+"EndpointApp" for endpoint applications.  The referenceTypes of the 
+"$ref" attribute SHALL contain "Device" for implementations that support
+the Device resource type and "EndpointApp" for implementations that support
+endpoint applications.
 
 
 Resource Type EndpointApp
@@ -445,6 +450,9 @@ clientToken:
    by default if it exists.  The SCIM server should expect that client
    tokens will be shared by the SCIM client with other components within
    the client's infrastructure.
+groups:
+: An optional read-only complex object that indicates group membership.  Its
+  form is precisely the same as that defined in {{Section 4.1.2 of RFC7643}}.
 
 ## Complex Attributes
 

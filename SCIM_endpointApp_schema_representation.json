@@ -70,6 +70,68 @@
       "mutability": "readOnly",
       "returned": "default",
       "uniqueness": "none"
+    },
+    {
+      "name": "groups",
+      "type": "complex",
+      "multiValued": true,
+      "description": "A list of groups to which an endpoint application belongs, either through direct membership, through nested groups, or dynamically calculated.",
+      "required": false,
+      "subAttributes": [
+        {
+          "name": "value",
+          "type": "string",
+          "multiValued": false,
+          "description": "The identifier of the endpoint application's group.",
+          "required": false,
+          "caseExact": false,
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        },
+        {
+          "name": "$ref",
+          "type": "reference",
+          "referenceTypes": [
+            "EndpointApp"
+          ],
+          "multiValued": false,
+          "description": "The URI of the corresponding 'Group' resource to which the endpoint application belongs.",
+          "required": false,
+          "caseExact": false,
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        },
+        {
+          "name": "display",
+          "type": "string",
+          "multiValued": false,
+          "description": "A human-readable name, primarily used for display purposes.  READ-ONLY.",
+          "required": false,
+          "caseExact": false,
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "multiValued": false,
+          "description": "A label indicating the attribute's function, e.g., 'direct' or 'indirect'.",
+          "required": false,
+          "caseExact": false,
+          "canonicalValues": [
+            "direct",
+            "indirect"
+          ],
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        }
+      ],
+      "mutability": "readOnly",
+      "returned": "default"
     }
   ],
   "meta" : {

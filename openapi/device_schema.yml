@@ -28,7 +28,6 @@ components:
           description: reference to the group object
           readOnly: true
           writeOnly: true
-
     Device:
       description: Entry containing attributes about a device
       type: object
