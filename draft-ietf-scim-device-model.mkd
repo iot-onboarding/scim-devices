@@ -1,7 +1,7 @@
 ---
 title: Device Schema Extensions to the SCIM model
 abbrev: SCIM Device Schema Extensions
-docname: draft-ietf-scim-device-model-16
+docname: draft-ietf-scim-device-model-17
 submissionType: IETF
 category: std
 
@@ -1119,8 +1119,15 @@ Draft 16:
 
   * Elwyn Davies review suggestions.
 
+Drafts 17:
+  * Post DISCUSS hiccup with groups.
+  * Add OpenAPI header
+  * multivalues->multivalued
+  * externalID->externalId
+  * remove nullable (wasn't doing anything)
+  * Update appropriate json schema and openapi accordingly.
 
-Drafts 14 and 15:
+Drafts 14, 15, 16:
   * Resolve DISCUSSes
 
 Draft 13:
