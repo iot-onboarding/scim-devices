@@ -389,7 +389,7 @@ Groups
 =============
 
 Device and EndpointApp groups are created using the SCIM groups as defined
-in {{Section 4.2 of RFC7643}}.  The "type" subattribute
+in {{Section 4.2 of RFC7643}}.  If set, the "type" subattribute
 of the "members" attribute MUST be set to "Device" for devices and
 "EndpointApp" for endpoint applications.
 
