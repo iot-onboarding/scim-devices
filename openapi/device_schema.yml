@@ -1,8 +1,35 @@
+openapi: 3.1.0
+info:
+  title: SCIM Device Schema
+  version: 1.0.0
+
 components:
   schemas:
+    Group:
+      type: object
+      description: A list of groups to which the device belongs,
+                   either through direct membership, through nested
+                   groups, or dynamically calculated.
+      properties:
+        value:
+          type: string
+          description: the unique identifier of a group,
+                       typically a UUID.
+          readOnly: true
+          writeOnly: false
+        display:
+          type: string
+          description: a display string for the group.
+          readOnly: true
+          writeOnly: false
+        $ref:
+          type: string
+          format: uri
+          description: reference to the group object
+          readOnly: true
+          writeOnly: true
     Device:
-      title: Device
-      description: Device account
+      description: Entry containing attributes about a device
       type: object
       properties:
         displayName:
@@ -10,7 +37,6 @@ components:
           description: "Human readable name of the device, suitable
                         for displaying to end-users. For example,
                        'BLE Heart Monitor' etc."
-          nullable: true
           readOnly: false
           writeOnly: false
         active:
@@ -23,7 +49,6 @@ components:
                        by the controller.  If set FALSE, any command
                        comming from the control app for the device
                        will be rejected by the controller.
-          nullable: false
           readOnly: false
           writeOnly: false
         mudUrl:
@@ -32,9 +57,14 @@ components:
           description: A URL to MUD file of the device (RFC 8520). It
                        is added for future use. Current usage is not 
                        defined yet.
-          nullable: true
           readOnly: false
           writeOnly: false
+        groups:
+          type: array
+          description: list of groups device belongs to
+          items:
+            $ref: '#/components/schemas/Group'
+
       required:
         - active
       additionalProperties: false
@@ -50,19 +80,16 @@ components:
             enum:
               - urn:ietf:params:scim:schemas:core:2.0:Device
           description: The list of schemas that define the resource.
-          nullable: false
         id:
           type: string
           format: uri
           description: The unique identifier for a resource.
-          nullable: false
           readOnly: true
           writeOnly: false
         externalId:
           type: string
           description: An identifier for the resource that is defined
                        by the provisioning client.
-          nullable: true
           readOnly: false
           writeOnly: false
         meta:
@@ -73,14 +100,12 @@ components:
               type: string
               description: The name of the resource type of the 
                            resource.
-              nullable: false
               readOnly: true
               writeOnly: false
             location:
               type: string
               format: uri
               description: The URI of the resource being returned.
-              nullable: false
               readOnly: true
               writeOnly: false
             created:
@@ -88,7 +113,6 @@ components:
               format: date-time
               description: The date and time the resource was added
                            to the service provider.
-              nullable: false
               readOnly: true
               writeOnly: false
             lastModified:
@@ -97,13 +121,11 @@ components:
               description: The most recent date and time that the 
                            details of this resource were updated at
                            the service provider.
-              nullable: false
               readOnly: true
               writeOnly: false
             version:
               type: string
               description: The version of the resource. 
-              nullable: true
               readOnly: true
               writeOnly: false
           additionalProperties: false

@@ -1,3 +1,8 @@
+openapi: 3.1.0
+info:
+  title: SCIM Zigbee Extension Schema
+  version: 1.0.0
+
 components:
   schemas:
     ZigbeeDevice:
@@ -22,7 +27,6 @@ components:
             type: string
           description: Provides a list of all the Zigbee versions 
                        supported by the device. For example, [3.0].
-          nullable: false
           readOnly: false
           writeOnly: false
         deviceEui64Address:
@@ -30,7 +34,6 @@ components:
           description: The EUI-64 (Extended Unique Identifier) device 
                        address. The regex pattern is
                        ^[0-9A-Fa-f]{16}$.
-          nullable: false
           readOnly: false
           writeOnly: false
       required:

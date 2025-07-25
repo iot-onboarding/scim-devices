@@ -1,13 +1,13 @@
 {  
   "id": "urn:ietf:params:scim:schemas:core:2.0:Device",
   "name": "Device",
-  "description": "Device account",
+  "description": "Entry containing attributes about a device",
   "attributes" : [
     {
       "name": "displayName",
       "type": "string",
       "description": "Human readable name of the device, suitable for displaying to end-users. For example, 'BLE Heart Monitor' etc.",
-      "multivalues": false,
+      "multiValued": false,
       "required": false,
       "caseExact": false,
       "mutability": "readWrite",
@@ -18,7 +18,7 @@
       "name": "active",
       "type": "boolean",
       "description": "A mutable boolean value indicating the device administrative status. If set TRUE, the commands (such as connect, disconnect, subscribe) that control app sends to the controller for the devices will be processeed by the controller. If set FALSE, any command comming from the control app for the device will be rejected by the controller.",
-      "multivalues": false,
+      "multiValued": false,
       "required": true,
       "caseExact": false,
       "mutability": "readWrite",
@@ -29,14 +29,76 @@
       "name": "mudUrl",
       "type": "reference",
       "description": "A URL to MUD file of the device (RFC 8520).",
-      "multivalues": false,
+      "multiValued": false,
       "required": false,
       "caseExact": true,
       "mutability": "readWrite",
       "returned": "default",
       "uniqueness": "none"
-    }
-  ],
+    },
+    {
+      "name": "groups",
+      "type": "complex",
+      "multiValued": true,
+      "description": "A list of groups to which the device belongs, either through direct membership, through nested groups, or dynamically calculated.",
+      "required": false,
+      "subAttributes": [
+        {
+          "name": "value",
+          "type": "string",
+          "multiValued": false,
+          "description": "The identifier of the Device's group.",
+          "required": false,
+          "caseExact": false,
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        },
+        {
+          "name": "$ref",
+          "type": "reference",
+          "referenceTypes": [
+            "Device"
+          ],
+          "multiValued": false,
+          "description": "The URI of the corresponding 'Group' resource to which the device belongs.",
+          "required": false,
+          "caseExact": false,
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        },
+        {
+          "name": "display",
+          "type": "string",
+          "multiValued": false,
+          "description": "A human-readable name, primarily used for display purposes.  READ-ONLY.",
+          "required": false,
+          "caseExact": false,
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "multiValued": false,
+          "description": "A label indicating the attribute's function, e.g., 'direct' or 'indirect'.",
+          "required": false,
+          "caseExact": false,
+          "canonicalValues": [
+            "direct",
+            "indirect"
+          ],
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        }
+      ],
+      "mutability": "readOnly",
+      "returned": "default"
+    } 
+],
   "meta" : {
     "resourceType" : "Schema",
     "location" :

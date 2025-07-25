@@ -1,3 +1,8 @@
+openapi: 3.1.0
+info:
+  title: SCIM Device Provisioning Protocol Extension Schema
+  version: 1.0.0
+
 components:
   schemas:
     DppDevice:
@@ -19,7 +24,6 @@ components:
         dppVersion:
           type: integer
           description: Version of DPP this device supports.
-          nullable: false
           readOnly: false
           writeOnly: false
         bootstrappingMethod:
@@ -29,7 +33,6 @@ components:
           description: The list of all the bootstrapping methods 
                        available on the enrollee device. For 
                        example, [QR, NFC].
-          nullable: true
           readOnly: false
           writeOnly: false
         bootstrapKey:
@@ -38,7 +41,6 @@ components:
                        (ECDH) public key. The base64 encoded length
                        for P-256, P-384, and P-521 is 80, 96, and 120
                        characters.
-          nullable: false
           readOnly: false
           writeOnly: true
         deviceMacAddress:
@@ -46,7 +48,6 @@ components:
           description: The MAC address assigned by the manufacturer.
                        The regex pattern is
                        ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.
-          nullable: false
           readOnly: false
           writeOnly: false
         classChannel:
@@ -57,14 +58,12 @@ components:
                        shared as bootstrapping information. It is 
                        formatted as class/channel. For example,
                        '81/1', '115/36'.
-          nullable: false
           readOnly: false
           writeOnly: false
         serialNumber:
           type: string
           description: An alphanumeric serial number that may also be
                        passed as bootstrapping information.
-          nullable: false
           readOnly: false
           writeOnly: false
       required:

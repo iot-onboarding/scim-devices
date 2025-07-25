@@ -1,5 +1,34 @@
+openapi: 3.1.0
+info:
+  title: SCIM endpoint app schema
+  version: 1.0.0
+
 components:
   schemas:
+    Group:
+      type: object
+      description: A list of groups to which the endpoint
+                   application belongs, either through
+                   direct membership, through nested
+                   groups, or dynamically calculated.
+      properties:
+        value:
+          type: string
+          description: the unique identifier of a group,
+                       typically a UUID.
+          readOnly: true
+          writeOnly: false
+        display:
+          type: string
+          description: a display string for the group.
+          readOnly: true
+          writeOnly: false
+        $ref:
+          type: string
+          format: uri
+          description: reference to the group object
+          readOnly: true
+          writeOnly: true
     EndpointApp:
       title: EndpointApp
       description: Endpoint application resource
@@ -7,18 +36,22 @@ components:
       properties:
         applicationType:
           type: string
-          description: "This attribute will only contain two values;
-                       'deviceControl' or 'telemetry'."
-          nullable: false
+          description: This attribute will only contain two values;
+                       'deviceControl' or 'telemetry'.
           readOnly: false
           writeOnly: false
 
         applicationName:
           type: string
           description: Human readable name of the application.
-          nullable: false
           readOnly: false
           writeOnly: false
+        groups:
+          type: array
+          description: list of groups to which the endpointApp
+                       belongs.
+          items:
+            $ref: '#/components/schemas/Group'
         
       required:
         - applicationType
@@ -37,7 +70,6 @@ components:
       description: "This attribute contains a token that the client
                     will use to authenticate itself. Each token may
                     be a string up to 500 characters in length."
-      nullable: true
       readOnly: true
       writeOnly: false
 
@@ -51,7 +83,6 @@ components:
           type: string
           description: "The base64 encoding of a trust anchor
                         certificate,as per RFC 4648 Section 4."
-          nullable: false
           readOnly: false
           writeOnly: false
 
@@ -62,7 +93,6 @@ components:
                         certificate that identifies the primary
                         domain or IP address for which the
                         certificate is issued."
-          nullable: false
           readOnly: false
           writeOnly: false
 
@@ -79,12 +109,10 @@ components:
             enum:
               - urn:ietf:params:scim:schemas:core:2.0:EndpointApp
           description: The list of schemas that define the resource.
-          nullable: false
         id:
           type: string
           format: uri
           description: The unique identifier for a resource.
-          nullable: false
           readOnly: true
           writeOnly: false
         meta:
@@ -95,14 +123,12 @@ components:
               type: string
               description: The name of the resource type of the 
                            resource.
-              nullable: false
               readOnly: true
               writeOnly: false
             location:
               type: string
               format: uri
               description: The URI of the resource being returned.
-              nullable: false
               readOnly: true
               writeOnly: false
             created:
@@ -110,7 +136,6 @@ components:
               format: date-time
               description: The date and time the resource was added
                            to the service provider.
-              nullable: false
               readOnly: true
               writeOnly: false
             lastModified:
@@ -119,13 +144,11 @@ components:
               description: The most recent date and time that the 
                            details of this resource were updated at
                            the service provider.
-              nullable: false
               readOnly: true
               writeOnly: false
             version:
               type: string
               description: The version of the resource. 
-              nullable: true
               readOnly: true
               writeOnly: false
           additionalProperties: false

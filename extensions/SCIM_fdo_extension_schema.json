@@ -7,7 +7,7 @@
         "name": "fdoVoucher",
         "type": "string",
         "description": "A voucher as defined in the FDO specification",
-        "multivalues": false,
+        "multiValued": false,
         "required": true,
         "caseExact": false,
         "mutability": "readWrite",

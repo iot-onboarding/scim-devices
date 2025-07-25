@@ -7,7 +7,7 @@
       "name": "applicationType",
       "type": "string",
       "description": "This attribute will only contain two values; 'deviceControl' or 'telemetry'.",
-      "multivalues": false,
+      "multiValued": false,
       "required": true,
       "caseExact": false,
       "mutability": "readOnly",
@@ -18,7 +18,7 @@
       "name": "applicationName",
       "type": "string",
       "description": "Human readable name of the application.",
-      "multivalues": false,
+      "multiValued": false,
       "required": true,
       "caseExact": false,
       "mutability": "readWrite",
@@ -29,7 +29,7 @@
       "name": "certificateInfo",
       "type": "complex",
       "description": "Contains x509 certificate's subject name and root CA information associated with the device control or telemetry app.",
-      "multivalues": false,
+      "multiValued": false,
       "required": false,
       "caseExact": false,
       "mutability": "readWrite",
@@ -64,12 +64,74 @@
       "name": "clientToken",
       "type": "string",
       "description": "This attribute contains a token that the client will use to authenticate itself.  Each token may be a string up to 500 characters in length.",
-      "multivalues": false,
+      "multiValued": false,
       "required": false,
       "caseExact": true,
       "mutability": "readOnly",
       "returned": "default",
       "uniqueness": "none"
+    },
+    {
+      "name": "groups",
+      "type": "complex",
+      "multiValued": true,
+      "description": "A list of groups to which an endpoint application belongs, either through direct membership, through nested groups, or dynamically calculated.",
+      "required": false,
+      "subAttributes": [
+        {
+          "name": "value",
+          "type": "string",
+          "multiValued": false,
+          "description": "The identifier of the endpoint application's group.",
+          "required": false,
+          "caseExact": false,
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        },
+        {
+          "name": "$ref",
+          "type": "reference",
+          "referenceTypes": [
+            "EndpointApp"
+          ],
+          "multiValued": false,
+          "description": "The URI of the corresponding 'Group' resource to which the endpoint application belongs.",
+          "required": false,
+          "caseExact": false,
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        },
+        {
+          "name": "display",
+          "type": "string",
+          "multiValued": false,
+          "description": "A human-readable name, primarily used for display purposes.  READ-ONLY.",
+          "required": false,
+          "caseExact": false,
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "multiValued": false,
+          "description": "A label indicating the attribute's function, e.g., 'direct' or 'indirect'.",
+          "required": false,
+          "caseExact": false,
+          "canonicalValues": [
+            "direct",
+            "indirect"
+          ],
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none"
+        }
+      ],
+      "mutability": "readOnly",
+      "returned": "default"
     }
   ],
   "meta" : {

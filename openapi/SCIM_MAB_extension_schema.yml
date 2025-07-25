@@ -1,3 +1,8 @@
+openapi: 3.1.0
+info:
+  title: SCIM MAC Authentication Bypass Extension Schema
+  version: 1.0.0
+
 components:
   schemas:
     EthernetMABDevice:
@@ -22,7 +27,6 @@ components:
                        manufacturer. It is unique 48 bit value. The
                        regex pattern is 
                        ^[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}.
-          nullable: false
           readOnly: false
           writeOnly: false
       required:

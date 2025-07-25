@@ -1,3 +1,8 @@
+openapi: 3.1.0
+info:
+  title: SCIM Fido Device Onboarding Extension Schema
+  version: 1.0.0
+
 components:
   schemas:
     FDODevice:
@@ -19,7 +24,6 @@ components:
         fdoVoucher:
           type: string
           description: A FIDO Device Onboard (FDO) Voucher
-          nullable: false
           readOnly: false
           writeOnly: false
       required:
