@@ -58,7 +58,7 @@
           "name": "$ref",
           "type": "reference",
           "referenceTypes": [
-            "Device"
+            "Group"
           ],
           "multiValued": false,
           "description": "The URI of the corresponding 'Group' resource to which the device belongs.",
